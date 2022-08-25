@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/transparent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_10sdp">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="@dimen/_12sdp"
+            app:cardBackgroundColor="@color/white">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:paddingRight="@dimen/padding10dp"
+                android:paddingLeft="@dimen/padding10dp">
+
+
+
+
+                <TextView
+                    android:id="@+id/tv_delete_msg"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/rate_us_black"
+                    android:textSize="14sp"
+                    android:text="@string/photo_delete_msg"/>
+
+
+                <LinearLayout
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_width="match_parent"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:padding="@dimen/_10sdp"
+                    android:layout_height="wrap_content">
+
+
+                    <TextView
+                        android:id="@+id/ll_cancel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:text="@string/cancel"
+                        android:layout_marginEnd="10dp"
+                        android:textAllCaps="true"
+                        android:textColor="@color/black"
+                        android:textSize="15sp" />
+
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:layout_width="@dimen/_120sdp"
+                        android:layout_centerInParent="true"
+                        android:layout_height="wrap_content"
+                        app:cardBackgroundColor="#E53838"
+                        app:cardUseCompatPadding="true"
+                        app:cardCornerRadius="@dimen/_20sdp">
+
+                        <LinearLayout
+                            android:id="@+id/ll_okProceed"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:layout_width="match_parent"
+                            android:paddingTop="@dimen/_10sdp"
+                            android:paddingBottom="@dimen/_10sdp"
+                            android:layout_height="match_parent">
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/ic_video_delete"
+                                android:backgroundTint="@color/white_inapp"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/delete"
+                                android:textAllCaps="true"
+                                android:textColor="@color/white_inapp"
+                                android:textStyle="bold"
+                                android:textSize="15sp"
+                                android:layout_marginStart="@dimen/_10sdp"
+                                android:gravity="center">
+
+                            </TextView>
+
+                        </LinearLayout>
+
+                    </androidx.cardview.widget.CardView>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -7,4 +7,126 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="other_card_one_text_color_exit_prompt">#d84c4b</color>
+    <color name="other_card_two_text_color_exit_prompt">#2fc355</color>
+    <color name="share_feed_bgcolor">#B3000000</color>
+    <color name="white_inapp">#ffffff</color>
+    <color name="exit_layout_divider_color">#80A5A3A3</color>
+    <color name="dark_grey">#aca3a3</color>
+    <color name="colorPrimary">#075E54</color>
+    <color name="colorPrimaryDark">#075E54</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="App_White">#FFFFFF</color>
+    <color name="view_color">#075E54</color>
+    <color name="black_trans">#aa000000</color>
+    <color name="tras">#80ffffff</color>
+    <color name="red_menu">#bf141d</color>
+    <color name="bg_date_color">#075E54</color>
+    <color name="black_gray">#8c8b8b</color>
+    <color name="black_transbb">#75000000</color>
+    <color name="full_trans">#00000000</color>
+    <color name="Trans_1">#00ffffff</color>
+    <color name="tool_visible">#315817</color>
+    <color name="callrado_text_color">#EB000000</color>
+    <color name="inactiveAddButtonColor">#B3B3B3</color>
+    <color name="infoPageBackgroundColor">#EBEBEB</color>
+    <color name="actionBarArrowColor">@color/colorAccent</color>
+    <color name="status_bar_color">#192b0d</color>
+    <color name="progress_background">#C7C5C8</color>
+    <color name="progress_background_complete">@android:color/holo_red_dark</color>
+    <color name="colr_black_trans">#aa474847</color>
+    <color name="dasboard_background">#1a3009</color>
+    <color name="background_list">#ebe9e9</color>
+    <color name="ads_color_main">#f1f2f3</color>
+    <color name="effect_1">#f83e3e</color>
+    <color name="effect_2">#ecd018</color>
+    <color name="effect_3">#410304</color>
+    <color name="effect_4">#0600ff</color>
+    <color name="effect_5">#2ed8b3</color>
+    <color name="effect_6">#67f412</color>
+    <color name="effect_7">#000000</color>
+    <color name="effect_8">#0e0282</color>
+    <color name="effect_9">#f17008</color>
+
+    //
+    <color name="appbar_bg_color">#27C984</color>
+    <color name="view_all_color">#FF6363</color>
+    <color name="nav_divider_color">#EDEFF2</color>
+    <color name="st_color">#212121</color>
+    <color name="tab_selected">#27C984</color>
+    <color name="color_trans">#C0000000</color>
+    <color name="color_dash_bg">#F8FAF9</color>
+    <color name="color_div">#EDEFF2</color>
+    <color name="color_toggle_disable">#717E95</color>
+
+
+    <color name="color_darkGrey_allMediaListing">#1AFFFFFF</color>
+    <color name="wd_colorPrimary">#075E54</color>
+    <color name="wd_colorPrimaryDark">#075E54</color>
+    <color name="wd_colorAccent">#D81B60</color>
+
+    <color name="wd_colorSwitch">#00ad05</color>
+    <color name="wd_colorSwitchDeactive">#999999</color>
+
+    <color name="wd_colorUserName">#000000</color>
+    <color name="wd_colorLastMessage">#626262</color>
+    <color name="wd_colorDivider">#e8e8e8</color>
+    <color name="wd_colorChatRoomBG">#f6f6f6</color>
+    <color name="wd_white">#ffffff</color>
+    <color name="wd_setting_bg">#151618</color>
+    <color name="wd_bg_date_color">#075E54</color>
+    <color name="wd_black_transbb">#75000000</color>
+    <color name="wd_trans">#00000000</color>
+    <color name="wd_btn_color">#00ff60</color>
+    <color name="wd_black_trans">#aa000000</color>
+    <color name="wd_White_Snow_new">#f9f8f8</color>
+    <color name="wd_colorConversationHeader">#E3FFF3</color>
+    <color name="wd_active_indicator">#c62828</color>
+    <color name="wd_inactive_indicator">#4D000000</color>
+
+    <!--tutorial screen entries-->
+    <color name="wd_grey_600">#757575</color>
+    <color name="wd_black_transparent">#14000000</color>
+
+    <color name="grad_card_1_start">#1c57c3</color>
+    <color name="grad_card_1_mid">#4988fb</color>
+    <color name="grad_card_1_end">#1c57c3</color>
+
+    <color name="grad_card_2_start">#1cbc32</color>
+    <color name="grad_card_2_mid">#2acc40</color>
+    <color name="grad_card_2_end">#1cbc32</color>
+
+    <color name="grad_card_3_start">#fccc04</color>
+    <color name="grad_card_3_mid">#ffd528</color>
+    <color name="grad_card_3_end">#fccc04</color>
+
+    <color name="grad_card_4_start">#0c3141</color>
+    <color name="grad_card_4_mid">#1487b9</color>
+    <color name="grad_card_4_end">#0c3141</color>
+
+    <color name="grad_card_5_start">#1d443e</color>
+    <color name="grad_card_5_mid">#206057</color>
+    <color name="grad_card_5_end">#1d443e</color>
+
+    <color name="grad_card_6_start">#9b36c8</color>
+    <color name="grad_card_6_mid">#a743d4</color>
+    <color name="grad_card_6_end">#9b36c8</color>
+
+    <color name="wa_delete_tool">#0b6c61</color>
+
+
+    <color name="wd_color_bg_enable">#15322e</color>
+    <color name="wd_color_media_bottom_tab_strip">#CD000000</color>
+
+    <color name="wd_foreground_chat_select">#331D443F</color>
+
+
+    <color name="header_bottom_active">#075E54</color>
+
+
+
+    <color name="color_sub_title_permission">#4D000000</color>
+
+    <color name="color_sub_title">#424242</color>
+    <color name="rate_us_black">#424242</color>
 </resources>

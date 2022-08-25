@@ -13,4 +13,37 @@
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
+
+    <style name="MyCustomTextAppearance" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="textAllCaps">true</item>
+    </style>
+
+    <style name="My.New.TabText.Style" parent="@android:style/Widget.Holo.ActionBar.TabText">
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <style name="BottomSheetDialogTheme" parent="BaseBottomSheetDialog" />
+
+    <style name="BaseBottomSheetDialog" parent="@style/Theme.Design.Light.BottomSheetDialog">
+        <item name="android:windowIsFloating">false</item>
+        <item name="bottomSheetStyle">@style/BottomSheet</item>
+        <item name="android:windowSoftInputMode">adjustResize</item>
+    </style>
+
+    <style name="BottomSheet" parent="@style/Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+   <!-- <style name="AppTheme.SeekBar">
+        <item name="colorAccent">@color/appbar_bg_color</item>
+        <item name="colorPrimaryDark">@color/appbar_bg_color</item>
+        <item name="colorPrimary">@color/appbar_bg_color</item>
+    </style>-->
+    <style name="MySeekBar" parent="Widget.AppCompat.SeekBar">
+        <item name="android:progressBackgroundTint">#FF0000</item>
+        <item name="android:progressTint">#FFF</item>
+        <item name="android:padding">5dp</item>
+        <item name="android:colorControlActivated">#FFF</item>
+    </style>
 </resources>

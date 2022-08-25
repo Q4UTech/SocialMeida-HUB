@@ -13,9 +13,9 @@
 
     <fragment
         android:id="@+id/navigation_dashboard"
-        android:name="com.jatpack.socialmediahub.ui.status.StatusFragment"
+        android:name="com.jatpack.socialmediahub.ui.status.WAStatusFragment"
         android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        tools:layout="@layout/fragment_allmedia_image" />
 
     <fragment
         android:id="@+id/navigation_notifications"

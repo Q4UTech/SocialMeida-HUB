@@ -1,7 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/AndroidStudioProjects/SocialMeida-HUB/app/src/main/res/drawable/bg_round_view_notifc.xml" value="0.1" />
+        <entry key="..\:/AndroidStudioProjects/SocialMeida-HUB/app/src/main/res/drawable/checkbox_selector.xml" value="0.142" />
+        <entry key="..\:/AndroidStudioProjects/SocialMeida-HUB/app/src/main/res/drawable/ic_check_select.xml" value="0.142" />
+        <entry key="..\:/AndroidStudioProjects/SocialMeida-HUB/app/src/main/res/drawable/rounded_btn_inapp.xml" value="0.1" />
+        <entry key="..\:/AndroidStudioProjects/SocialMeida-HUB/app/src/main/res/layout/activity_show_case.xml" value="0.1" />
+        <entry key="..\:/AndroidStudioProjects/SocialMeida-HUB/app/src/main/res/layout/activity_status_detail.xml" value="0.16770833333333332" />
+        <entry key="..\:/AndroidStudioProjects/SocialMeida-HUB/app/src/main/res/layout/dashboard_adapter_view.xml" value="0.1" />
+        <entry key="..\:/AndroidStudioProjects/SocialMeida-HUB/app/src/main/res/layout/download_bottom_sheet.xml" value="0.1" />
+        <entry key="..\:/AndroidStudioProjects/SocialMeida-HUB/app/src/main/res/layout/download_share_prompt.xml" value="0.1" />
+        <entry key="..\:/AndroidStudioProjects/SocialMeida-HUB/app/src/main/res/layout/fragment_allmedia_image.xml" value="0.1" />
+        <entry key="..\:/AndroidStudioProjects/SocialMeida-HUB/app/src/main/res/layout/fragment_dashboard.xml" value="0.16770833333333332" />
+        <entry key="..\:/AndroidStudioProjects/SocialMeida-HUB/app/src/main/res/layout/fragment_status.xml" value="0.16770833333333332" />
+        <entry key="..\:/AndroidStudioProjects/SocialMeida-HUB/app/src/main/res/layout/layout_delete.xml" value="0.1" />
+        <entry key="..\:/AndroidStudioProjects/SocialMeida-HUB/app/src/main/res/layout/row_imgslide_imgdetail.xml" value="0.1" />
+        <entry key="..\:/AndroidStudioProjects/SocialMeida-HUB/app/src/main/res/layout/set_status_bottom_sheet.xml" value="0.1" />
+        <entry key="..\:/AndroidStudioProjects/SocialMeida-HUB/app/src/main/res/layout/status_row_view.xml" value="0.16666666666666666" />
+        <entry key="..\:/AndroidStudioProjects/SocialMeida-HUB/app/src/main/res/menu/action_menu.xml" value="0.16666666666666666" />
+        <entry key="..\:/AndroidStudioProjects/SocialMeida-HUB/app/src/main/res/menu/bottom_nav_menu.xml" value="0.16770833333333332" />
+      </map>
+    </option>
+  </component>
   <component name="ExternalStorageConfigurationManager" enabled="true" />
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="11" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />
   </component>
 </project>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="5dp"
+    android:id="@+id/mainLL">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="@dimen/margin10dp"
+        >
+
+        <ImageView
+            android:id="@+id/civ_adapter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="centerCrop"
+            android:adjustViewBounds="true"
+            android:maxHeight="@dimen/_300sdp"
+            android:layout_centerInParent="false"
+            app:civ_border_color="@color/colorPrimary"
+            app:civ_border_width="2dp" />
+
+        <ImageView
+            android:id="@+id/iv_download"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="centerCrop"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:src="@drawable/ic_checked"
+            android:layout_centerInParent="false"
+            app:civ_border_color="@color/colorPrimary"
+            android:visibility="gone"
+            app:civ_border_width="2dp"/>
+
+        <ImageView
+            android:id="@+id/iv_id_icon"
+            android:layout_width="@dimen/margin15dp"
+            android:layout_height="@dimen/margin15dp"
+            android:layout_gravity="right|bottom"
+            android:layout_marginBottom="@dimen/margin10dp"
+            android:layout_marginRight="@dimen/margin8dp" />
+
+    </androidx.cardview.widget.CardView>
+
+</RelativeLayout>
