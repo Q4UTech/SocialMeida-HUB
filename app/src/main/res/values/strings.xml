@@ -14,7 +14,10 @@
     <string name="save_image_toast">image_saved</string>
     <string name="photo_delete_msg">image deleted</string>
     <string name="delete">Delete</string>
-    <string name="no_staus_display">No status to display</string>
+    <string name="no_staus_display">No status found !</string>
     <string name="wa_status_permission_text">You can save WA status by allowing \n storage permission</string>
     <string name="btn_allow">Allow</string>
+    <string name="share">Share</string>
+    <string name="videos">Videos</string>
+    <string name="images">Images</string>
 </resources>

@@ -5,7 +5,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#F8FAF9">
+    android:background="@android:color/white">
+<Button
+    android:id="@+id/open_gallery"
+    android:text="open"
+    android:layout_gravity="center"
+    android:textColor="@android:color/white"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center"/>
 
     <RelativeLayout
         android:visibility="visible"
@@ -17,30 +25,37 @@
         android:background="@color/color_darkGrey_allMediaListing">
 
 
-
-
-        <TextView
-            android:visibility="gone"
-            android:id="@+id/no_data"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/black"
-            android:textSize="@dimen/_14sdp"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:layout_centerInParent="true"
-            android:textStyle="bold"
-            android:text="@string/no_staus_display"/>
-
-
+<LinearLayout
+    android:visibility="visible"
+    android:id="@+id/ll_nodata"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_centerInParent="true"
+    android:orientation="vertical">
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/ic_frame"/>
+    <TextView
+        android:id="@+id/no_data"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#202020"
+        android:textSize="@dimen/_12sdp"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_centerInParent="true"
+        android:textStyle="bold"
+        android:text="@string/no_staus_display"/>
+</LinearLayout>
 
 
         <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/gv_allMediaImage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/gv_allMediaImage"
-            android:stretchMode="columnWidth">
-        </androidx.recyclerview.widget.RecyclerView>
+            android:stretchMode="columnWidth"></androidx.recyclerview.widget.RecyclerView>
     </RelativeLayout>
 
 
@@ -138,7 +153,7 @@
             android:layout_centerInParent="true"
             android:background="@drawable/rounded_btn_inapp"
             android:layout_marginTop="@dimen/_30sdp"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/_220sdp"
             android:textColor="#FFFFFF"
             android:paddingStart="@dimen/_20sdp"
             android:paddingEnd="@dimen/_20sdp"

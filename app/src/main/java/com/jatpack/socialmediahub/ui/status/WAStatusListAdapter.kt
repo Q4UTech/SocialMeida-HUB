@@ -25,12 +25,13 @@ import java.io.File
 
 class WAStatusListAdapter(
     private val mContext: Context,
-    private val status: ArrayList<File>,
+    var status: ArrayList<File>,
     private val isFromGalleryBoolean: Boolean,
     private var listener:SetClick
 ) : ListAdapter<File, WAStatusListAdapter.ListAdapterViewHolder>(
     DiffUtils()
 ) {
+
     var checkStatus = BooleanArray(status.size)
      var tempList = ArrayList<Int>()
      var isLongClickEnabled = false
@@ -171,6 +172,18 @@ class WAStatusListAdapter(
         }
         notifyDataSetChanged()
     }
+
+    fun getList(): List<File?> {
+        return status
+    }
+    override fun getItemCount(): Int {
+        return status.size
+    }
+
+    fun selectAll() {
+
+    }
+
     //also called DiffUtilS Callback , Comparator
     class DiffUtils : DiffUtil.ItemCallback<File>() {
 

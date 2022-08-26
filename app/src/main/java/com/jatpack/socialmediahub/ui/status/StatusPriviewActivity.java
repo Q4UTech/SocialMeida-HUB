@@ -6,10 +6,16 @@ import android.app.Dialog;
 import android.app.PendingIntent;
 import android.content.ContentResolver;
 import android.content.ContentUris;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
@@ -64,6 +70,8 @@ import java.util.concurrent.TimeUnit;
 public class StatusPriviewActivity extends BaseActivity implements View.OnClickListener, SeekBar.OnSeekBarChangeListener {
     Activity activity;
     ActivityStatusDetailBinding binding;
+    private Bitmap bitmap;
+    
     private MediaPreferences mediaPreferences;
     TextView lbl_tittle;
     private boolean isPortraitOrientation = false;
@@ -366,7 +374,7 @@ public class StatusPriviewActivity extends BaseActivity implements View.OnClickL
                 }
             });
 
-            binding.videoShare.setOnClickListener(new View.OnClickListener() {
+            binding.llShare.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     pauseAudio();
@@ -386,7 +394,24 @@ public class StatusPriviewActivity extends BaseActivity implements View.OnClickL
                 }
             });
 
+            binding.llRepost.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (statusDocumentFileList != null && statusDocumentFileList.size() > 0) {
 
+                        setwatsappdp(statusDocumentFileList.get(imgSelectedPos).getUri());
+                    } else if (statusFileList != null && statusFileList.size() > 0) {
+                        Log.d("StatusPriviewActivity", "Hello onClick hi pathhh" + " " + statusFileList.get(imgSelectedPos)
+                                .getPath());
+                        Uri uri = FileProvider.getUriForFile(
+                                StatusPriviewActivity.this,
+                                getApplicationContext().getPackageName() + ".provider",
+                                new File(statusFileList.get(imgSelectedPos)
+                                        .getPath()));
+                        setwatsappdp(uri);
+                    }
+                }
+            });
             binding.videoSave.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -545,6 +570,44 @@ public class StatusPriviewActivity extends BaseActivity implements View.OnClickL
         return !file.exists();
     }
 
+    private void setwatsappdp(Uri uri) {
+//        Intent intent = new Intent(Intent.ACTION_ATTACH_DATA);
+//        intent.setDataAndType(uri, "image/jpg");
+//        intent.putExtra("mimeType", "image/jpg");
+//        startActivityForResult(Intent.createChooser(intent, "com.whatsapp.com"), 200);
+
+        Log.d("TAG", "setwatsappdp: checkkUri:  "+uri);
+
+        try {
+            if (uri != null) {
+                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+            }
+        } catch (Exception e) {
+            Log.d(TAG, "setwatsappdp1: "+e.getMessage());
+        }
+
+        if (bitmap != null) {
+
+            Uri urisqure = saveImage(cropToSquare(bitmap));
+            PackageManager pm = getPackageManager();
+            Log.d("TAG", "setSingleStatus5: " +urisqure);
+            try {
+                // Raise exception if whatsapp doesn't exist
+                PackageInfo info = pm.getPackageInfo("com.whatsapp", PackageManager.GET_META_DATA);
+
+//            Intent waIntent = new Intent(Intent.ACTION_SEND);
+                Intent waIntent = new Intent(Intent.ACTION_ATTACH_DATA);
+                waIntent.setDataAndType(urisqure, "image/jpg");
+                waIntent.setPackage("com.whatsapp");
+                waIntent.putExtra("mimeType", "image/jpg");
+                startActivity(waIntent);
+                //   finish();
+            } catch (PackageManager.NameNotFoundException e) {
+                Toast.makeText(this, "Please install whatsapp app", Toast.LENGTH_SHORT)
+                        .show();
+            }
+        }
+    }
 
     public void shareImage(Activity activity, Uri uri) {
         Intent intent = new Intent(Intent.ACTION_SEND);
@@ -932,6 +995,73 @@ public class StatusPriviewActivity extends BaseActivity implements View.OnClickL
         }
         // Log.e("videoTime::",videoTime);
         return videoTime;
+    }
+
+
+    private Uri saveImage(Bitmap finalBitmap) {
+        //String root = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).toString();
+        //System.out.println(root + " Root value in saveImage Function");
+        String bitmapPath;
+        /*File myDir = null;
+        if (!myDir.exists()) {
+            myDir.mkdirs();
+        }*/
+
+        String iname = "Photo0" + ".jpg";
+        Log.d(TAG, "saveImage: "+statusDocumentFileList.get(imgSelectedPos).getUri());
+        File file = new File(String.valueOf(statusDocumentFileList.get(imgSelectedPos).getUri()));
+        if (file.exists())
+            file.delete();
+        try {
+            FileOutputStream out = new FileOutputStream(file);
+            finalBitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+            out.flush();
+            out.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        bitmapPath = String.valueOf(getImageContentUri(StatusPriviewActivity.this, file));
+
+        System.out.println("ExternalStorage saveImage" + bitmapPath);
+
+        return Uri.parse(bitmapPath);
+
+    }
+    public static Uri getImageContentUri(Context context, File imageFile) {
+        String filePath = imageFile.getAbsolutePath();
+        Cursor cursor = context.getContentResolver().query(
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                new String[]{MediaStore.Images.Media._ID},
+                MediaStore.Images.Media.DATA + "=? ",
+                new String[]{filePath}, null);
+        if (cursor != null && cursor.moveToFirst()) {
+            int id = cursor.getInt(cursor
+                    .getColumnIndex(MediaStore.MediaColumns._ID));
+            Uri baseUri = Uri.parse("content://media/external/images/media");
+            return Uri.withAppendedPath(baseUri, "" + id);
+        } else {
+            if (imageFile.exists()) {
+                ContentValues values = new ContentValues();
+                values.put(MediaStore.Images.Media.DATA, filePath);
+                return context.getContentResolver().insert(
+                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+            } else {
+                return null;
+            }
+        }
+    }
+    public static Bitmap cropToSquare(Bitmap srcBmp) {
+        int dim = Math.max(srcBmp.getWidth(), srcBmp.getHeight());
+
+
+        Bitmap dstBmp = Bitmap.createBitmap(dim, dim, Bitmap.Config.ARGB_8888);
+
+        Canvas canvas = new Canvas(dstBmp);
+        canvas.setBitmap(dstBmp);
+        canvas.drawBitmap(srcBmp, (dim - srcBmp.getWidth()) / 2, (dim - srcBmp.getHeight()) / 2, null);
+
+        return dstBmp;
     }
 
     public String milliSecondsToTimer(long milliseconds) {

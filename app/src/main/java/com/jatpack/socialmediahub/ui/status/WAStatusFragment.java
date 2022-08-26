@@ -18,31 +18,41 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.FileProvider;
 import androidx.documentfile.provider.DocumentFile;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 
 import com.jatpack.socialmediahub.R;
 import com.jatpack.socialmediahub.helper.MediaPreferences;
+import com.jatpack.socialmediahub.util.AppUtils;
 import com.jatpack.socialmediahub.util.ItemOffsetView;
 import com.jatpack.socialmediahub.util.SetClick;
-import com.quantum.dashboard.ui.wastatus.WAStatusWith11ListAdapter;
 
+
+import org.apache.commons.io.FileUtils;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.channels.FileChannel;
 import java.util.ArrayList;
+import java.util.List;
 
 public class WAStatusFragment extends Fragment implements StatusFragmentContracts.StatusView, SetClick {
 
@@ -51,17 +61,21 @@ public class WAStatusFragment extends Fragment implements StatusFragmentContract
     private WAStatusListAdapter adapter;
     private ItemOffsetView itemOffsetView;
     private WAStatusWith11ListAdapter waStatusWith11ListAdapter;
-    private TextView  allow_doc_permission;
-    private RelativeLayout  above_10_permission,main_layout;
-    private LinearLayout   ll_small_wa_permission, ll_wa_big_container;
+    private TextView allow_doc_permission;
+    private RelativeLayout above_10_permission, main_layout;
+    private LinearLayout ll_small_wa_permission, ll_wa_big_container;
     public static final int WA_STATUS_FOLDER_REQ_CODE = 1001;
     public static final String WA_STATUS_FOLDER_REQ_RECEIVER = "SuceesReceiver";
     private MediaPreferences mediaPreferences;
     private ImageView iv_wa_doc_permission;
     private ActionMode actionMode;
+    List<DocumentFile> statusDocumentFileList = null;
+    List<File> statusFileList = null;
     private ActionModeCallback actionModeCallback;
     private TextView no_data;
-    public static final int STATUS_DURATION=2 * 60 * 1000; // 2 minute
+    private Button open;
+    private LinearLayout ll_noData;
+    public static final int STATUS_DURATION = 2 * 60 * 1000; // 2 minute
     public static final long TIMER_Alarm_HOUR = 1000 * 60 * 60 * 12;//24 hour
     private StatusFragmentContracts.StatusPresenter mPresenter;
 
@@ -126,18 +140,24 @@ public class WAStatusFragment extends Fragment implements StatusFragmentContract
 
     public void init(View view) {
         recyclerView = view.findViewById(R.id.gv_allMediaImage);
-        itemOffsetView=new ItemOffsetView(getActivity(), com.intuit.sdp.R.dimen._5sdp);
+        itemOffsetView = new ItemOffsetView(getActivity(), com.intuit.sdp.R.dimen._5sdp);
         recyclerView.addItemDecoration(itemOffsetView);
         main_layout = view.findViewById(R.id.main_layout);
         allow_doc_permission = view.findViewById(R.id.allow_doc_permission);
         no_data = view.findViewById(R.id.no_data);
+        ll_noData = view.findViewById(R.id.ll_nodata);
         above_10_permission = view.findViewById(R.id.above_10_permission);
         ll_small_wa_permission = view.findViewById(R.id.ll_small_wa_permission);
         ll_wa_big_container = view.findViewById(R.id.ll_wa_big_container);
         iv_wa_doc_permission = view.findViewById(R.id.iv_wa_doc_permission);
-        no_data.setVisibility(View.GONE);
-
-
+        ll_noData.setVisibility(View.GONE);
+        open = view.findViewById(R.id.open_gallery);
+        open.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+               startActivity(new Intent(requireActivity(),MyDownloadsFragment.class));
+            }
+        });
 
 //        setting_click.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -145,7 +165,6 @@ public class WAStatusFragment extends Fragment implements StatusFragmentContract
 //                startActivity(new Intent(getActivity(), SettingActivity.class));
 //            }
 //        });
-
 
 
     }
@@ -157,14 +176,14 @@ public class WAStatusFragment extends Fragment implements StatusFragmentContract
 
     @Override
     public void loadStatus(ArrayList<File> status) {
-        Log.d("TAG", "loadStatus: "+status.size());
-        if(status.size()==0){
-            no_data.setVisibility(View.VISIBLE);
-        }else {
-            no_data.setVisibility(View.GONE);
+        Log.d("TAG", "loadStatus: " + status.size());
+        if (status.size() == 0) {
+            ll_noData.setVisibility(View.VISIBLE);
+        } else {
+            ll_noData.setVisibility(View.GONE);
 
         }
-        adapter = new WAStatusListAdapter(getActivity(), status,true,this);
+        adapter = new WAStatusListAdapter(getActivity(), status, true, this);
         adapter.submitList(status);
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(),
                 3));
@@ -176,7 +195,7 @@ public class WAStatusFragment extends Fragment implements StatusFragmentContract
 
     @Override
     public void statusEroor() {
-        no_data.setVisibility(View.VISIBLE);
+        ll_noData.setVisibility(View.VISIBLE);
     }
 
 
@@ -227,16 +246,30 @@ public class WAStatusFragment extends Fragment implements StatusFragmentContract
         System.out.println("temp = ck1" + docFile.canRead() + " " + docFile.canWrite() + " " + " " + docFile.toString());
         for (DocumentFile file : docFile.listFiles()) {
 //            if (!file.getName().endsWith(".nomedia"))
-                documentFile.add(file);
+            documentFile.add(file);
 
         }
         System.out.println("MainActivity2.fetchFile: fileSize: " + documentFile.size());
-        waStatusWith11ListAdapter = new WAStatusWith11ListAdapter(getActivity(), documentFile);
+        waStatusWith11ListAdapter = new WAStatusWith11ListAdapter(getActivity(), documentFile, this);
         waStatusWith11ListAdapter.submitList(documentFile);
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(),
                 3));
 //        recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(waStatusWith11ListAdapter);
+        waStatusWith11ListAdapter.setCheckedListener(new WAStatusWith11ListAdapter.CounterSlection() {
+            @Override
+            public void selectItems(int itemSlectionCount) {
+                setPageTitle(itemSlectionCount);
+            }
+
+        });
+    }
+
+    private void setPageTitle(int itemSlectionCount) {
+        if (actionMode != null) {
+            actionMode.setTitle("Selection" + itemSlectionCount);
+
+        }
     }
 
 //    private BroadcastReceiver customReceiver = new BroadcastReceiver() {
@@ -274,14 +307,47 @@ public class WAStatusFragment extends Fragment implements StatusFragmentContract
 
     @Override
     public void onClick(@NonNull View view, int position) {
+        getFilePathData();
+        if (view.getId() == R.id.fl_download) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                if (statusDocumentFileList.get(position).getUri().getPath().endsWith(".mp4")) {
+                    saveVideo(statusDocumentFileList.get(position).getUri(), ".mp4");
+                } else {
+                    saveVideo(statusDocumentFileList.get(position).getUri(), ".jpg");
+
+                }
+            } else {
+                copyFileOrDirectory(statusFileList.get(position).getAbsolutePath(), AppUtils.createAppDir(requireActivity()));
+            }
+
+        }
 
     }
 
     @Override
     public void onLongClcik(@NonNull View view, int position) {
-        actionModeCallback = new ActionModeCallback(this, R.menu.action_menu);
-        actionMode = getActivity().startActionMode(actionModeCallback);
+
+        if (adapter != null) {
+            getFilePathData();
+            actionModeCallback = new ActionModeCallback(this, R.menu.action_menu, true);
+            actionMode = getActivity().startActionMode(actionModeCallback);
+        }
+        if (waStatusWith11ListAdapter != null) {
+            getFilePathData();
+            actionModeCallback = new ActionModeCallback(this, R.menu.action_menu, false);
+            actionMode = getActivity().startActionMode(actionModeCallback);
+        }
     }
+
+   /* @Override
+    public void onClick11(@NonNull View view, int position) {
+
+    }
+
+    @Override
+    public void onLongClick11(@NonNull View view, int position) {
+
+    }*/
 
     private static class ActionModeCallback implements ActionMode.Callback {
 
@@ -289,18 +355,21 @@ public class WAStatusFragment extends Fragment implements StatusFragmentContract
         CheckBox checkBox;
         boolean flag = false;
         final int menu_lauout;
+        boolean from;
 
-        public ActionModeCallback(WAStatusFragment waStatusFragment, int menu_lauout) {
+        public ActionModeCallback(WAStatusFragment waStatusFragment, int menu_lauout, boolean from) {
             this.waStatusFragment = waStatusFragment;
             flag = false;
             this.menu_lauout = menu_lauout;
+            this.from = from;
         }
 
         @Override
         public boolean onCreateActionMode(ActionMode mode, Menu menu) {
             // inflate contextual menu
             mode.getMenuInflater().inflate(menu_lauout, menu);
-           // checkBox = (CheckBox) menu.findItem(R.id.select_all).getActionView();
+
+            // checkBox = (CheckBox) menu.findItem(R.id.select_all).getActionView();
 //            checkBox.setChecked(true);
            /* checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
@@ -325,25 +394,140 @@ public class WAStatusFragment extends Fragment implements StatusFragmentContract
         public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
             // retrieve selected items and print them out
 
+            switch (item.getItemId()) {
+                case R.id.share_multiple:
+                    //Toast.makeText(MainActivity.this, "Option 1 selected", Toast.LENGTH_SHORT).show();
+                    if (from) {
+                        waStatusFragment.shareMultipleImage();
+                    } else {
+                        waStatusFragment.shareMultipleImageFor11();
+                    }
+                    // waStatusFragment.actionMode.finish();
+                    return true;
+                case R.id.multiple_download:
+                    if (from) {
+                        waStatusFragment.downloadMultipleImage();
+                    } else {
+                        waStatusFragment.downloadMultipleImageFor11();
+                    }
+                    return true;
+                case R.id.select_all:
+
+                    if (from) {
+                        waStatusFragment.adapter.selectAll();
+                    } else {
+                        waStatusFragment.waStatusWith11ListAdapter.selectAll();
+                    }
+                    // mode.finish();
+                    return true;
+                default:
+                    return false;
+            }
 
 
-
-            return false;
         }
+
 
         @Override
         public void onDestroyActionMode(ActionMode mode) {
             // remove selection
 
-          //  waStatusFragment.actionMode.finish();
-            waStatusFragment.adapter.removeAllSelected();
-            waStatusFragment.actionMode=null;
+            //  waStatusFragment.actionMode.finish();
+            if (waStatusFragment.adapter != null) {
+                waStatusFragment.adapter.removeAllSelected();
+            }
+            if (waStatusFragment.waStatusWith11ListAdapter != null) {
+                waStatusFragment.waStatusWith11ListAdapter.removeAllSelected();
+            }
+            waStatusFragment.actionMode = null;
 
         }
 
     }
 
+    private void downloadMultipleImageFor11() {
+        /*List<DocumentFile> statusDocumentFileList = waStatusWith11ListAdapter.getList();*/
+        if (statusDocumentFileList != null && statusDocumentFileList.size() > 0) {
+            for (int i = 0; i < statusDocumentFileList.size(); i++) {
+                if (waStatusWith11ListAdapter.getCheckStatus()[i]) {
+                    if (statusDocumentFileList.get(i).getUri().getPath().endsWith(".mp4")) {
+                        saveVideo(statusDocumentFileList.get(i).getUri(), ".mp4");
+                    } else {
+                        saveVideo(statusDocumentFileList.get(i).getUri(), ".jpg");
 
+                    }
+                }
+
+            }
+
+//                        copyFileOrDirectory(statusDocumentFileList.get(imgSelectedPos).getUri().toString(),Utils.createAppDir(ImageDetailActivity.this));
+
+        }
+    }
+
+    private void downloadMultipleImage() {
+        //List<File> videoList = adapter.getList();
+
+        if (statusFileList != null && statusFileList.size() > 0) {
+            for (int i = 0; i < statusFileList.size(); i++) {
+                Log.d("TAG", "shareMultipleImage1: " + adapter.getCheckStatus()[i]);
+                if (adapter.getCheckStatus()[i]) {
+                    copyFileOrDirectory(statusFileList.get(i).getAbsolutePath(), AppUtils.createAppDir(requireActivity()));
+                }
+
+            }
+
+
+        }
+    }
+
+    private void shareMultipleImage() {
+        // List<File> list = adapter.getList();
+        ArrayList<Uri> uriArrayList = new ArrayList<>();
+        Log.d("TAG", "shareMultipleImage: " + statusFileList.size());
+        for (int i = 0; i < statusFileList.size(); i++) {
+            Log.d("TAG", "shareMultipleImage1: " + adapter.getCheckStatus()[i]);
+            if (adapter.getCheckStatus()[i]) {
+                Uri uri = FileProvider.getUriForFile(
+                        requireActivity(),
+                        context.getPackageName() + ".provider",
+                        new File(statusFileList.get(i).getPath())
+                );
+                uriArrayList.add(uri);
+            }
+
+        }
+        shareFileImage(uriArrayList);
+    }
+
+    private void shareMultipleImageFor11() {
+        //   List<DocumentFile> waList = waStatusWith11ListAdapter.getList();
+        ArrayList<Uri> uriArrayList = new ArrayList<>();
+        Log.d("TAG", "shareMultipleImage: " + statusDocumentFileList.size());
+        for (int i = 0; i < statusDocumentFileList.size(); i++) {
+
+            if (waStatusWith11ListAdapter.getCheckStatus()[i]) {
+
+                uriArrayList.add(statusDocumentFileList.get(i).getUri());
+            }
+
+        }
+        shareFileImage(uriArrayList);
+    }
+
+    public void shareFileImage(ArrayList<Uri> path) {
+
+        Log.d("TAG", "shareMutliple1: ");
+        Intent sendIntent = new Intent();
+
+        sendIntent.setAction(Intent.ACTION_SEND_MULTIPLE);
+        sendIntent.putExtra(Intent.EXTRA_STREAM, path);
+        sendIntent.setType("*/*");
+
+        Intent shareIntent = Intent.createChooser(sendIntent, null);
+        requireActivity().startActivity(shareIntent);
+
+    }
 //    private void setStatusAlarm() {
 //        Log.d("StatusAlarmReceiver", "Hello onReceive alarmmmm 002 aaa");
 //        int i = 1;
@@ -384,5 +568,109 @@ public class WAStatusFragment extends Fragment implements StatusFragmentContract
 //        }
 //    }
 
+    public void copyFileOrDirectory(String srcDir, String dstDir) {
+
+        try {
+
+            Log.d("ImageDetailActivity", "Hello copyFileOrDirectory hi test path" + " " +
+                    srcDir + " " + ">>>>>> " + dstDir);
+            File src = new File(srcDir);
+            File dst = new File(dstDir, src.getName());
+            if (src.isDirectory()) {
+
+                String files[] = src.list();
+                int filesLength = files.length;
+                for (int i = 0; i < filesLength; i++) {
+                    String src1 = (new File(src, files[i]).getPath());
+                    String dst1 = dst.getPath();
+                    copyFileOrDirectory(src1, dst1);
+                    System.out.println("my video dir if" + " " + src1 + " " + dst1);
+                }
+            } else {
+                copyFile(src, dst);
+                System.out.println("my video dir else" + " " + src.getPath() + " " + dst.getPath());
+            }
+
+
+        } catch (Exception e) {
+            System.out.println("qsdafqhakj" + " " + e);
+            e.printStackTrace();
+        }
+    }
+
+    public void copyFile(File sourceFile, File destFile) throws IOException {
+        if (!destFile.getParentFile().exists())
+            destFile.getParentFile().mkdirs();
+        System.out.println("MY LOG CHECK 01");
+
+        if (!destFile.exists()) {
+            destFile.createNewFile();
+            System.out.println("MY LOG CHECK 02 ggfahsdgfahj" + " " + destFile.getPath());
+
+            //  mediaPreferences.setgallerycount(mediaPreferences.getgallerycount() + 1);
+
+            Toast.makeText(requireActivity(), getResources().getString(R.string.save_image_toast), Toast.LENGTH_LONG).show();
+
+
+        } else {
+            System.out.println("MY LOG CHECK override");
+
+            Toast.makeText(requireActivity(), "This Image is already saved ", Toast.LENGTH_LONG).show();
+
+
+        }
+
+
+        FileChannel source = null;
+        FileChannel destination = null;
+
+        try {
+            System.out.println("MY LOG CHECK 03");
+            source = new FileInputStream(sourceFile).getChannel();
+            destination = new FileOutputStream(destFile).getChannel();
+            destination.transferFrom(source, 0, source.size());
+        } finally {
+            if (source != null) {
+                source.close();
+                System.out.println("MY LOG CHECK 04");
+            }
+            if (destination != null) {
+                System.out.println("MY LOG CHECK 05");
+                destination.close();
+            }
+        }
+    }
+
+    private void saveVideo(Uri myUri, String fileExtension) {
+        File file;
+        try {
+            String FileName = System.currentTimeMillis() + fileExtension;
+            File path = new File(AppUtils.createAppDir(requireActivity()));
+            if (path.exists()) {
+                file = new File(path, "/" + FileName);
+                InputStream inputStream = requireActivity().getContentResolver().openInputStream(myUri);
+                org.apache.commons.io.FileUtils.copyInputStreamToFile(inputStream, file);
+
+            } else {
+                path.mkdir();
+                file = new File(path, "/" + FileName);
+                InputStream inputStream = requireActivity().getContentResolver().openInputStream(myUri);
+                FileUtils.copyInputStreamToFile(inputStream, file);
+            }
+            Toast.makeText(requireActivity(), getResources().getString(R.string.saved_image_toast), Toast.LENGTH_SHORT).show();
+        } catch (Exception e) {
+            Log.d("TAG", "saveVideo: " + e.getMessage());
+        }
+
+    }
+
+    private void getFilePathData() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            statusDocumentFileList = waStatusWith11ListAdapter.getList();
+            Log.d("TAG", "getFilePathData: " + statusDocumentFileList.size());
+        } else {
+            statusFileList = adapter.getList();
+        }
+    }
 
 }
