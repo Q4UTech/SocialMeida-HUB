@@ -41,10 +41,10 @@
         android:layout_above="@id/rl_saved_options"
         android:background="@color/white_inapp"
         android:orientation="vertical"
-        android:visibility="gone">
+        android:visibility="visible">
 
 
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/ll_videoView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -53,8 +53,30 @@
             <VideoView
                 android:id="@+id/videoView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"></VideoView>
-        </LinearLayout>
+                android:layout_height="match_parent"/>
+            <LinearLayout
+                android:id="@+id/ll_play"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:gravity="center">
+
+                <ImageView
+                    android:id="@+id/img_pause"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@drawable/ic_pause_video"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:id="@+id/img_play"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@drawable/ic_play_icon" />
+            </LinearLayout>
+        </RelativeLayout>
 
         <LinearLayout
             android:id="@+id/bottomLayout"
@@ -62,7 +84,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerInParent="true"
-            android:background="@drawable/top_round_corner_with_opecity"
+            android:background="@android:color/transparent"
             android:orientation="vertical">
 
             <LinearLayout
@@ -73,6 +95,7 @@
                 android:background="#17FFFFFF">
 
                 <LinearLayout
+
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="top|center"
@@ -94,10 +117,10 @@
                             android:minHeight="20dp"
                             android:paddingTop="10dp"
                             android:paddingBottom="10dp"
-                            android:progressBackgroundTint="#221D02"
-                            android:progressTint="#221D02"
+                            android:progressBackgroundTint="#FFFFFF"
+                            android:progressTint="#16A2F2"
                             android:theme="@style/MySeekBar"
-                            android:thumbTint="#221D02" />
+                            android:thumbTint="#16A2F2" />
 
                     </LinearLayout>
 
@@ -119,7 +142,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
                                 android:text="00:00"
-                                android:textColor="@color/black" />
+                                android:textColor="@color/white" />
 
                         </LinearLayout>
 
@@ -135,12 +158,13 @@
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
                                 android:text="00:00"
-                                android:textColor="@color/black" />
+                                android:textColor="@color/white" />
                         </LinearLayout>
 
                     </LinearLayout>
 
                     <RelativeLayout
+                        android:visibility="gone"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_50sdp"
                         android:orientation="horizontal">
@@ -160,29 +184,6 @@
                                 android:src="@drawable/shuffle_song" />
                         </LinearLayout>
 
-
-                        <LinearLayout
-                            android:id="@+id/ll_play"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_centerInParent="true"
-                            android:gravity="center">
-
-                            <ImageView
-                                android:id="@+id/img_pause"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:background="@drawable/ic_pause_video"
-                                android:visibility="gone" />
-
-                            <ImageView
-                                android:id="@+id/img_play"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:background="@drawable/ic_play_icon" />
-                        </LinearLayout>
 
 
                         <LinearLayout
@@ -305,7 +306,7 @@
                 android:layout_height="wrap_content"
                 android:text="Download"
                 android:textColor="@color/txt_color"
-                android:textSize="10sp"/>
+                android:textSize="10sp" />
 
         </LinearLayout>
 

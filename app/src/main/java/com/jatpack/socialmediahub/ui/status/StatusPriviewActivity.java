@@ -66,12 +66,11 @@ import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 
-
 public class StatusPriviewActivity extends BaseActivity implements View.OnClickListener, SeekBar.OnSeekBarChangeListener {
     Activity activity;
     ActivityStatusDetailBinding binding;
     private Bitmap bitmap;
-    
+
     private MediaPreferences mediaPreferences;
     TextView lbl_tittle;
     private boolean isPortraitOrientation = false;
@@ -133,7 +132,7 @@ public class StatusPriviewActivity extends BaseActivity implements View.OnClickL
 //                    binding.videoSave.setVisibility(View.VISIBLE);
             }
 
-           // Log.e("##imgPathValue", imgName);
+            // Log.e("##imgPathValue", imgName);
 
 
 //            binding.toolbarImgDetail.lblTittle.setText("" + imgName);
@@ -195,7 +194,7 @@ public class StatusPriviewActivity extends BaseActivity implements View.OnClickL
                                         .getUri().toString()));
 
                                 binding.videoView.seekTo(1); // display video thumbnail
-                               // binding.lblTotalTime.setText((int) statusFileList.get(position).getTotalSpace());
+                                // binding.lblTotalTime.setText((int) statusFileList.get(position).getTotalSpace());
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
@@ -224,7 +223,7 @@ public class StatusPriviewActivity extends BaseActivity implements View.OnClickL
                                         .getPath()));
 
                                 binding.videoView.seekTo(1); // display video thumbnail
-                               // binding.lblTotalTime.setText((int) statusFileList.get(position).getTotalSpace());
+                                // binding.lblTotalTime.setText((int) statusFileList.get(position).getTotalSpace());
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
@@ -247,7 +246,7 @@ public class StatusPriviewActivity extends BaseActivity implements View.OnClickL
 //                            statusFileList = new Gson().fromJson(getIntent().getStringExtra("video_allList")
 //                                    , typeToken);
 
-                       // binding.lblTotalTime.setText((int) statusFileList.get(position).getTotalSpace());
+                        // binding.lblTotalTime.setText((int) statusFileList.get(position).getTotalSpace());
 
                         try {
                             binding.videoView.setVideoURI(Uri.parse(statusFileList
@@ -320,7 +319,7 @@ public class StatusPriviewActivity extends BaseActivity implements View.OnClickL
                     if (aBoolean) {
 
                     } else {
-                       // AHandler.getInstance().showFullAds(StatusPriviewActivity.this, false);
+                        // AHandler.getInstance().showFullAds(StatusPriviewActivity.this, false);
                         imgDetail_appViewModel.setIssFirstTime_ads(true);
                     }
                 }
@@ -380,7 +379,7 @@ public class StatusPriviewActivity extends BaseActivity implements View.OnClickL
                     pauseAudio();
                     if (statusDocumentFileList != null && statusDocumentFileList.size() > 0) {
 
-                        shareImage(StatusPriviewActivity.this,statusDocumentFileList.get(imgSelectedPos).getUri());
+                        shareImage(StatusPriviewActivity.this, statusDocumentFileList.get(imgSelectedPos).getUri());
                     } else if (statusFileList != null && statusFileList.size() > 0) {
                         Log.d("StatusPriviewActivity", "Hello onClick hi pathhh" + " " + statusFileList.get(imgSelectedPos)
                                 .getPath());
@@ -472,7 +471,7 @@ public class StatusPriviewActivity extends BaseActivity implements View.OnClickL
                             .getPath()));
 
                     binding.videoView.seekTo(1); // display video thumbnail
-                   // binding.lblTotalTime.setText(binding.videoView.getDuration());
+                    // binding.lblTotalTime.setText(binding.videoView.getDuration());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -576,21 +575,21 @@ public class StatusPriviewActivity extends BaseActivity implements View.OnClickL
 //        intent.putExtra("mimeType", "image/jpg");
 //        startActivityForResult(Intent.createChooser(intent, "com.whatsapp.com"), 200);
 
-        Log.d("TAG", "setwatsappdp: checkkUri:  "+uri);
+        Log.d("TAG", "setwatsappdp: checkkUri:  " + uri);
 
         try {
             if (uri != null) {
                 bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
             }
         } catch (Exception e) {
-            Log.d(TAG, "setwatsappdp1: "+e.getMessage());
+            Log.d(TAG, "setwatsappdp1: " + e.getMessage());
         }
 
         if (bitmap != null) {
 
             Uri urisqure = saveImage(cropToSquare(bitmap));
             PackageManager pm = getPackageManager();
-            Log.d("TAG", "setSingleStatus5: " +urisqure);
+            Log.d("TAG", "setSingleStatus5: " + urisqure);
             try {
                 // Raise exception if whatsapp doesn't exist
                 PackageInfo info = pm.getPackageInfo("com.whatsapp", PackageManager.GET_META_DATA);
@@ -883,15 +882,16 @@ public class StatusPriviewActivity extends BaseActivity implements View.OnClickL
 
     private String formattedTime(int mCurrentPosition) {
         int sec = mCurrentPosition % 60;
-        int min = (mCurrentPosition / 60)%60;
-        int hours = (mCurrentPosition/60)/60;
+        int min = (mCurrentPosition / 60) % 60;
+        int hours = (mCurrentPosition / 60) / 60;
 
-        String strSec=(sec<10)?"0"+Integer.toString(sec):Integer.toString(sec);
-        String strmin=(min<10)?"0"+Integer.toString(min):Integer.toString(min);
-        String strHours=(hours<10)?"0"+Integer.toString(hours):Integer.toString(hours);
-        return strHours+":"+strmin;
+        String strSec = (sec < 10) ? "0" + Integer.toString(sec) : Integer.toString(sec);
+        String strmin = (min < 10) ? "0" + Integer.toString(min) : Integer.toString(min);
+        String strHours = (hours < 10) ? "0" + Integer.toString(hours) : Integer.toString(hours);
+        return strHours + ":" + strmin;
     }
-    public String convertDurationMillis(Integer getDurationInMillis){
+
+    public String convertDurationMillis(Integer getDurationInMillis) {
 
         int getDurationMillis = getDurationInMillis;
 
@@ -971,7 +971,7 @@ public class StatusPriviewActivity extends BaseActivity implements View.OnClickL
     @Override
     protected void onDestroy() {
         super.onDestroy();
-          mediaPlayer.release();
+        mediaPlayer.release();
         AllMediaListingImage_singleton.getInstance().setAllStatusFiles(null);
         AllMediaListingImage_singleton.getInstance().setAllStatusDocumentFiles(null);
     }
@@ -1008,8 +1008,14 @@ public class StatusPriviewActivity extends BaseActivity implements View.OnClickL
         }*/
 
         String iname = "Photo0" + ".jpg";
-        Log.d(TAG, "saveImage: "+statusDocumentFileList.get(imgSelectedPos).getUri());
-        File file = new File(String.valueOf(statusDocumentFileList.get(imgSelectedPos).getUri()));
+//        Log.d(TAG, "saveImage: "+statusDocumentFileList.get(imgSelectedPos).getUri());
+
+        File file = null;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            file = new File(String.valueOf(statusDocumentFileList.get(imgSelectedPos).getUri()));
+        }else{
+            file=new File(String.valueOf(statusFileList.get(imgSelectedPos).getPath()));
+        }
         if (file.exists())
             file.delete();
         try {
@@ -1028,6 +1034,7 @@ public class StatusPriviewActivity extends BaseActivity implements View.OnClickL
         return Uri.parse(bitmapPath);
 
     }
+
     public static Uri getImageContentUri(Context context, File imageFile) {
         String filePath = imageFile.getAbsolutePath();
         Cursor cursor = context.getContentResolver().query(
@@ -1051,6 +1058,7 @@ public class StatusPriviewActivity extends BaseActivity implements View.OnClickL
             }
         }
     }
+
     public static Bitmap cropToSquare(Bitmap srcBmp) {
         int dim = Math.max(srcBmp.getWidth(), srcBmp.getHeight());
 
@@ -1089,7 +1097,6 @@ public class StatusPriviewActivity extends BaseActivity implements View.OnClickL
         // return timer string
         return finalTimerString;
     }
-
 
 
     private boolean isMediaCntrollerVisible = true;

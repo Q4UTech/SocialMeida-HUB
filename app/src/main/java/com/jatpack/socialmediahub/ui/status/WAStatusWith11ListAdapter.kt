@@ -7,10 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.CheckBox
-import android.widget.FrameLayout
-import android.widget.ImageView
-import android.widget.LinearLayout
+import android.widget.*
 import androidx.documentfile.provider.DocumentFile
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -56,9 +53,9 @@ class WAStatusWith11ListAdapter(
         val img_media = view.findViewById<RoundedImageView>(R.id.img_media_Video)
         val video_thum = view.findViewById<ImageView>(R.id.defImg_media_video)
         val parent_click = view.findViewById<LinearLayout>(R.id.parent_click)
-        val checkBox = view.findViewById<CheckBox>(R.id.ch_select)
+        val checkBox = view.findViewById<ImageView>(R.id.ch_select)
         val fl_download = view.findViewById<FrameLayout>(R.id.fl_download)
-
+        val rl_play = view.findViewById<RelativeLayout>(R.id.rl_play)
 
         /*  fun bind(file: DocumentFile,picassoInstance : Picasso,context:Context,status :ArrayList<DocumentFile>){
 
@@ -82,52 +79,27 @@ class WAStatusWith11ListAdapter(
 
         println("WAStatusListAdapter.onBindViewHolder " + " " + position)
         // holder.bind(item,picassoInstance,mContext,status)
-        holder.checkBox?.isClickable = false
-        holder.checkBox?.isChecked = checkStatus[position]
-
-
-
         if (isLongClickEnabled) {
-            Log.d("TAG", "onBindViewHolder1: ")
-            holder.checkBox?.visibility = View.VISIBLE
+
             holder.fl_download?.visibility = View.GONE
         } else {
-            Log.d("TAG", "onBindViewHolder2: ")
-            holder.checkBox?.visibility = View.GONE
+
             holder.fl_download?.visibility = View.VISIBLE
         }
-
-        holder.checkBox?.setOnClickListener {
-        //    checkStatus[position] = holder.checkBox!!.isChecked
-            if (checkStatus!![position]) {
-                checkStatus!![position] = false
-                Log.d("TAG", "onBindViewHolder5: " + position + "," + checkStatus!![position])
-                tempList.remove(status[position])
-                listenerSelection?.selectItems(tempList.size)
-
-            } else {
-                checkStatus!![position] = true
-                Log.d("TAG", "onBindViewHolder5: " + position + "," + checkStatus!![position])
-                tempList.add(status[position])
-                listenerSelection?.selectItems(tempList.size)
-
-
-            }
-            notifyDataSetChanged()
+        if (checkStatus[position]) {
+            holder.checkBox.visibility = View.VISIBLE
+        } else {
+            holder.checkBox.visibility = View.GONE
         }
         holder.parent_click.setOnClickListener(View.OnClickListener {
             if (isLongClickEnabled) {
-                Log.d("TAG", "onBindViewHolder3: ")
-                //  holder.checkBox.performClick()
-                if (checkStatus!![position]) {
-                    checkStatus!![position] = false
-                    Log.d("TAG", "onBindViewHolder5: " + position + "," + checkStatus!![position])
+                if (checkStatus[position]) {
+                    checkStatus[position] = false
                     tempList.remove(status[position])
                     listenerSelection?.selectItems(tempList.size)
 
                 } else {
-                    checkStatus!![position] = true
-                    Log.d("TAG", "onBindViewHolder5: " + position + "," + checkStatus!![position])
+                    checkStatus[position] = true
                     tempList.add(status[position])
                     listenerSelection?.selectItems(tempList.size)
 
@@ -169,7 +141,7 @@ class WAStatusWith11ListAdapter(
 
 
         if (status[position].uri.path!!.endsWith(".mp4")) {
-            holder.video_thum.visibility = View.VISIBLE
+            holder.rl_play.visibility = View.VISIBLE
 
 //                picassoInstance.load(
 //                    VideoRequestHandler.SCHEME_VIDEO.toString() + ":" + file.uri
@@ -183,7 +155,7 @@ class WAStatusWith11ListAdapter(
 
 
         } else {
-            holder.video_thum.visibility = View.GONE
+            holder.rl_play.visibility = View.GONE
             Picasso.get().load(status[position].uri)
                 //.memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
                 .placeholder(R.drawable.ic_placeholder_image).into(holder.img_media)
@@ -191,7 +163,7 @@ class WAStatusWith11ListAdapter(
         holder.parent_click.setOnLongClickListener {
             isLongClickEnabled = true
             holder.checkBox?.performClick()
-          //  checkStatus[position] = holder.checkBox!!.isChecked
+
             if (!checkStatus[position]) {
                 checkStatus[position] = true
                 tempList.add(status[position])
@@ -224,6 +196,8 @@ class WAStatusWith11ListAdapter(
     fun selectAll() {
         for (i in status.indices) {
             checkStatus[i] = true
+            listenerSelection?.selectItems(checkStatus.size)
+
         }
         notifyDataSetChanged()
     }

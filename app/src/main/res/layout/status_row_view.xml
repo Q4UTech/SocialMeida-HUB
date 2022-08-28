@@ -33,13 +33,14 @@
                     android:layout_width="match_parent"
                     android:background="@color/white_inapp"
                     android:layout_height="match_parent"
-                    android:scaleType="fitXY"
+                    android:scaleType="centerCrop"
                     android:adjustViewBounds="true"/>
 
 
             </LinearLayout>
 
             <RelativeLayout
+                android:id="@+id/rl_play"
                 android:layout_width="@dimen/_40sdp"
                 android:layout_height="wrap_content"
                 android:background="@drawable/ic_play_rectangle"
@@ -60,6 +61,7 @@
                     />
 
                 <TextView
+                    android:id="@+id/duration"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
@@ -96,7 +98,7 @@
                 android:layout_marginEnd="@dimen/_5sdp"
                 android:layout_marginBottom="@dimen/_5sdp"
                >
-                <CheckBox
+                <!--<CheckBox
                     android:visibility="visible"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -104,6 +106,15 @@
                     android:checked="true"
                     android:button="@null"
                     android:background="@drawable/checkbox_selector"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    /> -->
+                <ImageView
+                    android:visibility="gone"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/ch_select"
+                    android:src="@drawable/ic_check_select"
                     android:layout_gravity="center"
                     android:gravity="center"
                     />

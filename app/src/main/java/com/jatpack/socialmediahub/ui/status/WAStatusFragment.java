@@ -68,9 +68,9 @@ public class WAStatusFragment extends Fragment implements StatusFragmentContract
     public static final String WA_STATUS_FOLDER_REQ_RECEIVER = "SuceesReceiver";
     private MediaPreferences mediaPreferences;
     private ImageView iv_wa_doc_permission;
-    private ActionMode actionMode;
     List<DocumentFile> statusDocumentFileList = null;
     List<File> statusFileList = null;
+    private ActionMode actionMode;
     private ActionModeCallback actionModeCallback;
     private TextView no_data;
     private Button open;
@@ -189,7 +189,13 @@ public class WAStatusFragment extends Fragment implements StatusFragmentContract
                 3));
 //        recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(adapter);
+        adapter.setCheckedListener(new WAStatusListAdapter.CounterSlection() {
+            @Override
+            public void selectItems(int itemSlectionCount) {
+                setPageTitle(itemSlectionCount);
+            }
 
+        });
         Log.d("WAStatusFragment", "Hello loadStatus oopss" + " " + status.size());
     }
 
@@ -267,7 +273,7 @@ public class WAStatusFragment extends Fragment implements StatusFragmentContract
 
     private void setPageTitle(int itemSlectionCount) {
         if (actionMode != null) {
-            actionMode.setTitle("Selection" + itemSlectionCount);
+            actionMode.setTitle("Selected : " + itemSlectionCount);
 
         }
     }
@@ -331,11 +337,13 @@ public class WAStatusFragment extends Fragment implements StatusFragmentContract
             getFilePathData();
             actionModeCallback = new ActionModeCallback(this, R.menu.action_menu, true);
             actionMode = getActivity().startActionMode(actionModeCallback);
+            setPageTitle(1);
         }
         if (waStatusWith11ListAdapter != null) {
             getFilePathData();
             actionModeCallback = new ActionModeCallback(this, R.menu.action_menu, false);
             actionMode = getActivity().startActionMode(actionModeCallback);
+            setPageTitle(1);
         }
     }
 
@@ -402,7 +410,7 @@ public class WAStatusFragment extends Fragment implements StatusFragmentContract
                     } else {
                         waStatusFragment.shareMultipleImageFor11();
                     }
-                    // waStatusFragment.actionMode.finish();
+                     waStatusFragment.actionMode.finish();
                     return true;
                 case R.id.multiple_download:
                     if (from) {
@@ -410,6 +418,7 @@ public class WAStatusFragment extends Fragment implements StatusFragmentContract
                     } else {
                         waStatusFragment.downloadMultipleImageFor11();
                     }
+                    waStatusFragment.actionMode.finish();
                     return true;
                 case R.id.select_all:
 

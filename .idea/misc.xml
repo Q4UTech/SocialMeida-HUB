@@ -7,7 +7,9 @@
         <entry key="..\:/AndroidStudioProjects/SocialMeida-HUB/app/src/main/res/drawable/auto_select_bg.xml" value="0.142" />
         <entry key="..\:/AndroidStudioProjects/SocialMeida-HUB/app/src/main/res/drawable/bg_round_view_notifc.xml" value="0.1" />
         <entry key="..\:/AndroidStudioProjects/SocialMeida-HUB/app/src/main/res/drawable/checkbox_selector.xml" value="0.142" />
+        <entry key="..\:/AndroidStudioProjects/SocialMeida-HUB/app/src/main/res/drawable/cusom_shape.xml" value="0.141" />
         <entry key="..\:/AndroidStudioProjects/SocialMeida-HUB/app/src/main/res/drawable/ic_check_select.xml" value="0.142" />
+        <entry key="..\:/AndroidStudioProjects/SocialMeida-HUB/app/src/main/res/drawable/ic_checked.xml" value="0.141" />
         <entry key="..\:/AndroidStudioProjects/SocialMeida-HUB/app/src/main/res/drawable/ic_status_saver_bg.xml" value="0.142" />
         <entry key="..\:/AndroidStudioProjects/SocialMeida-HUB/app/src/main/res/drawable/ic_status_saver_bg_small.xml" value="0.142" />
         <entry key="..\:/AndroidStudioProjects/SocialMeida-HUB/app/src/main/res/drawable/rounded_btn_inapp.xml" value="0.1" />
@@ -22,12 +24,13 @@
         <entry key="..\:/AndroidStudioProjects/SocialMeida-HUB/app/src/main/res/layout/fragment_my_download.xml" value="0.16770833333333332" />
         <entry key="..\:/AndroidStudioProjects/SocialMeida-HUB/app/src/main/res/layout/fragment_status.xml" value="0.16770833333333332" />
         <entry key="..\:/AndroidStudioProjects/SocialMeida-HUB/app/src/main/res/layout/layout_delete.xml" value="0.1" />
-        <entry key="..\:/AndroidStudioProjects/SocialMeida-HUB/app/src/main/res/layout/own_gallary_items.xml" value="0.16770833333333332" />
+        <entry key="..\:/AndroidStudioProjects/SocialMeida-HUB/app/src/main/res/layout/own_gallary_items.xml" value="0.4466666666666667" />
         <entry key="..\:/AndroidStudioProjects/SocialMeida-HUB/app/src/main/res/layout/row_imgslide_imgdetail.xml" value="0.1" />
         <entry key="..\:/AndroidStudioProjects/SocialMeida-HUB/app/src/main/res/layout/set_status_bottom_sheet.xml" value="0.1" />
         <entry key="..\:/AndroidStudioProjects/SocialMeida-HUB/app/src/main/res/layout/status_row_view.xml" value="0.22" />
         <entry key="..\:/AndroidStudioProjects/SocialMeida-HUB/app/src/main/res/menu/action_menu.xml" value="0.16666666666666666" />
         <entry key="..\:/AndroidStudioProjects/SocialMeida-HUB/app/src/main/res/menu/bottom_nav_menu.xml" value="0.16770833333333332" />
+        <entry key="..\:/AndroidStudioProjects/SocialMeida-HUB/app/src/main/res/menu/download_menu.xml" value="0.12578125" />
       </map>
     </option>
   </component>
