@@ -20,4 +20,14 @@
     <string name="share">Share</string>
     <string name="videos">Videos</string>
     <string name="images">Images</string>
+    <string name="send">Send</string>
+    <string name="enter_your_message">Enter your message</string>
+    <string name="whatsapp_web_url">https://web.whatsapp.com</string>
+    <string name="whatsapp_host">.whatsapp.com</string>
+    <!--<string name="user_agent_string">Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.0.4) Gecko/20100101 Firefox/34.0</string>-->
+    <string name="user_agent_string" translatable="false">Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.113 Safari/537.36</string>
+    <string name="choose_account">Choose Account</string>
+    <string name="continue_using_same_account">Continue using same account</string>
+    <string name="logout_amp_scan_using_new_account"><![CDATA[logout & Scan using new account]]></string>
+    <string name="select_all">Select All</string>
 </resources>

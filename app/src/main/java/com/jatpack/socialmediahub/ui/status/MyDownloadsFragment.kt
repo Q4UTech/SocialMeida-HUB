@@ -42,13 +42,14 @@ class MyDownloadsFragment : AppCompatActivity(), SetClick {
     private var total_downloads: TextView? = null
     private var rl_no_data_found: RelativeLayout? = null
     var adapterList: GalleryAdapter? = null
+
     private val hideEmpty = false
     private var showFooters: Boolean? = true
     private var itemOffsetView: ItemOffsetView? = null
     private var rl_saved_options: LinearLayout? = null
     private var ll_save: LinearLayout? = null
     private var ll_share: LinearLayout? = null
-    private var ll_post: LinearLayout? = null
+    private var ll_select_all: LinearLayout? = null
     private var ll_card_selection: CardView? = null
     private var share: ImageView? = null
     private var imgActive: TextView? = null
@@ -88,7 +89,7 @@ class MyDownloadsFragment : AppCompatActivity(), SetClick {
         rl_saved_options = findViewById(R.id.rl_saved_options)
         ll_share = findViewById(R.id.ll_share)
         ll_save = findViewById(R.id.ll_save)
-        ll_post = findViewById(R.id.ll_repost)
+        ll_select_all = findViewById(R.id.ll_select_all)
         ll_card_selection = findViewById(R.id.ll_card_selection)
         imgActive?.setOnClickListener(View.OnClickListener { v: View? ->
 
@@ -144,7 +145,11 @@ class MyDownloadsFragment : AppCompatActivity(), SetClick {
             total_downloads?.setText("Total Downloads : " + imageList?.size)
             recyclerView?.layoutManager = gridLayoutManager
             recyclerView?.adapter = adapterList
-
+            adapterList?.setCheckedListener(object : GalleryAdapter.CounterSlection {
+                override fun selectItems(itemSlectionCount: Int) {
+                    setPageTitle(itemSlectionCount)
+                }
+            })
         } else if (criteria.equals("video") && videoList != null && videoList?.size!! > 0) {
 
             adapterList = GalleryAdapter(this, videoList!!, this)
@@ -216,23 +221,39 @@ class MyDownloadsFragment : AppCompatActivity(), SetClick {
             getFilePathData()
             actionModeCallback = ActionModeCallback(this, R.menu.download_menu, true)
             actionMode = startActionMode(actionModeCallback)
-            ll_card_selection?.visibility=View.GONE
+            ll_card_selection?.visibility = View.GONE
             rl_saved_options?.visibility = View.VISIBLE
 
             ll_save?.setOnClickListener {
-                downloadMultipleImage()
+                //  downloadMultipleImage()
+                deleteMultipleImage()
                 actionMode?.finish()
             }
             ll_share?.setOnClickListener {
                 shareMultipleImage()
                 actionMode?.finish()
             }
-            ll_post?.setOnClickListener {
-                Log.d("TAG", "onLongClcik: ")
+            ll_select_all?.setOnClickListener {
+                adapterList?.selectAll()
             }
 
 
             setPageTitle(1)
+        }
+    }
+
+    private fun deleteMultipleImage() {
+        if (statusFileList != null && statusFileList?.size!! > 0) {
+            val tempDeleteList = ArrayList<File>()
+            tempDeleteList.addAll(statusFileList!!)
+            for (i in statusFileList?.indices!!) {
+
+                if (adapterList?.checkStatus?.get(i)!!) {
+                    File(statusFileList!![i].absolutePath).delete()
+                    tempDeleteList.remove(statusFileList!![i])
+                }
+            }
+            adapterList?.updateList(tempDeleteList)
         }
     }
 

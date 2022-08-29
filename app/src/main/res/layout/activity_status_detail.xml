@@ -41,7 +41,7 @@
         android:layout_above="@id/rl_saved_options"
         android:background="@color/white_inapp"
         android:orientation="vertical"
-        android:visibility="visible">
+        android:visibility="gone">
 
 
         <RelativeLayout
@@ -53,7 +53,7 @@
             <VideoView
                 android:id="@+id/videoView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent" />
             <LinearLayout
                 android:id="@+id/ll_play"
                 android:layout_width="wrap_content"

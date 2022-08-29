@@ -306,5 +306,7 @@ public class MediaPreferences {
         editor.putBoolean(IMAGE_FILE_REFRESH, isRefresh);
         editor.commit();
     }
+
+
 }
 

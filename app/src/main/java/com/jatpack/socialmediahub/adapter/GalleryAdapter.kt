@@ -34,7 +34,15 @@ class GalleryAdapter(
     var tempList = ArrayList<File>()
     var isLongClickEnabled = false
     var visible = false
-    private var listenerSelection: WAStatusListAdapter.CounterSlection? = null
+    private var listenerSelection: CounterSlection? = null
+
+    interface CounterSlection {
+        fun selectItems(itemSlectionCount: Int)
+    }
+
+    fun setCheckedListener(listenerSelection: CounterSlection) {
+        this.listenerSelection = listenerSelection
+    }
 
     class MyViewHolder(item: View) : RecyclerView.ViewHolder(item) {
         val img = item.findViewById<ImageView>(R.id.img)
@@ -56,16 +64,17 @@ class GalleryAdapter(
         if (galleryList[position].path.endsWith(".mp4")) {
             holder.rl_video.visibility = View.VISIBLE
 
-         if(MediaPlayer.create(context, Uri.parse(galleryList[position].path))!=null ) {
-             Log.d("TAG", "onBindViewHolder: "+ Uri.parse(galleryList[position].path))
-             val mediaPlayer = MediaPlayer.create(context, Uri.parse(galleryList[position].path));
-             holder.duration.text = AppUtils.timeConversion1(mediaPlayer.duration.toLong())
-         }else{
-             Log.d("TAG", "onBindViewHolder1: "+ Uri.parse(galleryList[position].path))
-         }
+            if (MediaPlayer.create(context, Uri.parse(galleryList[position].path)) != null) {
+                Log.d("TAG", "onBindViewHolder: " + Uri.parse(galleryList[position].path))
+                val mediaPlayer =
+                    MediaPlayer.create(context, Uri.parse(galleryList[position].path));
+                holder.duration.text = AppUtils.timeConversion1(mediaPlayer.duration.toLong())
+            } else {
+                Log.d("TAG", "onBindViewHolder1: " + Uri.parse(galleryList[position].path))
+            }
 
 
-           // holder.duration.text = AppUtils.timeConversion1(mediaPlayer.duration.toLong())
+            // holder.duration.text = AppUtils.timeConversion1(mediaPlayer.duration.toLong())
         } else {
             holder.rl_video.visibility = View.GONE
         }
@@ -134,5 +143,12 @@ class GalleryAdapter(
     override fun getItemCount(): Int {
         Log.d("TAG", "getItemCount: " + galleryList.size)
         return galleryList.size
+    }
+
+    fun updateList(newList: List<File>) {
+        this.galleryList = newList as ArrayList<File>
+        Log.d("TAG", "updateList: " + galleryList.size)
+        notifyDataSetChanged()
+
     }
 }

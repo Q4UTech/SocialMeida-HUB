@@ -173,12 +173,15 @@ class WAStatusListAdapter(
 //                }
             }
         })
-
+        holder.fl_download.setOnClickListener {
+            listener.onClick(it, position)
+        }
         holder.parent_click.setOnLongClickListener {
             isLongClickEnabled = true
             if (!checkStatus[position]) {
                 checkStatus[position] = true
                 tempList.add(status[position])
+                Log.d("TAG", "onBindViewHolder: " + tempList.size)
                 listenerSelection?.selectItems(tempList.size)
 
             }
