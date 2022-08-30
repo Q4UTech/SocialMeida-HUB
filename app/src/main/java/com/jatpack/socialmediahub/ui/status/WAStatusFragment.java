@@ -34,9 +34,11 @@ import androidx.documentfile.provider.DocumentFile;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.SimpleItemAnimator;
 
 
 import com.jatpack.socialmediahub.R;
+import com.jatpack.socialmediahub.activities.SettingActivity;
 import com.jatpack.socialmediahub.helper.MediaPreferences;
 import com.jatpack.socialmediahub.util.AppUtils;
 import com.jatpack.socialmediahub.util.ItemOffsetView;
@@ -73,7 +75,7 @@ public class WAStatusFragment extends Fragment implements StatusFragmentContract
     private ActionMode actionMode;
     private ActionModeCallback actionModeCallback;
     private TextView no_data;
-    private Button open;
+    private Button open, settings;
     private LinearLayout ll_noData;
     public static final int STATUS_DURATION = 2 * 60 * 1000; // 2 minute
     public static final long TIMER_Alarm_HOUR = 1000 * 60 * 60 * 12;//24 hour
@@ -155,7 +157,14 @@ public class WAStatusFragment extends Fragment implements StatusFragmentContract
         open.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               startActivity(new Intent(requireActivity(),MyDownloadsFragment.class));
+                startActivity(new Intent(requireActivity(), MyDownloadsFragment.class));
+            }
+        });
+        settings = view.findViewById(R.id.open_setting);
+        settings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(requireActivity(), SettingActivity.class));
             }
         });
 
@@ -189,6 +198,7 @@ public class WAStatusFragment extends Fragment implements StatusFragmentContract
                 3));
 //        recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(adapter);
+        ((SimpleItemAnimator) recyclerView.getItemAnimator()).setSupportsChangeAnimations(false);
         adapter.setCheckedListener(new WAStatusListAdapter.CounterSlection() {
             @Override
             public void selectItems(int itemSlectionCount) {
@@ -410,7 +420,7 @@ public class WAStatusFragment extends Fragment implements StatusFragmentContract
                     } else {
                         waStatusFragment.shareMultipleImageFor11();
                     }
-                     waStatusFragment.actionMode.finish();
+                    waStatusFragment.actionMode.finish();
                     return true;
                 case R.id.multiple_download:
                     if (from) {

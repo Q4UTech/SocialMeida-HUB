@@ -30,4 +30,7 @@
     <string name="continue_using_same_account">Continue using same account</string>
     <string name="logout_amp_scan_using_new_account"><![CDATA[logout & Scan using new account]]></string>
     <string name="select_all">Select All</string>
+    <string name="whatsapp">WhatsApp</string>
+    <string name="status">Status</string>
+    <string name="search">Search</string>
 </resources>

@@ -82,6 +82,7 @@ public class Constants {
     public static final String KEY_FROM_MEDIA_REMOVE = "_from_media_remove_";
 
     public static final String WHATSAPP_PACKAGE = "com.whatsapp";
+    public static final String WA_Status_Gallery = "WA Status Gallery";
 
     public static final String WHATSAPP_SETTING_ACTIVITY_PATH = WHATSAPP_PACKAGE.concat(".SettingsDataUsage");
     /**

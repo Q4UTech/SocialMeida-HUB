@@ -24,6 +24,7 @@ import com.jatpack.socialmediahub.adapter.GalleryAdapter
 import com.jatpack.socialmediahub.helper.MediaPreferences
 import com.jatpack.socialmediahub.model.ImagesDetails
 import com.jatpack.socialmediahub.util.AppUtils
+import com.jatpack.socialmediahub.util.Constants
 import com.jatpack.socialmediahub.util.ItemOffsetView
 import com.jatpack.socialmediahub.util.SetClick
 import java.io.File
@@ -76,8 +77,8 @@ class MyDownloadsFragment : AppCompatActivity(), SetClick {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.fragment_my_download)
-        path = this.getExternalFilesDir("WA Status Gallery")?.getAbsolutePath();
-        tempList = getExternalFilesDir("WA Status Gallery")!!.listFiles()
+        path = this.getExternalFilesDir(Constants.WA_Status_Gallery)?.absolutePath
+        tempList = getExternalFilesDir(Constants.WA_Status_Gallery)!!.listFiles()
         executorService = Executors.newSingleThreadExecutor()
         videoList = ArrayList()
         imageList = ArrayList()

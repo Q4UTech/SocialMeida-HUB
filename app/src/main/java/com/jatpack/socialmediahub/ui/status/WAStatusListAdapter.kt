@@ -142,7 +142,7 @@ class WAStatusListAdapter(
                     listenerSelection?.selectItems(tempList.size)
                 }
 
-                notifyDataSetChanged()
+                notifyItemChanged(position)
 
             } else {
                 Log.d("TAG", "onBindViewHolder4: ")
@@ -185,7 +185,7 @@ class WAStatusListAdapter(
                 listenerSelection?.selectItems(tempList.size)
 
             }
-            notifyDataSetChanged()
+            notifyItemChanged(position)
             listener.onLongClcik(it, position)
             true
         }

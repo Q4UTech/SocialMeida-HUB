@@ -570,31 +570,25 @@ public class StatusPriviewActivity extends BaseActivity implements View.OnClickL
     }
 
     private void setwatsappdp(Uri uri) {
-//        Intent intent = new Intent(Intent.ACTION_ATTACH_DATA);
-//        intent.setDataAndType(uri, "image/jpg");
-//        intent.putExtra("mimeType", "image/jpg");
-//        startActivityForResult(Intent.createChooser(intent, "com.whatsapp.com"), 200);
 
-        Log.d("TAG", "setwatsappdp: checkkUri:  " + uri);
 
         try {
             if (uri != null) {
                 bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
             }
         } catch (Exception e) {
-            Log.d(TAG, "setwatsappdp1: " + e.getMessage());
+//            Log.d(TAG, "setwatsappdp1: " + e.getMessage());
         }
 
         if (bitmap != null) {
 
             Uri urisqure = saveImage(cropToSquare(bitmap));
             PackageManager pm = getPackageManager();
-            Log.d("TAG", "setSingleStatus5: " + urisqure);
+           // Log.d("TAG", "setSingleStatus5: " + urisqure);
             try {
                 // Raise exception if whatsapp doesn't exist
                 PackageInfo info = pm.getPackageInfo("com.whatsapp", PackageManager.GET_META_DATA);
 
-//            Intent waIntent = new Intent(Intent.ACTION_SEND);
                 Intent waIntent = new Intent(Intent.ACTION_ATTACH_DATA);
                 waIntent.setDataAndType(urisqure, "image/jpg");
                 waIntent.setPackage("com.whatsapp");
