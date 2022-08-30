@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -41,7 +42,10 @@ class NumberAdapter(
     class MyViewHolder(item: View) : RecyclerView.ViewHolder(item) {
         val img = item.findViewById<ImageView>(R.id.img)
         val contact = item.findViewById<TextView>(R.id.contact)
-       val duration = item.findViewById<TextView>(R.id.dataTime)
+        val duration = item.findViewById<TextView>(R.id.dataTime)
+        val delete = item.findViewById<ImageView>(R.id.cross)
+        val rl = item.findViewById<RelativeLayout>(R.id.rl)
+        val ll_number = item.findViewById<LinearLayout>(R.id.ll_number)
 
     }
 
@@ -53,13 +57,19 @@ class NumberAdapter(
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
 
-        holder.contact.text=galleryList[position].contactNumber
-        holder.duration.text=galleryList[position].timDate
+        holder.contact.text = galleryList[position].contactNumber
+        holder.duration.text = galleryList[position].timDate
+        holder.delete.setOnClickListener {
+            listener.onClick(it, position)
+        }
+        holder.rl.setOnClickListener {
+            listener.onClick(it, position)
+        }
+        holder.ll_number.setOnClickListener {
+            listener.onClick(it, position)
+        }
 
     }
-
-
-
 
 
     override fun getItemCount(): Int {
@@ -67,10 +77,10 @@ class NumberAdapter(
         return galleryList.size
     }
 
-   /* fun updateList(newList: List<File>) {
-        this.galleryList = newList as ArrayList<File>
+    fun updateList(newList: ArrayList<PersonNumber>) {
+        this.galleryList = newList
         Log.d("TAG", "updateList: " + galleryList.size)
         notifyDataSetChanged()
 
-    }*/
+    }
 }

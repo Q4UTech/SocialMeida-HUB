@@ -9,6 +9,7 @@ import android.view.ActionMode
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.webkit.WebStorage
 import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -17,6 +18,7 @@ import androidx.cardview.widget.CardView
 import androidx.core.content.FileProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.jatpack.socialmediahub.R
 import com.jatpack.socialmediahub.adapter.GalleryAdapter
 import com.jatpack.socialmediahub.helper.MediaPreferences
@@ -42,7 +44,7 @@ class MyDownloadsFragment : AppCompatActivity(), SetClick {
     private var total_downloads: TextView? = null
     private var rl_no_data_found: RelativeLayout? = null
     var adapterList: GalleryAdapter? = null
-
+    private var bottomSheetDialog: BottomSheetDialog? = null
     private val hideEmpty = false
     private var showFooters: Boolean? = true
     private var itemOffsetView: ItemOffsetView? = null
@@ -226,8 +228,8 @@ class MyDownloadsFragment : AppCompatActivity(), SetClick {
 
             ll_save?.setOnClickListener {
                 //  downloadMultipleImage()
-                deleteMultipleImage()
-                actionMode?.finish()
+                showBottomSheetDialog()
+
             }
             ll_share?.setOnClickListener {
                 shareMultipleImage()
@@ -240,6 +242,27 @@ class MyDownloadsFragment : AppCompatActivity(), SetClick {
 
             setPageTitle(1)
         }
+    }
+
+    fun showBottomSheetDialog() {
+        bottomSheetDialog = BottomSheetDialog(this, R.style.BottomSheetDialog)
+        bottomSheetDialog?.setContentView(R.layout.login_bottom_sheet)
+
+        val delete = bottomSheetDialog?.findViewById<TextView>(R.id.delete)
+        val close = bottomSheetDialog?.findViewById<ImageView>(R.id.close)
+        close?.setOnClickListener {
+            bottomSheetDialog?.dismiss()
+        }
+
+        delete?.setOnClickListener {
+
+            deleteMultipleImage()
+            actionMode?.finish()
+            bottomSheetDialog?.dismiss()
+        }
+
+
+        bottomSheetDialog?.show()
     }
 
     private fun deleteMultipleImage() {

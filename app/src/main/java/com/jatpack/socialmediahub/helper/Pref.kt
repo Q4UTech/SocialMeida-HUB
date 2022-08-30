@@ -32,6 +32,10 @@ class Pref(context: Context) {
         editor.putString(NUMBER_LIST, json)
         editor.commit()
     }
+    fun removeData() {
+        editor.remove(NUMBER_LIST)
+        editor.commit()
+    }
 
     fun getNumberList(): ArrayList<PersonNumber>? {
         val gson = Gson()

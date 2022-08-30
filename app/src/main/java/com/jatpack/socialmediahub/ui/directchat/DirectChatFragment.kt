@@ -4,6 +4,8 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.webkit.WebStorage
@@ -18,7 +20,6 @@ import com.jatpack.socialmediahub.helper.Pref
 import com.jatpack.socialmediahub.model.PersonNumber
 import com.jatpack.socialmediahub.util.SetClick
 import com.rilixtech.CountryCodePicker
-import kotlin.collections.ArrayList
 
 
 class DirectChatFragment : Fragment(R.layout.fragment_notifications), SetClick {
@@ -34,7 +35,9 @@ class DirectChatFragment : Fragment(R.layout.fragment_notifications), SetClick {
     private var senMsg: TextView? = null
     private var tvMsg: TextView? = null
     private var phNumber: EditText? = null
-    private var cpp: CountryCodePicker? = null
+    private var ccp: CountryCodePicker? = null
+    var clicked: Boolean? = false
+    private var tempList: ArrayList<PersonNumber> = ArrayList()
 
 
     // This property is only valid between onCreateView and
@@ -47,13 +50,22 @@ class DirectChatFragment : Fragment(R.layout.fragment_notifications), SetClick {
         tempNumberList = ArrayList()
 
         rlWhatApp = view.findViewById(R.id.rl_whats_app)
-        cpp = view.findViewById(R.id.ccp)
+        ccp = view.findViewById(R.id.ccp)
         phNumber = view.findViewById(R.id.phNumber)
         recyclerView = view.findViewById(R.id.recycler_View)
         openList = view.findViewById(R.id.contact_history)
         tvMsg = view.findViewById(R.id.tvMsg)
+
         openList?.setOnClickListener {
-            loadData()
+            if (!clicked!!) {
+                clicked = true
+                loadData()
+
+            } else {
+                recyclerView?.visibility = View.GONE
+                clicked = false
+            }
+
         }
         rlWhatApp?.setOnClickListener {
 
@@ -69,22 +81,47 @@ class DirectChatFragment : Fragment(R.layout.fragment_notifications), SetClick {
                 )
             )
             numberPref?.setNumberList(tempNumberList)
-            Log.d("TAG", "onCreateView22: " + numberPref?.getNumberList()?.size)
-            phNumber?.setText("")
-            sendMessage(
-                cpp?.selectedCountryCode + phNumber?.text.toString(),
-                tvMsg?.text.toString()
-            )
+            numberPref?.getNumberList()?.let {
+                tempList.clear()
+                tempList.addAll(it)
+
+            }
+            Log.d("TAG", "onCreateView22: " + tempNumberList?.size)
+
+
+            if (phNumber != null && phNumber?.length()!! > 9) {
+                sendMessage(
+                    ccp?.selectedCountryCode + phNumber?.text.toString(),
+                    tvMsg?.text.toString()
+                )
+            }
         }
 
         /*  if (numberPref?.getNumberList() != null) {*/
 
+        tvMsg?.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+            override fun afterTextChanged(p0: Editable?) {
+
+                if (p0?.length!! > 0) {
+                    senMsg?.background = resources.getDrawable(R.drawable.ic_send_active,null)
+                } else {
+                    senMsg?.background = resources.getDrawable(R.drawable.ic_senc_inactive,null)
+                }
+            }
+        })
 
 
 
 
-
-        cpp?.setOnCountryChangeListener {
+        ccp?.setOnCountryChangeListener {
             Toast.makeText(
                 requireActivity(),
                 "Updated " + it.name,
@@ -95,6 +132,7 @@ class DirectChatFragment : Fragment(R.layout.fragment_notifications), SetClick {
     }
 
     private fun loadData() {
+
         tempNumberList = numberPref?.getNumberList()
 
         if (tempNumberList != null && tempNumberList?.size!! > 0) {
@@ -140,9 +178,7 @@ class DirectChatFragment : Fragment(R.layout.fragment_notifications), SetClick {
 
     fun showBottomSheetDialog() {
 
-        /*   SharedPreferences sh = getSharedPreferences("pref", MODE_PRIVATE);
-        boolean status = sh.getBoolean("status",false);
-*/
+
         bottomSheetDialog = BottomSheetDialog(requireActivity(), R.style.BottomSheetDialog)
         bottomSheetDialog?.setContentView(R.layout.login_bottom_sheet)
         val login = bottomSheetDialog?.findViewById<CheckBox>(R.id.login)
@@ -189,7 +225,21 @@ class DirectChatFragment : Fragment(R.layout.fragment_notifications), SetClick {
     }
 
     override fun onClick(view: View, position: Int) {
-        TODO("Not yet implemented")
+        tempNumberList = numberPref?.getNumberList();
+
+        if (view.id == R.id.cross) {
+            Log.d("TAG", "onClick: " + tempNumberList?.size + "," + tempList.size)
+            tempList.remove(tempNumberList!![position])
+            numberPref?.setNumberList(tempList)
+            numberAdapter?.updateList(tempList)
+            recyclerView?.visibility = View.GONE
+        } else if (view.id == R.id.rl) {
+            Log.d("TAG", "onClick1: ")
+            numberPref?.getNumberList()?.let {
+                phNumber?.setText(it[position].contactNumber)
+            }
+            recyclerView?.visibility = View.GONE
+        }
     }
 
     override fun onLongClcik(view: View, position: Int) {

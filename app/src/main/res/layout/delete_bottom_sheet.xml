@@ -5,7 +5,6 @@
     android:id="@+id/bottom_sheet"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@android:color/transparent"
     android:orientation="vertical"
     app:behavior_hideable="true"
     app:behavior_peekHeight="0dp"
@@ -14,82 +13,53 @@
 
 
     <RelativeLayout
-        android:background="@drawable/top_round_bg"
-        android:padding="@dimen/margin_left_10"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@drawable/top_round_bg"
+        android:padding="@dimen/margin_left_10">
 
+        <ImageView
+            android:id="@+id/close"
+            android:layout_width="@dimen/_20sdp"
+            android:layout_height="@dimen/_20sdp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:src="@drawable/ic_close" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="vertical"
-            android:padding="@dimen/padding10dp">
-
+            android:padding="@dimen/margin5">
 
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:padding="@dimen/margin_left_10"
-                android:text="Delete"
-                android:textColor="@color/rate_us_black"
+                android:layout_marginTop="@dimen/_30sdp"
+                android:padding="@dimen/_10sdp"
+                android:text="Are you ure want delete \n
+these images ?"
+                android:textAlignment="center"
+                android:textColor="#202020"
                 android:textSize="16sp"
-                android:textStyle="bold" />
+                />
 
 
             <TextView
-                android:id="@+id/tv1"
+                android:id="@+id/delete"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/_30sdp"
                 android:gravity="center"
-                android:text="Delete"
-                android:textColor="#424212" />
-
-            <RelativeLayout
-                android:id="@+id/complete"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/tv1"
-                android:layout_marginTop="@dimen/_25sdp"
-                android:layout_marginBottom="@dimen/margin_left_20"
-                android:background="@android:color/white"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/delete"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerInParent="true"
-                    android:layout_gravity="center|end"
-                    android:layout_marginEnd="@dimen/margin_left_20"
-                    android:gravity="center|end"
-                    android:text="@string/delete"
-                    android:textColor="#202020"
-                    android:textSize="14sp" />
-
-                <TextView
-                    android:id="@+id/cancel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:layout_marginEnd="@dimen/margin_left_20"
-                    android:layout_toLeftOf="@+id/delete"
-                    android:gravity="center|end"
-                    android:text="@string/cancel"
-                    android:textColor="#202020"
-                    android:textSize="14sp" />
-            </RelativeLayout>
+                android:text="@string/delete"
+                android:textColor="#16A2F2" />
 
 
         </LinearLayout>
-
-
-
 
 
     </RelativeLayout>

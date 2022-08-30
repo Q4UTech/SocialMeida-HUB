@@ -24,10 +24,9 @@ import com.rilixtech.Country;
 import com.rilixtech.CountryCodePicker;
 
 
-*/
-/**
+*
  * Created by qunatum4u2 on 27/05/19.
- *//*
+
 
 
 public class DirectChat extends AppCompatActivity {
