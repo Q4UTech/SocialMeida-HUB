@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">WhatsDelete</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="download_only">Download</string>
+    <string name="preview_images"><u>Preview images</u></string>
+    <string name="share_to">Share to</string>
+
+</resources>
