@@ -19,6 +19,7 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.browser.customtabs.CustomTabsIntent
+import com.example.whatsdelete.constants.Constants
 import java.io.File
 import java.net.MalformedURLException
 import java.net.URL
@@ -431,7 +432,7 @@ class AppUtils {
 
 
         fun createAppDir(context: Context): String? {
-            val APP_DIR = context.getExternalFilesDir("SocialHubDownloader")!!.absolutePath
+            val APP_DIR = context.getExternalFilesDir("WA Status Gallery")!!.absolutePath
             val file = File(APP_DIR)
             if (!file.exists()) {
                 file.parentFile.mkdirs()

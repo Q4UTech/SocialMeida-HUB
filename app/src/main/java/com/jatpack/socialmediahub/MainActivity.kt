@@ -19,9 +19,11 @@ import androidx.navigation.ui.setupWithNavController
 import com.example.whatsdelete.constants.Constants
 import com.example.whatsdelete.utils.AppUtils
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.jatpack.socialmediahub.activities.SettingActivity
 import com.jatpack.socialmediahub.databinding.ActivityMainBinding
 import com.jatpack.socialmediahub.ui.socialmediadownloader.services.BackgroundRunningService
 import com.jatpack.socialmediahub.ui.socialmediadownloader.services.ClipBoardService
+import com.jatpack.socialmediahub.ui.status.MyDownloadsFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import org.jsoup.Jsoup
 import retrofit2.Call
@@ -29,10 +31,10 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.io.IOException
 
-class MainActivity : AppCompatActivity() , View.OnClickListener{
+class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var binding: ActivityMainBinding
-    private var isSocialMediaClicked:Boolean=false
+    private var isSocialMediaClicked: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,6 +47,8 @@ class MainActivity : AppCompatActivity() , View.OnClickListener{
         binding.openNavDrawer.setOnClickListener(this)
         binding.searchDrop.setOnClickListener(this)
         binding.llDownload.setOnClickListener(this)
+        binding.navSetting.setOnClickListener(this)
+        binding.ivDownloaded.setOnClickListener(this)
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
         navView.setupWithNavController(navController)
 
@@ -56,6 +60,7 @@ class MainActivity : AppCompatActivity() , View.OnClickListener{
                     binding.searchBoxEditText.setText("")
                 }
             }
+
             override fun onDrawerClosed(drawerView: View) {
             }
 
@@ -66,8 +71,8 @@ class MainActivity : AppCompatActivity() , View.OnClickListener{
 
     override fun onClick(v: View?) {
 
-        when(v?.id){
-            R.id.open_nav_drawer->{
+        when (v?.id) {
+            R.id.open_nav_drawer -> {
                 if (isDrawerOpen()) {
                     closeMenuDrawer()
                 } else {
@@ -75,21 +80,30 @@ class MainActivity : AppCompatActivity() , View.OnClickListener{
                 }
             }
 
-            R.id.search_drop->{
+            R.id.search_drop -> {
                 setPopUpWindow(v)
             }
+            R.id.nav_setting -> {
+                startActivity(Intent(this, SettingActivity::class.java))
+                closeMenuDrawer()
+            }
+            R.id.iv_downloaded -> {
 
-            R.id.ll_download->{
-                if(isSocialMediaClicked){
+                startActivity(Intent(this, MyDownloadsFragment::class.java))
+                closeMenuDrawer()
+            }
+
+            R.id.ll_download -> {
+                if (isSocialMediaClicked) {
 
 
                     val paste = searchBoxEditText?.text.toString()
 
 
-                 if (paste!=null && paste.equals("")){
-                     Toast.makeText(this,"Please paste valid URL",Toast.LENGTH_LONG).show()
-                     return
-                 }
+                    if (paste != null && paste.equals("")) {
+                        Toast.makeText(this, "Please paste valid URL", Toast.LENGTH_LONG).show()
+                        return
+                    }
 
 
                     if (paste != null && paste.contains("https://www.instagram.com") || paste.contains(
@@ -145,16 +159,16 @@ class MainActivity : AppCompatActivity() , View.OnClickListener{
         )
         mypopupWindow.showAsDropDown(v, -10, -90)
         google_click.setOnClickListener {
-            isSocialMediaClicked=false
-            binding.searchBoxEditText.hint="Search"
-            binding.llDownload.visibility=View.GONE
+            isSocialMediaClicked = false
+            binding.searchBoxEditText.hint = "Search"
+            binding.llDownload.visibility = View.GONE
             binding.selectedSocial.setImageDrawable(getDrawable(R.drawable.ic_search))
             mypopupWindow.dismiss()
         }
         down_video.setOnClickListener {
-            isSocialMediaClicked=true
-            binding.searchBoxEditText.hint="Paste URL/Link here"
-            binding.llDownload.visibility=View.VISIBLE
+            isSocialMediaClicked = true
+            binding.searchBoxEditText.hint = "Paste URL/Link here"
+            binding.llDownload.visibility = View.VISIBLE
             binding.selectedSocial.setImageDrawable(getDrawable(R.drawable.ic_video_selected))
             mypopupWindow.dismiss()
         }

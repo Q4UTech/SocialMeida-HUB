@@ -212,6 +212,12 @@ class SettingActivity : AppCompatActivity(), SetClick, View.OnClickListener {
         if (pref?.getCameraPref() == true) {
             cbCamera?.isChecked = true
         }
+        if (pref?.getWhatsAppPref() == true) {
+            cbWhatsApp?.isChecked = true
+        }
+        if (pref?.getMessagePref() == true) {
+            cbMessage?.isChecked = true
+        }
     }
 
     override fun onClick(view: View, position: Int) {
@@ -257,34 +263,34 @@ class SettingActivity : AppCompatActivity(), SetClick, View.OnClickListener {
             }
             R.id.rl_camera -> {
                 if (pref?.getCameraPref() == true) {
-                    llCamera?.visibility = View.VISIBLE
+                    llCamera?.visibility = View.GONE
                     pref?.setSearchPref(false)
                     cbCamera?.isChecked = true
                 } else {
                     pref?.setCameraPref(true)
-                    llCamera?.visibility = View.GONE
+                    llCamera?.visibility = View.VISIBLE
                     cbCamera?.isChecked = false
                 }
             }
             R.id.rl_whats_app -> {
                 if (pref?.getWhatsAppPref() == true) {
-                    llWhatsApp?.visibility = View.VISIBLE
+                    llWhatsApp?.visibility = View.GONE
                     pref?.setWhatsAppPref(false)
                     cbCamera?.isChecked = true
                 } else {
                     pref?.setCameraPref(true)
-                    llWhatsApp?.visibility = View.GONE
+                    llWhatsApp?.visibility = View.VISIBLE
                     cbCamera?.isChecked = false
                 }
             }
             R.id.rl_msg -> {
                 if (pref?.getMessagePref() == true) {
-                    llMessege?.visibility = View.VISIBLE
+                    llMessege?.visibility = View.GONE
                     pref?.setWhatsAppPref(false)
                     cbCamera?.isChecked = true
                 } else {
                     pref?.setMessagePref(true)
-                    llMessege?.visibility = View.GONE
+                    llMessege?.visibility = View.VISIBLE
                     cbCamera?.isChecked = false
                 }
             }

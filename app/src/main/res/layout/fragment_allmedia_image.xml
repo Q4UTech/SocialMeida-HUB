@@ -1,71 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@android:color/white">
+    android:background="@android:color/white"
+    android:orientation="vertical">
 
     <LinearLayout
-        android:layout_gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_gravity="center"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
         <Button
             android:id="@+id/open_gallery"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
             android:text="open"
-            android:layout_gravity="center"
-            android:textColor="@android:color/white"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"/>
+            android:textColor="@android:color/white" />
+
         <Button
-            android:layout_marginStart="@dimen/_5sdp"
             android:id="@+id/open_setting"
-            android:text="Settings"
-            android:layout_gravity="center"
-            android:textColor="@android:color/white"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"/>
+            android:layout_gravity="center"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:gravity="center"
+            android:text="Settings"
+            android:textColor="@android:color/white" />
     </LinearLayout>
 
 
     <RelativeLayout
-        android:visibility="visible"
         android:id="@+id/main_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
         android:layout_marginBottom="@dimen/_5sdp"
-        android:background="@color/color_darkGrey_allMediaListing">
+        android:background="@color/color_darkGrey_allMediaListing"
+        android:orientation="vertical"
+        android:visibility="visible">
 
 
-<LinearLayout
-    android:visibility="visible"
-    android:id="@+id/ll_nodata"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_centerInParent="true"
-    android:orientation="vertical">
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:src="@drawable/ic_frame"/>
-    <TextView
-        android:id="@+id/no_data"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="#202020"
-        android:textSize="@dimen/_12sdp"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:layout_centerInParent="true"
-        android:textStyle="bold"
-        android:text="@string/no_staus_display"/>
-</LinearLayout>
+        <LinearLayout
+            android:id="@+id/ll_nodata"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:orientation="vertical"
+            android:visibility="visible">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/ic_frame" />
+
+            <TextView
+                android:id="@+id/no_data"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="@string/no_staus_display"
+                android:textColor="#202020"
+                android:textSize="@dimen/_12sdp"
+                android:textStyle="bold" />
+        </LinearLayout>
 
 
         <androidx.recyclerview.widget.RecyclerView
@@ -76,14 +80,13 @@
     </RelativeLayout>
 
 
-
     <RelativeLayout
-        android:visibility="gone"
         android:id="@+id/above_10_permission"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_marginTop="@dimen/_20sdp"
         android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:visibility="gone">
 
         <RelativeLayout
             android:id="@+id/rl_container"
@@ -92,94 +95,95 @@
 
             <LinearLayout
                 android:id="@+id/ll_small_wa_permission"
-                android:visibility="visible"
-                android:layout_marginTop="@dimen/_20sdp"
-                android:layout_gravity="center|top"
-                android:gravity="center|top"
-                android:layout_alignParentTop="true"
-                android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_gravity="center|top"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:gravity="center|top"
+                android:orientation="vertical"
+                android:visibility="visible">
 
 
                 <ImageView
                     android:id="@+id/iv_wa_doc_permission"
-                    android:background="@drawable/ic_status_saver_bg_small"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    />
+                    android:background="@drawable/ic_status_saver_bg_small" />
 
                 <TextView
-                    android:layout_marginTop="@dimen/_10sdp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="#212121"
-                    android:textStyle="bold"
-                    android:textSize="15sp"
+                    android:layout_marginTop="@dimen/_10sdp"
                     android:padding="@dimen/_7sdp"
-                    android:text="To Get All Status"/>
+                    android:text="To Get All Status"
+                    android:textColor="#212121"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="#8C8C8C"
-                    android:textSize="8sp"
+                    android:text="@string/wa_status_permission_text"
                     android:textAlignment="center"
-                    android:text="@string/wa_status_permission_text"/>
+                    android:textColor="#8C8C8C"
+                    android:textSize="8sp" />
             </LinearLayout>
+
             <LinearLayout
-                android:visibility="gone"
+                android:id="@+id/ll_wa_big_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:id="@+id/ll_wa_big_container"
-                android:layout_centerInParent="true"
                 android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:visibility="gone">
 
 
                 <ImageView
-                    android:background="@drawable/ic_status_saver_bg"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    />
+                    android:background="@drawable/ic_status_saver_bg" />
 
                 <TextView
-                    android:layout_marginTop="@dimen/_10sdp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="#212121"
-                    android:textStyle="bold"
-                    android:textSize="18sp"
+                    android:layout_marginTop="@dimen/_10sdp"
                     android:padding="@dimen/_10sdp"
-                    android:text="To Get All Status"/>
+                    android:text="To Get All Status"
+                    android:textColor="#212121"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="#8C8C8C"
-                    android:textSize="8sp"
+                    android:text="@string/wa_status_permission_text"
                     android:textAlignment="center"
-                    android:text="@string/wa_status_permission_text"/>
+                    android:textColor="#8C8C8C"
+                    android:textSize="8sp" />
             </LinearLayout>
 
         </RelativeLayout>
 
 
         <TextView
-            android:layout_below="@+id/rl_container"
             android:id="@+id/allow_doc_permission"
-            android:layout_centerInParent="true"
-            android:background="@drawable/rounded_btn_inapp"
-            android:layout_marginTop="@dimen/_30sdp"
             android:layout_width="@dimen/_220sdp"
-            android:textColor="#FFFFFF"
+            android:layout_height="@dimen/_35sdp"
+            android:layout_below="@+id/rl_container"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/_30sdp"
+            android:background="@drawable/rounded_btn_inapp"
+            android:gravity="center"
             android:paddingStart="@dimen/_20sdp"
             android:paddingEnd="@dimen/_20sdp"
-            android:textSize="12sp"
+            android:text="@string/btn_allow"
             android:textAllCaps="true"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:layout_height="@dimen/_35sdp"
-            android:text="@string/btn_allow"/>
+            android:textColor="#FFFFFF"
+            android:textSize="12sp" />
 
     </RelativeLayout>
 

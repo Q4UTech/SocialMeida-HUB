@@ -345,6 +345,7 @@ public class WAStatusFragment extends Fragment implements StatusFragmentContract
     public void onLongClcik(@NonNull View view, int position) {
 
         if (adapter != null) {
+
             getFilePathData();
             actionModeCallback = new ActionModeCallback(this, R.menu.action_menu, true);
             actionMode = getActivity().startActionMode(actionModeCallback);

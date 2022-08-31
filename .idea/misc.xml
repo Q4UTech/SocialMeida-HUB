@@ -3,52 +3,14 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/AndroidStudioProjects/SocialMeida-HUB/app/src/main/res/drawable/auto_manual_bg.xml" value="0.142" />
-        <entry key="..\:/AndroidStudioProjects/SocialMeida-HUB/app/src/main/res/drawable/auto_select_bg.xml" value="0.142" />
-        <entry key="..\:/AndroidStudioProjects/SocialMeida-HUB/app/src/main/res/drawable/bg_round_view_notifc.xml" value="0.1" />
-        <entry key="..\:/AndroidStudioProjects/SocialMeida-HUB/app/src/main/res/drawable/checkbox_selector.xml" value="0.142" />
-        <entry key="..\:/AndroidStudioProjects/SocialMeida-HUB/app/src/main/res/drawable/cusom_shape.xml" value="0.141" />
-        <entry key="..\:/AndroidStudioProjects/SocialMeida-HUB/app/src/main/res/drawable/ic_check_select.xml" value="0.142" />
-        <entry key="..\:/AndroidStudioProjects/SocialMeida-HUB/app/src/main/res/drawable/ic_checked.xml" value="0.141" />
-        <entry key="..\:/AndroidStudioProjects/SocialMeida-HUB/app/src/main/res/drawable/ic_edittext_bg.xml" value="0.141" />
-        <entry key="..\:/AndroidStudioProjects/SocialMeida-HUB/app/src/main/res/drawable/ic_recycle_bg.xml" value="0.141" />
-        <entry key="..\:/AndroidStudioProjects/SocialMeida-HUB/app/src/main/res/drawable/ic_senc_inactive.xml" value="0.141" />
-        <entry key="..\:/AndroidStudioProjects/SocialMeida-HUB/app/src/main/res/drawable/ic_status_saver_bg.xml" value="0.142" />
-        <entry key="..\:/AndroidStudioProjects/SocialMeida-HUB/app/src/main/res/drawable/ic_status_saver_bg_small.xml" value="0.142" />
-        <entry key="..\:/AndroidStudioProjects/SocialMeida-HUB/app/src/main/res/drawable/rounded_btn_inapp.xml" value="0.1" />
-        <entry key="..\:/AndroidStudioProjects/SocialMeida-HUB/app/src/main/res/drawable/toggle_selector.xml" value="0.141" />
         <entry key="..\:/AndroidStudioProjects/SocialMeida-HUB/app/src/main/res/layout/activity_main.xml" value="0.16770833333333332" />
-        <entry key="..\:/AndroidStudioProjects/SocialMeida-HUB/app/src/main/res/layout/activity_setting.xml" value="0.16666666666666666" />
         <entry key="..\:/AndroidStudioProjects/SocialMeida-HUB/app/src/main/res/layout/activity_show_case.xml" value="0.1" />
-        <entry key="..\:/AndroidStudioProjects/SocialMeida-HUB/app/src/main/res/layout/activity_status_detail.xml" value="0.16770833333333332" />
-        <entry key="..\:/AndroidStudioProjects/SocialMeida-HUB/app/src/main/res/layout/bottom_item_layout.xml" value="0.16770833333333332" />
-        <entry key="..\:/AndroidStudioProjects/SocialMeida-HUB/app/src/main/res/layout/dashboard_adapter_view.xml" value="0.1" />
-        <entry key="..\:/AndroidStudioProjects/SocialMeida-HUB/app/src/main/res/layout/delete_bottom_sheet.xml" value="0.16770833333333332" />
-        <entry key="..\:/AndroidStudioProjects/SocialMeida-HUB/app/src/main/res/layout/directchatlayout.xml" value="0.16770833333333332" />
-        <entry key="..\:/AndroidStudioProjects/SocialMeida-HUB/app/src/main/res/layout/download_bottom_sheet.xml" value="0.1" />
-        <entry key="..\:/AndroidStudioProjects/SocialMeida-HUB/app/src/main/res/layout/download_share_prompt.xml" value="0.1" />
-        <entry key="..\:/AndroidStudioProjects/SocialMeida-HUB/app/src/main/res/layout/fragment_allmedia_image.xml" value="0.1" />
-        <entry key="..\:/AndroidStudioProjects/SocialMeida-HUB/app/src/main/res/layout/fragment_dashboard.xml" value="0.16770833333333332" />
-        <entry key="..\:/AndroidStudioProjects/SocialMeida-HUB/app/src/main/res/layout/fragment_my_download.xml" value="0.16770833333333332" />
-        <entry key="..\:/AndroidStudioProjects/SocialMeida-HUB/app/src/main/res/layout/fragment_notifications.xml" value="0.16666666666666666" />
-        <entry key="..\:/AndroidStudioProjects/SocialMeida-HUB/app/src/main/res/layout/fragment_status.xml" value="0.16770833333333332" />
-        <entry key="..\:/AndroidStudioProjects/SocialMeida-HUB/app/src/main/res/layout/item_number_layout.xml" value="0.16666666666666666" />
-        <entry key="..\:/AndroidStudioProjects/SocialMeida-HUB/app/src/main/res/layout/layout_delete.xml" value="0.1" />
-        <entry key="..\:/AndroidStudioProjects/SocialMeida-HUB/app/src/main/res/layout/login_bottom_sheet.xml" value="0.30078125" />
-        <entry key="..\:/AndroidStudioProjects/SocialMeida-HUB/app/src/main/res/layout/notification_item_layout.xml" value="0.13675213675213677" />
-        <entry key="..\:/AndroidStudioProjects/SocialMeida-HUB/app/src/main/res/layout/own_gallary_items.xml" value="0.4466666666666667" />
-        <entry key="..\:/AndroidStudioProjects/SocialMeida-HUB/app/src/main/res/layout/row_imgslide_imgdetail.xml" value="0.1" />
-        <entry key="..\:/AndroidStudioProjects/SocialMeida-HUB/app/src/main/res/layout/set_status_bottom_sheet.xml" value="0.1" />
-        <entry key="..\:/AndroidStudioProjects/SocialMeida-HUB/app/src/main/res/layout/status_row_view.xml" value="0.22" />
-        <entry key="..\:/AndroidStudioProjects/SocialMeida-HUB/app/src/main/res/layout/webviewlayout.xml" value="0.16666666666666666" />
-        <entry key="..\:/AndroidStudioProjects/SocialMeida-HUB/app/src/main/res/menu/action_menu.xml" value="0.16666666666666666" />
-        <entry key="..\:/AndroidStudioProjects/SocialMeida-HUB/app/src/main/res/menu/bottom_nav_menu.xml" value="0.16770833333333332" />
-        <entry key="..\:/AndroidStudioProjects/SocialMeida-HUB/app/src/main/res/menu/download_menu.xml" value="0.12578125" />
+        <entry key="..\:/AndroidStudioProjects/SocialMeida-HUB/app/src/main/res/layout/dashboard_adapter_view.xml" value="0.16770833333333332" />
+        <entry key="..\:/AndroidStudioProjects/SocialMeida-HUB/app/src/main/res/layout/fragment_allmedia_image.xml" value="0.16770833333333332" />
+        <entry key="..\:/AndroidStudioProjects/SocialMeida-HUB/app/src/main/res/layout/nav_header_main.xml" value="0.16770833333333332" />
       </map>
     </option>
   </component>
   <component name="ExternalStorageConfigurationManager" enabled="true" />
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
-    <output url="file://$PROJECT_DIR$/out" />
-  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK" />
 </project>

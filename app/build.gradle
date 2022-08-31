@@ -48,7 +48,6 @@ android {
         }
     }
 
-}
 
     dexOptions {
         preDexLibraries = false
@@ -66,7 +65,7 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
-    implementation 'com.github.bumptech.glide:glide:4.12.0'
+
 
 //    annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
 
@@ -92,15 +91,11 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0'
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.5.1'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1'
-    implementation 'androidx.navigation:navigation-fragment-ktx:2.5.0'
-    implementation 'androidx.navigation:navigation-ui-ktx:2.5.0'
 
 
 
-    //rx java
-    implementation 'io.reactivex.rxjava2:rxjava:2.2.9'
-    implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
-    implementation 'com.jakewharton.rxbinding3:rxbinding:3.0.0-alpha2'
+
+
 
     implementation 'com.makeramen:roundedimageview:2.3.0'
 
@@ -119,20 +114,20 @@ dependencies {
 
     implementation 'androidx.navigation:navigation-fragment-ktx:2.5.1'
     implementation 'androidx.navigation:navigation-ui-ktx:2.5.1'
-    implementation 'com.github.allenxuan:xuanimageview:0.5.0'
-    implementation 'com.squareup.picasso:picasso:2.71828'
+
+
     implementation 'com.intuit.sdp:sdp-android:1.1.0'
     implementation 'com.google.code.gson:gson:2.8.9'
-    implementation 'com.makeramen:roundedimageview:2.3.0'
+
     implementation 'com.github.bumptech.glide:glide:4.12.0'
-    implementation 'com.github.shts:StoriesProgressView:3.0.0'
+
     implementation 'commons-io:commons-io:2.6'
     //rx java
     implementation 'io.reactivex.rxjava2:rxjava:2.2.9'
     implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
     implementation 'com.jakewharton.rxbinding3:rxbinding:3.0.0-alpha2'
 
-    implementation 'com.makeramen:roundedimageview:2.3.0'
+
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'

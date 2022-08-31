@@ -66,7 +66,7 @@ public class ClipBoardService extends Service {
     private boolean goButtonClick;
     private String pin_url, pin_video_image;
     private Notification mRunningNotification;
-    private static final String PRIMARY_CHANNEL = "Social Media Downloader";
+    private static final String PRIMARY_CHANNEL = "Social Media Hub";
     private static Set<DownloadingMediaInfo> mCurrentDownLoadingSet;
     private static boolean pinvideo_boolean = false;
     private static DownloadingListener mDownloadingListener;

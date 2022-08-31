@@ -6,10 +6,8 @@
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
-    <color name="white">#ffffff</color>
+
     <color name="header_text_blue">#012A72</color>
-    <color name="progress_background">#C7C5C8</color>
-    <color name="progress_background_complete">@android:color/holo_red_dark</color>
     <color name="white">#FFFFFF</color>
     <color name="action_bar_text">#012A72</color>
     <color name="btn_color">#16A2F2</color>
