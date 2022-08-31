@@ -1,6 +1,4 @@
-package com.universal;
-
-import com.universal.helper.DownloadingMediaInfo;
+package com.jatpack.socialmediahub.ui.socialmediadownloader.services;
 
 import java.util.List;
 

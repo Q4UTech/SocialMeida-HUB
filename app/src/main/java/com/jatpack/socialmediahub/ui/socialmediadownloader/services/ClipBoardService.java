@@ -1,4 +1,9 @@
-package com.universal.helper;
+package com.jatpack.socialmediahub.ui.socialmediadownloader.services;
+
+import static com.example.whatsdelete.constants.Constants.DOWNLOADED_WITH_MULTIPLE;
+import static com.example.whatsdelete.constants.Constants.DOWNLOADED_WITH_SINGLE;
+import static com.example.whatsdelete.constants.Constants.GO_BUTTON_CLICK;
+import static com.example.whatsdelete.constants.Constants.PASTE_MEDIA_URL;
 
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -22,15 +27,15 @@ import com.downloader.OnProgressListener;
 import com.downloader.PRDownloader;
 import com.downloader.Progress;
 import com.downloader.request.DownloadRequest;
+import com.example.whatsdelete.constants.Constants;
+import com.example.whatsdelete.utils.AppUtils;
+import com.example.whatsdelete.utils.Prefs;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.m24apps.socialvideo.R;
-import com.universal.DownloadingListener;
-import com.universal.gallery.AppPreference;
-import com.universal.gallery.AppUtils;
+import com.jatpack.socialmediahub.R;
+import com.jatpack.socialmediahub.ui.socialmediadownloader.ecrypt.MCrypt;
 
-import org.greenrobot.eventbus.EventBus;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -52,13 +57,11 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import engine.app.ecrypt.MCrypt;
-import prompt_new.DialogHandler;
 
 
 public class ClipBoardService extends Service {
     private final int NOTIFICATION_ID = 10;
-    private AppPreference preference;
+    private Prefs preference;
     public long progressPercent;
     private boolean goButtonClick;
     private String pin_url, pin_video_image;
@@ -83,7 +86,7 @@ public class ClipBoardService extends Service {
 //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 //            super.startForeground(NOTIFICATION_ID, new Notification());
 //        }
-        preference = new AppPreference(getApplicationContext());
+        preference = new Prefs(getApplicationContext());
         super.onCreate();
     }
 
@@ -96,10 +99,10 @@ public class ClipBoardService extends Service {
             return START_NOT_STICKY;
         }
 
-        String data = intent.getStringExtra(AppUtils.PASTE_MEDIA_URL);
-        goButtonClick = intent.getExtras().getBoolean(AppUtils.GO_BUTTON_CLICK);
-        pin_url = intent.getStringExtra(AppUtils.PINTEREST_URL);
-        pin_video_image = intent.getStringExtra(AppUtils.PINTEREST_VIDEO_IMAGE);
+        String data = intent.getStringExtra(PASTE_MEDIA_URL);
+        goButtonClick = intent.getExtras().getBoolean(GO_BUTTON_CLICK);
+        pin_url = intent.getStringExtra(Constants.PINTEREST_URL);
+        pin_video_image = intent.getStringExtra(Constants.PINTEREST_VIDEO_IMAGE);
 
         Log.d("ClipBoardService", "Hello onStartCommand 02" + " " + data);
 
@@ -126,7 +129,6 @@ public class ClipBoardService extends Service {
         }
 
         DownloadingMediaInfo downloadingMediaInfo = new DownloadingMediaInfo();
-//    TODO:        downloadingMediaInfo.
 
         downloadingMediaInfo.setUrl(url);
         downloadingMediaInfo.setDownloadedFileName(pathextension);
@@ -214,18 +216,16 @@ public class ClipBoardService extends Service {
         @Override
         public void onDownloadComplete() {
             pinvideo_boolean = false;
-            EventBus.getDefault().postSticky(new SimpleEvent(123123));
-            Toast.makeText(mClipBoardService.getApplicationContext(), mClipBoardService.getApplicationContext().getResources().getString(R.string.downloaded_successfully), Toast.LENGTH_LONG).show();
+            Toast.makeText(mClipBoardService.getApplicationContext(), mClipBoardService.getApplicationContext().getResources().getString(R.string.download_completed), Toast.LENGTH_LONG).show();
             downloadingMediaInfo.setCompleted(true);
-
-            new SaveDownloadInfoAsyncTask(new WeakReference<ClipBoardService>(mClipBoardService), downloadingMediaInfo)
-                    .executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "");
+//
+//            new SaveDownloadInfoAsyncTask(new WeakReference<ClipBoardService>(mClipBoardService), downloadingMediaInfo)
+//                    .executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "");
         }
 
 
         @Override
         public void onError(Error error) {
-            EventBus.getDefault().postSticky(new SimpleEvent(123123));
 
             Toast.makeText(mClipBoardService.getApplicationContext(), "Error please try again", Toast.LENGTH_LONG).show();
 
@@ -242,7 +242,6 @@ public class ClipBoardService extends Service {
 
         @Override
         public void onCancel() {
-            EventBus.getDefault().postSticky(new SimpleEvent(123123));
             mClipBoardService.mCurrentDownLoadingSet.clear();
             mClipBoardService.stopSelf();
         }
@@ -250,7 +249,7 @@ public class ClipBoardService extends Service {
 
     public static class DownloadingAsynTask extends AsyncTask<String, String, Boolean> {
         private final ClipBoardService clipBoardService;
-        private final AppPreference preference;
+        private final Prefs preference;
         private String downloadType;
 
         public DownloadingAsynTask(ClipBoardService clipBoardService) {
@@ -267,29 +266,29 @@ public class ClipBoardService extends Service {
 
             Set<String> setUrl = null;
             if (pasteData.contains("https://www.instagram.com/reel")) {
-                downloadType = AppUtils.DOWNLOADED_WITH_INSTA_REELS;
+                downloadType = Constants.DOWNLOADED_WITH_INSTA_REELS;
                 setUrl = downloadInstaGram(pasteData, downloadType);
             } else if (pasteData.contains("https://www.instagram.com")) {
-                downloadType = AppUtils.DOWNLOADED_WITH_INSTA;
+                downloadType = Constants.DOWNLOADED_WITH_INSTA;
                 setUrl = downloadInstaGram(pasteData, downloadType);
             } else if (pasteData.contains("https://www.facebook.com") ||
                     pasteData.contains("https://m.facebook.com")) {
-                downloadType = AppUtils.DOWNLOADED_WITH_FACEBOOK;
+                downloadType = Constants.DOWNLOADED_WITH_FACEBOOK;
                 setUrl = downloadInstaGram(pasteData, downloadType);
             } else if (pasteData.contains("https://like.video") || pasteData.contains("https://l.likee.video")
                     || pasteData.contains("https://share.like.video") || pasteData.contains("https://mobile.like-video")
                     || pasteData.contains("https://like-video")) {
-                downloadType = AppUtils.DOWNLOADED_WITH_LIKE;
+                downloadType = Constants.DOWNLOADED_WITH_LIKE;
                 setUrl = downloadInstaGram(pasteData, downloadType);
             } else if (pasteData.contains("https://pin.it") || pasteData.contains("https://in.pinterest")
                     || pasteData.contains("https://www.pinterest")) {
-                downloadType = AppUtils.DOWNLOADED_WITH_PINTEREST;
+                downloadType = Constants.DOWNLOADED_WITH_PINTEREST;
                 setUrl = downloadInstaGram(pasteData, downloadType);
             } else if (pasteData.contains("tumblr.com/post")) {
-                downloadType = AppUtils.DOWNLOADED_WITH_TUMBLER;
+                downloadType = Constants.DOWNLOADED_WITH_TUMBLER;
                 setUrl = downloadInstaGram(pasteData, downloadType);
             } else if (pasteData.contains("tiktok.com")) {
-                downloadType = AppUtils.DOWNLOADED_WITH_TIKTOK;
+                downloadType = Constants.DOWNLOADED_WITH_TIKTOK;
                 setUrl = downloadInstaGram(pasteData, downloadType);
             }
 
@@ -328,7 +327,6 @@ public class ClipBoardService extends Service {
             } else {
 
                 Log.d("DownloadingAsynTask", "Hello onPostExecute " + " " + isUrlFound);
-                EventBus.getDefault().postSticky(new SimpleEvent(123123));
 
                 Toast.makeText(clipBoardService.getApplicationContext(),
                         "Do not download private media ", Toast.LENGTH_SHORT)
@@ -394,7 +392,7 @@ public class ClipBoardService extends Service {
             try {
                 Document document = Jsoup.connect(pasteData).get();
 
-                if (AppUtils.DOWNLOADED_WITH_LIKE.equals(downloadType)) {
+                if (Constants.DOWNLOADED_WITH_LIKE.equals(downloadType)) {
 //                    Log.d("DownloadingAsynTask", "Hello downloadInstaGram like");
 //                    Element e = document.getElementById("videoPlayer");
 //                    Log.d("DownloadingAsynTask", "Hello downloadInstaGram like 001"+" "+e.getAllElements());
@@ -422,7 +420,7 @@ public class ClipBoardService extends Service {
 
                 }
 
-                if (AppUtils.DOWNLOADED_WITH_TIKTOK.equals(downloadType)) {
+                if (Constants.DOWNLOADED_WITH_TIKTOK.equals(downloadType)) {
                     Log.d("DownloadingAsynTask", "Hello downloadInstaGram with tiktok");
                     if (urlSet == null) {
                         urlSet = new HashSet<String>();
@@ -454,7 +452,7 @@ public class ClipBoardService extends Service {
 
                 }
 
-                if (AppUtils.DOWNLOADED_WITH_PINTEREST.equals(downloadType)) {
+                if (Constants.DOWNLOADED_WITH_PINTEREST.equals(downloadType)) {
                     Log.d("DownloadingAsynTask", "Hello downloadInstaGram pin");
 
                     if (urlSet == null) {
@@ -485,7 +483,7 @@ public class ClipBoardService extends Service {
 
                 }
 
-                if ((AppUtils.DOWNLOADED_WITH_TUMBLER.equals(downloadType))) {
+                if ((Constants.DOWNLOADED_WITH_TUMBLER.equals(downloadType))) {
                     Elements links = document.select("source");
                     Log.d("DownloadingAsynTask", "Hello downloadInstaGram 001" + " " + links);
                     for (Element link : links) {
@@ -517,7 +515,7 @@ public class ClipBoardService extends Service {
                     }
                 }
 
-                if ((AppUtils.DOWNLOADED_WITH_INSTA_REELS.equals(downloadType))) {
+                if ((Constants.DOWNLOADED_WITH_INSTA_REELS.equals(downloadType))) {
                     Elements metaTags = document.getElementsByTag("meta");
 
                     Log.d("DownloadingAsynTask", "Hello downloadInstaGram reels"+metaTags);
@@ -596,7 +594,7 @@ public class ClipBoardService extends Service {
 
                 if (url != null) {
                     switch (downloadType) {
-                        case AppUtils.DOWNLOADED_WITH_INSTA_REELS:
+                        case Constants.DOWNLOADED_WITH_INSTA_REELS:
 
                             if (url.contains(".jpg") || url.contains(".jpeg")) {
 
@@ -605,7 +603,7 @@ public class ClipBoardService extends Service {
                                 try {
                                     String encrypt = MCrypt.bytesToHex(new MCrypt().encrypt(reelsURL));
                                     //Don't remove this line............
-                                    fileName = "Reels" + encrypt + "Reels" + AppUtils.INSTA_JPG;
+                                    fileName = "Reels" + encrypt + "Reels" + Constants.INSTA_JPG;
 
                                     Log.d("DownloadingAsynTask", "downloadInstaGram: INSTA_REELS encrypt " + encrypt);
 
@@ -619,61 +617,61 @@ public class ClipBoardService extends Service {
                             }
 
                             break;
-                        case AppUtils.DOWNLOADED_WITH_INSTA:
+                        case Constants.DOWNLOADED_WITH_INSTA:
 
                             if (url.contains(".mp4")) {
 
-                                fileName = System.currentTimeMillis() + "" + AppUtils.INSTA_MP4;
+                                fileName = System.currentTimeMillis() + "" + Constants.INSTA_MP4;
 
                             } else if (url.contains(".jpg") || url.contains(".jpeg")) {
 
-                                fileName = System.currentTimeMillis() + "" + AppUtils.INSTA_JPG;
+                                fileName = System.currentTimeMillis() + "" + Constants.INSTA_JPG;
                             }
 
                             break;
 
-                        case AppUtils.DOWNLOADED_WITH_TIKTOK:
+                        case Constants.DOWNLOADED_WITH_TIKTOK:
 
-                            fileName = System.currentTimeMillis() + "" + AppUtils.TIKTOK_MP4;
+                            fileName = System.currentTimeMillis() + "" + Constants.TIKTOK_MP4;
 
                             break;
 
-                        case AppUtils.DOWNLOADED_WITH_FACEBOOK:
+                        case Constants.DOWNLOADED_WITH_FACEBOOK:
 
 
                             if (url.contains(".mp4")) {
-                                fileName = System.currentTimeMillis() + "" + AppUtils.FB_MP4;
+                                fileName = System.currentTimeMillis() + "" + Constants.FB_MP4;
                             } else if (url.contains(".jpg") || url.contains(".jpeg")) {
-                                fileName = System.currentTimeMillis() + "" + AppUtils.FB_JPG;
+                                fileName = System.currentTimeMillis() + "" + Constants.FB_JPG;
                             }
 
 
                             break;
-                        case AppUtils.DOWNLOADED_WITH_LIKE:
+                        case Constants.DOWNLOADED_WITH_LIKE:
 
                             if (url.contains(".mp4")) {
-                                fileName = System.currentTimeMillis() + "" + AppUtils.LIKE_MP4;
+                                fileName = System.currentTimeMillis() + "" + Constants.LIKE_MP4;
                             }
 
                             break;
 
 
-                        case AppUtils.DOWNLOADED_WITH_PINTEREST:
+                        case Constants.DOWNLOADED_WITH_PINTEREST:
 
                             if (url.contains(".mp4")) {
-                                fileName = System.currentTimeMillis() + "" + AppUtils.PIN_MP4;
+                                fileName = System.currentTimeMillis() + "" + Constants.PIN_MP4;
                             } else if (url.contains(".jpg")) {
-                                fileName = System.currentTimeMillis() + "" + AppUtils.PIN_JPG;
+                                fileName = System.currentTimeMillis() + "" + Constants.PIN_JPG;
                             }
 
                             break;
 
-                        case AppUtils.DOWNLOADED_WITH_TUMBLER:
+                        case Constants.DOWNLOADED_WITH_TUMBLER:
 
                             if (url.contains(".mp4")) {
-                                fileName = System.currentTimeMillis() + "" + AppUtils.TUMBLR_MP4;
+                                fileName = System.currentTimeMillis() + "" + Constants.TUMBLR_MP4;
                             } else if (url.contains(".jpg")) {
-                                fileName = System.currentTimeMillis() + "" + AppUtils.TUMBLR_JPG;
+                                fileName = System.currentTimeMillis() + "" + Constants.TUMBLR_JPG;
                             }
                             break;
                     }
@@ -683,7 +681,7 @@ public class ClipBoardService extends Service {
 
                 if (fileName != null) {
                     hasDownloadingURL = true;
-                    publishProgress(url, AppUtils.getAppMainDir(), fileName);
+                    publishProgress(url, AppUtils.Companion.createAppDir(clipBoardService.getApplicationContext()), fileName);
 
                 }
 
@@ -698,10 +696,10 @@ public class ClipBoardService extends Service {
     private void getsavedpath(ClipBoardService mContext, String filepath, String pathextension, String multipleDownload, int size) {
         Log.d("DownloadingAsynTask", "Hello getsavedpath nkjjKSGLjakl" + " " + filepath);
         File f = new File(filepath, pathextension);
-        if (f.getPath().endsWith(".mp4") && multipleDownload.equals(AppUtils.DOWNLOADED_WITH_SINGLE)) {
+        if (f.getPath().endsWith(".mp4") && multipleDownload.equals(Constants.DOWNLOADED_WITH_SINGLE)) {
             if (mContext != null) {
-                mContext.startActivity(DialogHandler.Companion.getNewIntent(ClipBoardService.this, goButtonClick, false,
-                        true, f.getPath(), getResources().getString(R.string.download_completed), 0, String.valueOf(f.getAbsoluteFile().lastModified())).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+//                mContext.startActivity(DialogHandler.Companion.getNewIntent(ClipBoardService.this, goButtonClick, false,
+//                        true, f.getPath(), getResources().getString(R.string.download_completed), 0, String.valueOf(f.getAbsoluteFile().lastModified())).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
 //                Intent intent = new Intent(mContext, TransparentActivityShowPrompt.class);
 //                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 //                intent.putExtra(AppUtils.DOWNLOADED_WITH_MP4, AppUtils.DOWNLOADED_WITH_MP4);
@@ -713,10 +711,10 @@ public class ClipBoardService extends Service {
                 mCurrentDownLoadingSet.clear();
             }
 
-        } else if (f.getPath().endsWith(".jpg") && multipleDownload.equals(AppUtils.DOWNLOADED_WITH_SINGLE)) {
+        } else if (f.getPath().endsWith(".jpg") && multipleDownload.equals(Constants.DOWNLOADED_WITH_SINGLE)) {
             if (mContext != null) {
-                mContext.startActivity(DialogHandler.Companion.getNewIntent(ClipBoardService.this, goButtonClick, true,
-                        true, f.getPath(), getResources().getString(R.string.download_completed), 0, String.valueOf(f.getAbsoluteFile().lastModified())).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+//                mContext.startActivity(DialogHandler.Companion.getNewIntent(ClipBoardService.this, goButtonClick, true,
+//                        true, f.getPath(), getResources().getString(R.string.download_completed), 0, String.valueOf(f.getAbsoluteFile().lastModified())).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
 //                Intent intent = new Intent(mContext, TransparentActivityShowPrompt.class);
 //                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 //                intent.putExtra(AppUtils.DOWNLOADED_WITH_JPG, AppUtils.DOWNLOADED_WITH_JPG);
@@ -730,10 +728,10 @@ public class ClipBoardService extends Service {
 
 
             }
-        } else if (multipleDownload.equals(AppUtils.DOWNLOADED_WITH_MULTIPLE)) {
+        } else if (multipleDownload.equals(Constants.DOWNLOADED_WITH_MULTIPLE)) {
             if (mContext != null) {
-                mContext.startActivity(DialogHandler.Companion.getNewIntent(ClipBoardService.this, goButtonClick, false,
-                        true, f.getPath(), getResources().getString(R.string.download_completed), 0, String.valueOf(f.getAbsoluteFile().lastModified())).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+//                mContext.startActivity(DialogHandler.Companion.getNewIntent(ClipBoardService.this, goButtonClick, false,
+//                        true, f.getPath(), getResources().getString(R.string.download_completed), 0, String.valueOf(f.getAbsoluteFile().lastModified())).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
 //                Intent intent = new Intent(mContext, TransparentActivityShowPrompt.class);
 //                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 //                intent.putExtra(AppUtils.DOWNLOADED_WITH_MULTIPLE_TXT, AppUtils.DOWNLOADED_WITH_MULTIPLE_TXT);
@@ -750,106 +748,106 @@ public class ClipBoardService extends Service {
 
     }
 
-    private List<DownloadingMediaInfo> saveDownloadInfo(Context context, DownloadingMediaInfo downloadingMediaInfo) {
-        /*.....for saving data in preference....*/
-        List<DownloadingMediaInfo> downloadListComplete = AppPreference.getList(context,
-                AppPreference.PROGRESS_KEY_PREF, DownloadingMediaInfo.class);
+//    private List<DownloadingMediaInfo> saveDownloadInfo(Context context, DownloadingMediaInfo downloadingMediaInfo) {
+//        /*.....for saving data in preference....*/
+//        List<DownloadingMediaInfo> downloadListComplete = AppPreference.getList(context,
+//                AppPreference.PROGRESS_KEY_PREF, DownloadingMediaInfo.class);
+//
+//        if (downloadListComplete == null) {
+//            downloadListComplete = new ArrayList<>();
+//        }
+//
+//        File file = new File(AppUtils.Companion.getAppMainDir(),
+//                downloadingMediaInfo.getDownloadedFileName());
+//
+//        downloadingMediaInfo.setDownloadFilePath(file.getPath());
+//        downloadListComplete.add(downloadingMediaInfo);
+//
+//        AppPreference.saveList(context, AppPreference.PROGRESS_KEY_PREF, downloadListComplete);
+//
+//        Collections.sort(downloadListComplete, new Comparator<DownloadingMediaInfo>() {
+//            @Override
+//            public int compare(DownloadingMediaInfo list1, DownloadingMediaInfo list2) {
+//
+//                if (list1 == null || list2 == null) {
+//                    return 0;
+//                }
+//
+//                return Long.compare(list2.getDate(), list1.getDate());
+//
+//            }
+//        });
+//
+//        return downloadListComplete;
+//    }
 
-        if (downloadListComplete == null) {
-            downloadListComplete = new ArrayList<>();
-        }
-
-        File file = new File(AppUtils.getAppMainDir(),
-                downloadingMediaInfo.getDownloadedFileName());
-
-        downloadingMediaInfo.setDownloadFilePath(file.getPath());
-        downloadListComplete.add(downloadingMediaInfo);
-
-        AppPreference.saveList(context, AppPreference.PROGRESS_KEY_PREF, downloadListComplete);
-
-        Collections.sort(downloadListComplete, new Comparator<DownloadingMediaInfo>() {
-            @Override
-            public int compare(DownloadingMediaInfo list1, DownloadingMediaInfo list2) {
-
-                if (list1 == null || list2 == null) {
-                    return 0;
-                }
-
-                return Long.compare(list2.getDate(), list1.getDate());
-
-            }
-        });
-
-        return downloadListComplete;
-    }
-
-    private static class SaveDownloadInfoAsyncTask extends AsyncTask<String, Void, List<DownloadingMediaInfo>> {
-
-        private final WeakReference<ClipBoardService> weakReference;
-        private final DownloadingMediaInfo mediaInfoToSave;
-
-        private SaveDownloadInfoAsyncTask(WeakReference<ClipBoardService> weakReference, DownloadingMediaInfo mediaInfoToSave) {
-            this.weakReference = weakReference;
-            this.mediaInfoToSave = mediaInfoToSave;
-        }
-
-
-        @Override
-        protected List<DownloadingMediaInfo> doInBackground(String... values) {
-            ClipBoardService mClipBoardService = weakReference.get();
-            Context context = mClipBoardService.getApplicationContext();
-            return mClipBoardService.saveDownloadInfo(context, mediaInfoToSave);
-
-        }
-
-
-        @Override
-        protected void onPostExecute(List<DownloadingMediaInfo> downloadedList) {
-            super.onPostExecute(downloadedList);
-            // Log.d("PasteLinkFragment", "123123 downloadlist123123..." + " " + downloadedList.size());
-
-            if (weakReference.get() != null) {
-                ClipBoardService mClipBoardService = weakReference.get();
-
-                if (ClipBoardService.mDownloadingListener != null) {
-                    ClipBoardService.mDownloadingListener.onComplete(downloadedList);
-                }
-
-
-                for (DownloadingMediaInfo downloadingMediaInfo : mClipBoardService.mCurrentDownLoadingSet) {
-                    if (!downloadingMediaInfo.isCompleted()) {
-                        return;
-                    }
-                }
-
-                final int size = mClipBoardService.mCurrentDownLoadingSet.size();
-
-                if (size > 1) {
-                    //Multiple
-
-
-                    if (mClipBoardService.preference.getKeyAutoDownload()) {
-                        mClipBoardService.getsavedpath(mClipBoardService, AppUtils.getAppMainDir(),
-                                mediaInfoToSave.getDownloadedFileName(),
-                                AppUtils.DOWNLOADED_WITH_MULTIPLE,
-                                size);
-                    }
-                } else {
-                    //Single
-
-                    if (mClipBoardService.preference.getKeyAutoDownload()) {
-                        mClipBoardService.getsavedpath(mClipBoardService, AppUtils.getAppMainDir(),
-                                mediaInfoToSave.getDownloadedFileName(),
-                                AppUtils.DOWNLOADED_WITH_SINGLE,
-                                size);
-                    }
-                }
-                mClipBoardService.mCurrentDownLoadingSet.clear();
-                mClipBoardService.stopSelf();
-
-            }
-        }
-    }
+//    private static class SaveDownloadInfoAsyncTask extends AsyncTask<String, Void, List<DownloadingMediaInfo>> {
+//
+//        private final WeakReference<ClipBoardService> weakReference;
+//        private final DownloadingMediaInfo mediaInfoToSave;
+//
+//        private SaveDownloadInfoAsyncTask(WeakReference<ClipBoardService> weakReference, DownloadingMediaInfo mediaInfoToSave) {
+//            this.weakReference = weakReference;
+//            this.mediaInfoToSave = mediaInfoToSave;
+//        }
+//
+//
+//        @Override
+//        protected List<DownloadingMediaInfo> doInBackground(String... values) {
+//            ClipBoardService mClipBoardService = weakReference.get();
+//            Context context = mClipBoardService.getApplicationContext();
+//            return mClipBoardService.saveDownloadInfo(context, mediaInfoToSave);
+//
+//        }
+//
+//
+//        @Override
+//        protected void onPostExecute(List<DownloadingMediaInfo> downloadedList) {
+//            super.onPostExecute(downloadedList);
+//            // Log.d("PasteLinkFragment", "123123 downloadlist123123..." + " " + downloadedList.size());
+//
+//            if (weakReference.get() != null) {
+//                ClipBoardService mClipBoardService = weakReference.get();
+//
+//                if (ClipBoardService.mDownloadingListener != null) {
+//                    ClipBoardService.mDownloadingListener.onComplete(downloadedList);
+//                }
+//
+//
+//                for (DownloadingMediaInfo downloadingMediaInfo : mClipBoardService.mCurrentDownLoadingSet) {
+//                    if (!downloadingMediaInfo.isCompleted()) {
+//                        return;
+//                    }
+//                }
+//
+//                final int size = mClipBoardService.mCurrentDownLoadingSet.size();
+//
+//                if (size > 1) {
+//                    //Multiple
+//
+//
+//                    if (mClipBoardService.preference.getKeyAutoDownload()) {
+//                        mClipBoardService.getsavedpath(mClipBoardService, AppUtils.Companion.getAppMainDir(),
+//                                mediaInfoToSave.getDownloadedFileName(),
+//                                DOWNLOADED_WITH_MULTIPLE,
+//                                size);
+//                    }
+//                } else {
+//                    //Single
+//
+//                    if (mClipBoardService.preference.getKeyAutoDownload()) {
+//                        mClipBoardService.getsavedpath(mClipBoardService, AppUtils.Companion.getAppMainDir(),
+//                                mediaInfoToSave.getDownloadedFileName(),
+//                                DOWNLOADED_WITH_SINGLE,
+//                                size);
+//                    }
+//                }
+//                mClipBoardService.mCurrentDownLoadingSet.clear();
+//                mClipBoardService.stopSelf();
+//
+//            }
+//        }
+//    }
 
     public static void setDownloadingListener(DownloadingListener mDownloadingListener) {
         ClipBoardService.mDownloadingListener = mDownloadingListener;
@@ -905,7 +903,7 @@ public class ClipBoardService extends Service {
 
 
             builder.setSmallIcon(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP
-                    ? R.drawable.status_app_icon : R.drawable.app_icon)
+                    ? R.drawable.ic_notifications_black_24dp : R.mipmap.ic_launcher)
                     .setContentIntent(pIntent)
                     .setOnlyAlertOnce(true)
                     // Set RemoteViews into Notification
@@ -923,7 +921,7 @@ public class ClipBoardService extends Service {
         final int size = mCurrentDownLoadingSet.size();
         try {
             Notification notification = initRunningNotification();
-            totalSize = AppUtils.getFileSize(totalBytes);
+            totalSize = AppUtils.Companion.getFileSize(totalBytes);
 
 
             Intent intent2 = new Intent(getApplicationContext(), DownloadCancelReceiver.class);
@@ -964,9 +962,9 @@ public class ClipBoardService extends Service {
     private void createNotificationChannelID(NotificationManager nm) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel(PRIMARY_CHANNEL,
-                    getResources().getString(app.pnd.adshandler.R.string.app_name),
+                    getResources().getString(R.string.app_name),
                     NotificationManager.IMPORTANCE_DEFAULT);
-            channel.setDescription(getResources().getString(app.pnd.adshandler.R.string.app_name));
+            channel.setDescription(getResources().getString(R.string.app_name));
 
             nm.createNotificationChannel(channel);
         }

@@ -10,14 +10,16 @@ import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.whatsdelete.listener.onclickInstalledApp
 import com.example.whatsdelete.listener.openOnClick
 import com.example.whatsdelete.modal.CategoryDetailItem
 import com.example.whatsdelete.responce.ApplicationListData
 import com.jatpack.wastatustranding.R
 import com.squareup.picasso.Picasso
 
-class WhatsDelteCategoryItemAdapter(var context:Context,private val list: List<ApplicationListData>?,
-                                    var listener:openOnClick): RecyclerView.Adapter<WhatsDelteCategoryItemAdapter.ViewHolder>() {
+class InstalledAppItemAdapter(var context:Context, private val list: List<ApplicationListData>?,
+                              var listener: onclickInstalledApp
+): RecyclerView.Adapter<InstalledAppItemAdapter.ViewHolder>() {
 
 
     override fun onCreateViewHolder(
@@ -39,7 +41,7 @@ class WhatsDelteCategoryItemAdapter(var context:Context,private val list: List<A
         holder.ll_app_container.setOnClickListener {
             if (itemData != null) {
 //                listener.openAppInWebView(itemData.package_name, "itemDatacolor")
-                listener.openAppInWebView("https://www.google.com/", "itemDatacolor")
+                listener.onclickInstalledApp(itemData.package_name, "itemDatacolor")
             }
         }
 

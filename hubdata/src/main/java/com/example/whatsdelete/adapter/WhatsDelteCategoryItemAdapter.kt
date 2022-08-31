@@ -6,16 +6,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.whatsdelete.listener.openOnClick
 import com.example.whatsdelete.modal.CategoryDetailItem
+import com.example.whatsdelete.responce.ApplicationListData
 import com.jatpack.wastatustranding.R
 import com.squareup.picasso.Picasso
 
-class WhatsDelteCategoryItemAdapter(var context:Context,private val list: List<CategoryDetailItem>?,
-                                    var listener:openOnClick,var isServerHit:Boolean): RecyclerView.Adapter<WhatsDelteCategoryItemAdapter.ViewHolder>() {
+class WhatsDelteCategoryItemAdapter(var context:Context,private val list: List<ApplicationListData>?,
+                                    var listener:openOnClick): RecyclerView.Adapter<WhatsDelteCategoryItemAdapter.ViewHolder>() {
 
 
     override fun onCreateViewHolder(
@@ -32,24 +34,18 @@ class WhatsDelteCategoryItemAdapter(var context:Context,private val list: List<C
             .load(itemData?.img)
             .diskCacheStrategy(DiskCacheStrategy.ALL)
             .into(holder.img)*/
-       Picasso.get().load(itemData?.img)
+       Picasso.get().load(itemData?.image)
            .into(holder.img)
-        holder.img.setOnClickListener {
+        holder.ll_app_container.setOnClickListener {
             if (itemData != null) {
-                listener.openItem(it, itemData)
+//                listener.openAppInWebView(itemData.package_name, "itemDatacolor")
+                println("WhatsDelteCategoryItemAdapter.onBindViewHolder sgjkhaskgddjsa"+" "+itemData.color)
+                listener.openAppInWebView(itemData.click_url, itemData.color)
             }
         }
-        holder.title.setOnClickListener {
-            if (itemData != null) {
-                listener.openItem(it, itemData)
-            }
-        }
-        holder.rl_bottom.setOnClickListener {
-            if (itemData != null) {
-                listener.openItem(it, itemData)
-            }
-        }
-        holder.download_count.text=itemData?.count
+
+        holder.title.text=itemData?.app_name
+
 
         /*if (itemData != null) {
             holder.bind(itemData)
@@ -62,11 +58,9 @@ class WhatsDelteCategoryItemAdapter(var context:Context,private val list: List<C
     }
 
     class ViewHolder(itemView: View):RecyclerView.ViewHolder(itemView) {
-       // private var id=itemView.findViewById<TextView>(R.id.user_id)
-         var title=itemView.findViewById<TextView>(R.id.tv_title)
+         var title=itemView.findViewById<TextView>(R.id.app_name)
         var img=itemView.findViewById<ImageView>(R.id.category_item_img)
-        var download_count=itemView.findViewById<TextView>(R.id.download_count)
-        var rl_bottom=itemView.findViewById<RelativeLayout>(R.id.rl_bottom)
+        var ll_app_container=itemView.findViewById<LinearLayout>(R.id.ll_app_container)
 
 
     }

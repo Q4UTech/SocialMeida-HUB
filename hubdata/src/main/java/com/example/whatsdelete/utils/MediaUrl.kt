@@ -1,4 +1,4 @@
-package com.jatpack.socialmediahub.ui.socialmediadownloader.services
+package com.example.whatsdelete.utils
 
 
 import kotlinx.serialization.Serializable

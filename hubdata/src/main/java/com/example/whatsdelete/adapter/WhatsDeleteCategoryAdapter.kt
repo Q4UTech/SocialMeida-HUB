@@ -6,17 +6,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.whatsdelete.listener.setClick
 import com.example.whatsdelete.modal.Data
+import com.example.whatsdelete.responce.CategoryListData
 import com.jatpack.wastatustranding.R
 import com.squareup.picasso.Picasso
 
 
-class WhatsDeleteCategoryAdapter(var context:Context,private val list: List<Data>, var listener: setClick
-,var isServerHit:Boolean): RecyclerView.Adapter<WhatsDeleteCategoryAdapter.ViewHolder>() {
+class WhatsDeleteCategoryAdapter(var context:Context, private val list: List<CategoryListData>,
+                                 var listener: setClick): RecyclerView.Adapter<WhatsDeleteCategoryAdapter.ViewHolder>() {
 private var index:Int?=0
 
     override fun onCreateViewHolder(
@@ -35,13 +37,13 @@ private var index:Int?=0
         holder.itemView.setOnClickListener {
             //holder.rv_select.background= context.resources.getDrawable(R.drawable.ic_bg_active,null)
            index=position
-            notifyDataSetChanged()
-            listener.onClick(data,position,isServerHit)
+            listener.onClick(data,data.cat_id)
+//            notifyDataSetChanged()
         }
-        if (index == position)
-            holder.rv_select.background= context.resources.getDrawable(R.drawable.active_bg,null)
-        else
-            holder.rv_select.background= context.resources.getDrawable(R.drawable.category_rectangle,null)
+//        if (index == position)
+//            holder.ll_cat_container.background= context.resources.getDrawable(R.drawable.active_bg,null)
+//        else
+//            holder.ll_cat_container.background= context.resources.getDrawable(R.drawable.category_rectangle,null)
 
     }
 
@@ -54,7 +56,7 @@ private var index:Int?=0
       //  private var id=itemView.findViewById<TextView>(R.id.user_id)
       var categoryName=itemView.findViewById<TextView>(R.id.category_name)
         var categoryImg=itemView.findViewById<ImageView>(R.id.category_image)
-        var rv_select=itemView.findViewById<RelativeLayout>(R.id.rv_select)
+        var ll_cat_container=itemView.findViewById<LinearLayout>(R.id.ll_cat_container)
 
 
 

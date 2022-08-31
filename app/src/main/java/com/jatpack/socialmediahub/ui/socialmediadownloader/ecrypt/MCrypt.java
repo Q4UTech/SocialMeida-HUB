@@ -1,4 +1,4 @@
-package engine.app.ecrypt;
+package com.jatpack.socialmediahub.ui.socialmediadownloader.ecrypt;
 
 /*
  * Created by quantum4u1 on 25/04/18.

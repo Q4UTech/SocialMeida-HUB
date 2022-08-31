@@ -23,7 +23,6 @@ import androidx.navigation.fragment.findNavController
 import com.example.whatsdelete.utils.AppUtils
 import com.jatpack.wastatustranding.R
 import com.squareup.picasso.Picasso
-import engine.app.adshandler.AHandler
 import java.io.*
 import java.lang.ref.WeakReference
 import java.net.HttpURLConnection
@@ -71,7 +70,6 @@ class DetailFragment : AppCompatActivity(), View.OnClickListener {
         shareOnWhatsApp?.setOnClickListener(this)
         progressBar=findViewById(R.id.progress_circular)
 
-        adsbanner?.addView(AHandler.getInstance().getBannerHeader(this))
 
     }
 

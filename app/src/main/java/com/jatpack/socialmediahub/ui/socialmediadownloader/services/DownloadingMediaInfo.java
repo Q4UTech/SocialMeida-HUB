@@ -1,6 +1,4 @@
-package com.universal.helper;
-
-import java.util.Set;
+package com.jatpack.socialmediahub.ui.socialmediadownloader.services;
 
 /**
  * Created by qunatum4u2 on 27/12/18.

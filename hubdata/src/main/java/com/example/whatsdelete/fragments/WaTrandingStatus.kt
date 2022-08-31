@@ -1,36 +1,31 @@
 package com.example.whatsdelete.fragments
 
+import android.app.Activity
 import android.app.ProgressDialog
-import android.content.Context
-import android.content.Intent
+import android.content.pm.PackageInfo
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.ProgressBar
-import android.widget.RelativeLayout
-import android.widget.TextView
-import androidx.activity.OnBackPressedCallback
+import android.widget.*
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import com.downloader.OnDownloadListener
-import com.downloader.PRDownloader
-import com.example.whatsdelete.adapter.ImageStackAdapter
+import com.example.whatsdelete.adapter.InstalledAppItemAdapter
 import com.example.whatsdelete.adapter.WhatsDeleteCategoryAdapter
 import com.example.whatsdelete.adapter.WhatsDelteCategoryItemAdapter
 import com.example.whatsdelete.api.APIClient
 import com.example.whatsdelete.constants.Constants
-import com.example.whatsdelete.listener.OnBackPressedInterface
+import com.example.whatsdelete.listener.onclickInstalledApp
 import com.example.whatsdelete.listener.openOnClick
 import com.example.whatsdelete.listener.setClick
-import com.example.whatsdelete.modal.*
+import com.example.whatsdelete.request.ApplicationListRequest
+import com.example.whatsdelete.request.CategoryListRequest
+import com.example.whatsdelete.responce.ApplicationListData
+import com.example.whatsdelete.responce.CategoryListData
 import com.example.whatsdelete.utils.AppUtils
 import com.example.whatsdelete.utils.ItemOffsetView
 import com.example.whatsdelete.utils.OverlapDecoration
@@ -39,23 +34,31 @@ import com.example.whatsdelete.viewmodel.ApiDataViewModel
 import com.example.whatsdelete.viewmodel.MyViewModelFactory
 import com.example.whatsdelete.viewmodel.WhatsDeleteRepository
 import com.jatpack.wastatustranding.R
-import engine.app.adshandler.AHandler
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.File
 import java.text.SimpleDateFormat
 
 
-class WaTrandingStatus : Fragment(), setClick, openOnClick, View.OnClickListener{
+class WaTrandingStatus : Fragment(), setClick, openOnClick, onclickInstalledApp,View.OnClickListener{
     public val DATEFORMAT = SimpleDateFormat("ddMMyyyy")
     private var recyclerView: RecyclerView? = null
     private var recCategoryitem: RecyclerView? = null
+    private var rv_installed_app: RecyclerView? = null
     private var progressBar: ProgressBar? = null
     private var whatsDeleteDataAdapter: WhatsDeleteCategoryAdapter? = null
     private var whatsDelteCategoryItemAdapter: WhatsDelteCategoryItemAdapter? = null
+    private var installedAppItemAdapter: InstalledAppItemAdapter? = null
     private var viewModel: ApiDataViewModel? = null
     private var country: String? = null
     private var appId: String? = null
     private var preview: TextView? = null
     private var close: ImageView? = null
+    private var ll_nodata_container: LinearLayout? = null
+    private var sub_cat_container: LinearLayout? = null
+
     private var itemOffsetView: ItemOffsetView? = null
     private var rv_statck: RecyclerView? = null
     private var bottomStack: RelativeLayout? = null
@@ -72,6 +75,7 @@ class WaTrandingStatus : Fragment(), setClick, openOnClick, View.OnClickListener
     private var tempImgList = ArrayList<String>()
     private var tempFileNameList = ArrayList<String>()
     private var temFileList = ArrayList<File>()
+    private var prefs : Prefs?=null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -79,7 +83,7 @@ class WaTrandingStatus : Fragment(), setClick, openOnClick, View.OnClickListener
     ): View? {
 
 
-        return inflater.inflate(R.layout.fragment_home, container, false)
+        return inflater.inflate(R.layout.fragment_home_cat, container, false)
     }
 
 
@@ -87,6 +91,7 @@ class WaTrandingStatus : Fragment(), setClick, openOnClick, View.OnClickListener
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.d("TAG", "onViewCreated: ")
+        prefs= Prefs(requireActivity())
         progressDialog = ProgressDialog(requireActivity())
         progressDialog?.setTitle("Downloading..")
         progressDialog?.setMessage("Please wait..")
@@ -98,12 +103,15 @@ class WaTrandingStatus : Fragment(), setClick, openOnClick, View.OnClickListener
         share = view.findViewById(R.id.share);
         share?.setOnClickListener(this)
         shareOnFacebook = view.findViewById(R.id.share_facebook)
+        sub_cat_container = view.findViewById(R.id.sub_cat_container)
+        ll_nodata_container = view.findViewById(R.id.ll_nodata_container)
         shareOnFacebook?.setOnClickListener(this)
         shareOnInsta = view.findViewById(R.id.share_insta)
         shareOnInsta?.setOnClickListener(this)
         shareOnWhatsApp = view.findViewById(R.id.share_whats_app)
         shareOnWhatsApp?.setOnClickListener(this)
         recCategoryitem = view.findViewById(R.id.rec_category_item);
+        rv_installed_app = view.findViewById(R.id.rv_installed_app);
         preview = view.findViewById(R.id.preview)
         preview?.setOnClickListener(this)
         rv_statck = view.findViewById(R.id.rv_statck)
@@ -124,6 +132,7 @@ class WaTrandingStatus : Fragment(), setClick, openOnClick, View.OnClickListener
         ).get(ApiDataViewModel::class.java)
         itemOffsetView = activity?.let { ItemOffsetView(it, R.dimen.item_offset) }
         recCategoryitem?.addItemDecoration(ItemOffsetView(requireActivity(), R.dimen.item_offset))
+        rv_installed_app?.addItemDecoration(ItemOffsetView(requireActivity(), R.dimen.item_offset))
 
         bottomStack?.setOnClickListener{
 
@@ -131,58 +140,53 @@ class WaTrandingStatus : Fragment(), setClick, openOnClick, View.OnClickListener
 
     }
 
-    private fun initStackView(tempImgList: ArrayList<String>) {
-        if (tempImgList.size >= 6) {
-            rl_counter?.visibility = View.VISIBLE
-            itemCount?.visibility = View.VISIBLE
-            itemCount?.text = tempImgList.size.toString()
-        } else {
-            rl_counter?.visibility = View.GONE
-            itemCount?.visibility = View.GONE
-
-        }
-        rv_statck?.apply {
-            val linearLayoutManager = LinearLayoutManager(activity)
-            linearLayoutManager.orientation = LinearLayoutManager.HORIZONTAL
-            val imageStackAdapter = ImageStackAdapter(context, tempImgList)
-            layoutManager = linearLayoutManager
-            adapter = imageStackAdapter
-
-        }
-    }
-
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
+        Log.d("TAG", "onActivityCreated1: adgfadsgadg 001")
         super.onActivityCreated(savedInstanceState)
-
-//        Log.d("TAG", "onActivityCreated: $country,$appId"
-//        +" "+DATEFORMAT.format(System.currentTimeMillis()))
-
-//        if (!AppUtils.isSameDay(requireActivity(), DATEFORMAT.format(System.currentTimeMillis()))) {
-
-//        requireActivity().addOnBackPressedCallback(getViewLifecycleOwner(),this)
             if (viewModel != null) {
                 if (country != null) {
-                    Prefs(requireActivity()).setCategoryList(null)
-                    viewModel?.callApiData(CategoryRequestData(country, appId))
-                        ?.observe(viewLifecycleOwner) { list ->
-                            recyclerView?.apply {
-                                Log.d("TAG", "onActivityCreated1: " + list)
-                                val linearLayoutManager = LinearLayoutManager(activity)
-                                linearLayoutManager.orientation = LinearLayoutManager.HORIZONTAL
-                                layoutManager = linearLayoutManager
-                                whatsDeleteDataAdapter =
-                                    WhatsDeleteCategoryAdapter(
-                                        requireContext(),
-                                        list.data,
-                                        this@WaTrandingStatus,true
-                                    )
-                                adapter = whatsDeleteDataAdapter
-//                                Prefs(requireActivity()).setCategoryList(list.data)
+                    if(prefs?.getCategoryList()!=null && prefs!!.getCategoryList()!!.isNotEmpty()){
 
-                                callCategoryItem(list.data[0].cat_id, true)
-                            }
+                        recyclerView?.apply {
+
+                            whatsDeleteDataAdapter =
+                                WhatsDeleteCategoryAdapter(
+                                    requireContext(),
+                                    prefs?.getCategoryList()!!,
+                                    this@WaTrandingStatus
+                                )
+                            adapter = whatsDeleteDataAdapter
+
+
+                            callApplicationListView(prefs?.getCategoryList()!![0].cat_id)
                         }
+
+
+                    }else{
+                        prefs?.setCategoryList(null)
+                        viewModel?.callApiData(CategoryListRequest(country!!, appId!!))
+                            ?.observe(viewLifecycleOwner) { list ->
+                                Log.d("TAG", "onActivityCreated1: adgfadsgadg 002")
+                                Log.d("TAG", "onActivityCreated1: " + list.data.size)
+
+                                recyclerView?.apply {
+
+                                    whatsDeleteDataAdapter =
+                                        WhatsDeleteCategoryAdapter(
+                                            requireContext(),
+                                            list.data,
+                                            this@WaTrandingStatus
+                                        )
+                                    adapter = whatsDeleteDataAdapter
+
+                                    prefs?.setCategoryList(list.data)
+
+                                    callApplicationListView(list.data[0].cat_id)
+                                }
+                            }
+                    }
+
                 }
             } else {
                 Log.d("TAG", "onViewCreated1: ")
@@ -211,7 +215,7 @@ class WaTrandingStatus : Fragment(), setClick, openOnClick, View.OnClickListener
 //                        )
 //                    adapter = whatsDeleteDataAdapter
 //
-//                    callCategoryItem(Prefs(requireActivity()).getCategoryList()!![0].cat_id,false)
+//                    callApplicationListView(Prefs(requireActivity()).getCategoryList()!![0].cat_id,false)
 //                }
 //            }
         }
@@ -219,76 +223,147 @@ class WaTrandingStatus : Fragment(), setClick, openOnClick, View.OnClickListener
 
     }
 
-    override fun onClick(data: Data, position: Int,isServerHit:Boolean) {
-        callCategoryItem(data.cat_id,isServerHit)
+    override fun onClick(data: CategoryListData, position: String) {
+        callApplicationListView(position)
     }
 
-    private fun callCategoryItem(position: String, isServerHit: Boolean) {
+    private fun callApplicationListView(position: String) {
         tempCategoriesID = position
         progressBar?.visibility = View.VISIBLE
-        println("WaTrandingStatus.callCategoryItem fasdgjhafsgh"+" "+isServerHit)
+        println("WaTrandingStatus.callApplicationListView fasdgjhafsgh"+" "+position)
         if (country != null) {
 //            if (isServerHit) {
 
-                viewModel?.callCategoryItemData(
-                    CategoryItemRequestData(
-                        country,
-                        position.toString(),
-                        appId
-                    )
-                )?.observe(viewLifecycleOwner) { categoryItemList ->
-                    recCategoryitem?.apply {
-                        Log.d("TAG", "onActivityCreated1: $categoryItemList")
-                        if (categoryItemList?.data != null && categoryItemList.data?.size!! > 0) {
-                            val linearLayoutManager =
-                                StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-                            layoutManager = linearLayoutManager
-                            whatsDelteCategoryItemAdapter =
-                                WhatsDelteCategoryItemAdapter(
-                                    requireContext(),
-                                    categoryItemList.data,
-                                    this@WaTrandingStatus,isServerHit
-                                )
 
-                            adapter = whatsDelteCategoryItemAdapter
+            val applicationResponceList =  prefs?.getApplicationLsit(requireActivity())!!.get(position)
 
-                            progressBar?.visibility = View.GONE
+
+
+            if(applicationResponceList !=null && !applicationResponceList!!.equals("")){
+                println("WaTrandingStatus.callApplicationListView gshjdgakdh 001"+" "+
+                        applicationResponceList!!.size)
+
+                recCategoryitem?.apply {
+
+                    if (applicationResponceList != null && applicationResponceList?.size!! > 0) {
+                        println("WaTrandingStatus.callApplicationListView fasdgjhafsgh 009 aaaa"+" ")
+                        ll_nodata_container?.visibility=View.GONE
+                        sub_cat_container?.visibility=View.VISIBLE
+
+//                            val linearLayoutManager =
+//                                StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+//                            layoutManager = linearLayoutManager
+                        whatsDelteCategoryItemAdapter =
+                            WhatsDelteCategoryItemAdapter(
+                                requireContext(),
+                                applicationResponceList,
+                                this@WaTrandingStatus
+                            )
+
+
+                        adapter = whatsDelteCategoryItemAdapter
+
+                        progressBar?.visibility = View.GONE
+
+                        println("WaTrandingStatus.callApplicationListView fasdgjhafsgh 009"+" ")
+
+                        getallapps(requireActivity(),applicationResponceList)
+
+
+
+
 //                            Prefs(requireActivity()).setSubCategoryList(null)
 //                            Prefs(requireActivity()).setSubCategoryList(categoryItemList.data)
-                        } else {
-                            recCategoryitem?.visibility = View.GONE
-                            progressBar?.visibility = View.GONE
+                    } else {
+//                            recCategoryitem?.visibility = View.GONE
+                        ll_nodata_container?.visibility=View.VISIBLE
+                        sub_cat_container?.visibility=View.GONE
+                        progressBar?.visibility = View.GONE
 
+                    }
+                }
+
+
+            }else{
+                println("WaTrandingStatus.callApplicationListView gshjdgakdh 002")
+
+
+                viewModel?.callApplicationListData(
+                    ApplicationListRequest(
+                        appId!!,
+                        position,
+                        country!!
+
+                    )
+                )?.observe(viewLifecycleOwner) { categoryItemList ->
+                    println("WaTrandingStatus.callApplicationListView fasdgjhafsgh 009 bbb"+" ")
+
+
+
+                    if(categoryItemList!=null){
+                        ll_nodata_container?.visibility=View.GONE
+                        sub_cat_container?.visibility=View.VISIBLE
+                        val aMap =HashMap<String, List<ApplicationListData>>()
+                        aMap[position] = categoryItemList.data
+                        prefs?.setApplicationList(requireActivity(),aMap)
+
+                        recCategoryitem?.apply {
+
+                            if (categoryItemList?.data != null && categoryItemList.data?.size!! > 0) {
+                                println("WaTrandingStatus.callApplicationListView fasdgjhafsgh 009 aaaa"+" ")
+                                ll_nodata_container?.visibility=View.GONE
+                                sub_cat_container?.visibility=View.VISIBLE
+
+//                            val linearLayoutManager =
+//                                StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+//                            layoutManager = linearLayoutManager
+                                whatsDelteCategoryItemAdapter =
+                                    WhatsDelteCategoryItemAdapter(
+                                        requireContext(),
+                                        categoryItemList.data,
+                                        this@WaTrandingStatus
+                                    )
+
+
+                                adapter = whatsDelteCategoryItemAdapter
+
+                                progressBar?.visibility = View.GONE
+
+                                println("WaTrandingStatus.callApplicationListView fasdgjhafsgh 009"+" ")
+
+                                getallapps(requireActivity(),categoryItemList.data)
+
+
+
+
+//                            Prefs(requireActivity()).setSubCategoryList(null)
+//                            Prefs(requireActivity()).setSubCategoryList(categoryItemList.data)
+                            } else {
+//                            recCategoryitem?.visibility = View.GONE
+                                ll_nodata_container?.visibility=View.VISIBLE
+                                sub_cat_container?.visibility=View.GONE
+                                progressBar?.visibility = View.GONE
+
+                            }
                         }
+                    }else{
+                        ll_nodata_container?.visibility=View.VISIBLE
+                        sub_cat_container?.visibility=View.GONE
+                        progressBar?.visibility = View.GONE
                     }
 
 
+
+
+
+
+
                 }
-//            } else {
-//                if (Prefs(requireActivity()).getSubCategoryList() != null &&
-//                    Prefs(requireActivity()).getSubCategoryList()!!.isNotEmpty()
-//                ) {
-//                    recCategoryitem?.apply {
-//                        val linearLayoutManager =
-//                            StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-//                        layoutManager = linearLayoutManager
-//                        whatsDelteCategoryItemAdapter =
-//                            WhatsDelteCategoryItemAdapter(
-//                                requireContext(),
-//                                Prefs(requireActivity()).getSubCategoryList(),
-//                                this@WaTrandingStatus,isServerHit
-//                            )
-//
-//                        adapter = whatsDelteCategoryItemAdapter
-//
-//                        progressBar?.visibility = View.GONE
-//
-//                    }
-//                } else {
-//                    recCategoryitem?.visibility = View.GONE
-//                    progressBar?.visibility = View.GONE
-//                }
-//            }
+
+
+            }
+
+
 
         }
     }
@@ -297,129 +372,9 @@ class WaTrandingStatus : Fragment(), setClick, openOnClick, View.OnClickListener
 
     }
 
-    override fun openItem(view: View, categoryDetailItem: CategoryDetailItem) {
-        if (view == view.findViewById<TextView>(R.id.rl_bottom)) {
-            Log.d("TAG", "openItem:  001")
-            startDownload(categoryDetailItem)
-        }
-
-        if (view == view.findViewById<TextView>(R.id.category_item_img)) {
-            Log.d("TAG", "openItem: 002")
-            openDetailPage(categoryDetailItem)
-        }
-
-
-//        else {
-//            Log.d("TAG", "openItem1: ")
-//            openDetailPage(categoryDetailItem)
-//
-//        }
-
-
-    }
-
-    private fun startDownload(categoryDetailItem: CategoryDetailItem) {
-        var filename = AppUtils.getImageName(AppUtils.stringToURL(categoryDetailItem.img))
-        val directory = File(
-            context?.getExternalFilesDir("WA Status Tranding Gallery")?.path
-        )
-        if (!directory.exists())
-            directory.mkdirs()
-//        if (tempFileNameList != null && tempFileNameList.size >= 1 && tempFileNameList.contains(
-//                filename
-//            )
-//        ) {
-//            Toast.makeText(requireActivity(), "Image already downloaded", Toast.LENGTH_SHORT).show()
-//        } else {
-            PRDownloader.download(categoryDetailItem.img, directory.toString(), filename)
-                .build()
-                .setOnStartOrResumeListener {
-                    Log.d("TAG", "onHandleIntent: ")
-                    progressBar?.visibility = View.VISIBLE
-                    true
-                }
-                .setOnPauseListener {
-                    Log.d("TAG", "onHandleIntent: ")
-                }
-                .setOnCancelListener {
-                    progressBar?.visibility = View.GONE
-                    Log.d("TAG", "onHandleIntent: ")
-                }
-                .setOnProgressListener {
-
-                    val currentByte = it.currentBytes.toFloat()
-                    val totalByte = it.totalBytes.toFloat()
-                    val percentage = (currentByte / totalByte) * 100
-                    Log.d("TAG", "onHandleIntent: $percentage")
-                    /* sendMessageToActivity(
-                     downloadingPercentage = percentage.toInt(),
-                     totalFileCount = totalDownloadingFileCount,
-                     remainingFileCount = remainingDownloadingFileCount,
-                     fileThumbnail = mediaUrl?.mediaUrl,
-                     downloadedFilePath = directory + filename
-                 )*/
-                }
-                .start(object : OnDownloadListener {
-                    override fun onDownloadComplete() {
-                        progressBar?.visibility = View.GONE
-
-                        Log.d("TAG", "onDownloadComplete: $directory$filename")
-                        tempFileNameList.add(filename)
-
-                        val file = File(directory, filename)
-                        tempImgList.add(file.path)
-                        Log.d("TAG", "onDownloadComplete1: " + tempImgList.size)
-                        if (tempImgList.size > 0) {
-                            bottomStack?.visibility = View.VISIBLE
-                            initStackView(tempImgList)
-                        } else {
-                            bottomStack?.visibility = View.GONE
-                        }
-
-
-                        // api hit
-
-                        postDownloadCountAPI(categoryDetailItem.id!!)
-                        //success refresh list
-
-                    }
-
-                    override fun onError(error: com.downloader.Error?) {
-                        Log.d(
-                            "TAG",
-                            "onError:  error ${error?.isServerError}"
-                        )
-                    }
-
-
-                })
-//        }
-    }
-
-
-    private fun scanPath(any: Any) {
-
-    }
-
-    private fun openDetailPage(categoryDetailItem: CategoryDetailItem) {
 
 
 
-//        val ldf = DetailFragment()
-//        val args = Bundle()
-//        args.putString("id", categoryDetailItem.cat_id)
-//        args.putString("img_url", categoryDetailItem.img)
-//        ldf.arguments = args
-//        activity?.supportFragmentManager!!.beginTransaction().replace(R.id.container, ldf)
-//            .addToBackStack(null).commit()
-
-
-        startActivity(Intent(requireActivity(),DetailFragment::class.java)
-            .putExtra("id", categoryDetailItem.cat_id)
-            .putExtra("img_url", categoryDetailItem.img))
-
-        AHandler.getInstance().showFullAds(requireActivity(),false)
-    }
 
     override fun onClick(v: View?) {
         when (v?.id) {
@@ -506,21 +461,6 @@ class WaTrandingStatus : Fragment(), setClick, openOnClick, View.OnClickListener
     }
 
 
-    fun postDownloadCountAPI(downloadID: String) {
-        if (viewModel != null) {
-            viewModel?.callCategoryDownloadCount(CategoryDownloadRequest(downloadID))
-                ?.observe(viewLifecycleOwner) { list ->
-
-//                    if (tempCategoriesID != null && !tempCategoriesID.equals("")) {
-//                        callCategoryItem(tempCategoriesID!!,isServerHit)
-//
-//                    }
-
-                }
-        } else {
-            Log.d("TAG", "onViewCreated1: ")
-        }
-    }
 
 //    override fun handleOnBackPressed() {
 //        TODO("Not yet implemented")
@@ -530,6 +470,113 @@ class WaTrandingStatus : Fragment(), setClick, openOnClick, View.OnClickListener
     override fun onDestroyView() {
         super.onDestroyView()
 //        getActivity().removeOnBackPressedCallback(this);
+    }
+
+    override fun openAppInWebView(appUrl: String, toolbarColor: String) {
+        if(appUrl!=null && !appUrl.equals("")){
+            AppUtils.openCustomTab(requireActivity(), Uri.parse(appUrl),toolbarColor)
+        }
+    }
+
+
+    fun getallapps(activity: Activity, webAppList: List<ApplicationListData>){
+        // get list of all the apps installed
+        var appContainsList: ArrayList<ApplicationListData> = ArrayList<ApplicationListData>()
+
+
+        GlobalScope.launch {
+            val packList: List<PackageInfo> = activity.packageManager.getInstalledPackages(0)
+            val apps = arrayOfNulls<String>(packList.size)
+            for (i in packList.indices) {
+                val packInfo: PackageInfo = packList[i]
+                apps[i] = packInfo.applicationInfo.packageName
+                println("WaTrandingStatus.callApplicationListView hhifhafhia 001"+" "+apps[i])
+
+                for (pos in webAppList.indices){
+                    println("WaTrandingStatus.callApplicationListView hhifhafhia 002"+" "+webAppList[pos].package_name)
+
+                    if(apps[i].equals(webAppList[pos].package_name)){
+                        println("WaTrandingStatus.callApplicationListView hhifhafhia 003"+" "+webAppList[pos].package_name)
+
+
+                        appContainsList.add(ApplicationListData(
+                            webAppList[pos].app_name,
+                            webAppList[pos].cat_id,
+                            webAppList[pos].id,
+                            webAppList[pos].image,
+                            webAppList[pos].package_name,
+                            webAppList[pos].click_url,
+                            webAppList[pos].color
+                            ))
+
+
+
+//                            appContainsList=   object : java.util.ArrayList<ApplicationListData>() {
+//                                init {
+//                                    add(ApplicationListData(
+//                                        webAppList[pos].app_name,
+//                                        webAppList[pos].cat_id,
+//                                        webAppList[pos].id,
+//                                        webAppList[pos].image,
+//                                        webAppList[pos].package_name,
+//
+//                                        ))
+//                                }
+//
+//                            }
+
+
+                    }
+                }
+            }
+
+            withContext(Dispatchers.Main) {
+                println("WaTrandingStatus.callApplicationListView hhifhafhia 006"+" "+appContainsList.size)
+
+                rv_installed_app?.apply {
+
+                    println("WaTrandingStatus.callApplicationListView hihhih 001")
+                    if (appContainsList != null && appContainsList.size!! > 0) {
+//                                ll_nodata_container?.visibility=View.GONE
+//                                sub_cat_container?.visibility=View.VISIBLE
+                        println("WaTrandingStatus.callApplicationListView hihhih 002"+" "+appContainsList.size)
+                        installedAppItemAdapter =
+                            InstalledAppItemAdapter(
+                                requireContext(),
+                                appContainsList,
+                                this@WaTrandingStatus
+                            )
+
+
+
+
+
+                        adapter = installedAppItemAdapter
+                        progressBar?.visibility = View.GONE
+                    } else {
+//                            recCategoryitem?.visibility = View.GONE
+//                                ll_nodata_container?.visibility=View.VISIBLE
+//                                sub_cat_container?.visibility=View.GONE
+                        progressBar?.visibility = View.GONE
+
+                    }
+                }
+            }
+        }
+
+
+
+
+        // set all the apps name in list view
+
+        // write total count of apps available.
+        println("WaTrandingStatus.callApplicationListView hhifhafhia 004"+" "+appContainsList.size)
+
+
+    }
+
+    override fun onclickInstalledApp(appPackageName: String, toolbarColor: String) {
+        AppUtils.openInstalledApp(requireActivity(),appPackageName)
     }
 
 

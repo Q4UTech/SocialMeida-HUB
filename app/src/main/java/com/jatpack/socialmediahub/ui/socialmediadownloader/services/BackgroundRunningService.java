@@ -1,4 +1,14 @@
-package com.universal.services;
+package com.jatpack.socialmediahub.ui.socialmediadownloader.services;
+
+
+import static com.example.whatsdelete.constants.Constants.GO_BUTTON_CLICK;
+import static com.example.whatsdelete.constants.Constants.NOTIFICATION_CHANNEL_ID;
+import static com.example.whatsdelete.constants.Constants.NOTIFICATION_ID;
+import static com.example.whatsdelete.constants.Constants.PASTE_MEDIA_URL;
+import static com.example.whatsdelete.constants.Constants.PINTEREST_URL;
+import static com.example.whatsdelete.constants.Constants.PINTEREST_VIDEO_IMAGE;
+import static com.example.whatsdelete.constants.Constants.channelName;
+import static com.example.whatsdelete.constants.Constants.onDefaultNotificationSetting;
 
 import android.annotation.TargetApi;
 import android.app.Notification;
@@ -14,18 +24,17 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.IBinder;
-import androidx.annotation.Nullable;
-import androidx.core.app.NotificationCompat;
 import android.util.Log;
 import android.widget.RemoteViews;
 
+import androidx.annotation.Nullable;
+import androidx.core.app.NotificationCompat;
+
+
 import com.downloader.PRDownloader;
-import com.m24apps.socialvideo.R;
-import utils.SplashActivityV3;
-import com.universal.gallery.AppPreference;
-import com.universal.gallery.AppUtils;
-import com.universal.helper.ClipBoardService;
-import com.developer.whatsdelete.utils.Const;
+import com.example.whatsdelete.MainActivity;
+import com.example.whatsdelete.utils.Prefs;
+import com.jatpack.socialmediahub.R;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -37,10 +46,6 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import version2.retrofit.Api;
-import version2.retrofit.PinterestRequest;
-
-import static com.developer.whatsdelete.utils.Const.NOTIFICATION_CHANNEL_ID;
 
 
 /**
@@ -65,7 +70,7 @@ public class BackgroundRunningService extends Service implements ClipboardManage
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 //            createNotificationChannels();
 //            startNotificationForeGround(createRecordingNotificationPrimary().build(), Const.NOTIFICATION_ID);
-            super.startForeground(Const.NOTIFICATION_ID, newRunningNotification());
+            super.startForeground(NOTIFICATION_ID, newRunningNotification());
 
         }
 
@@ -103,7 +108,7 @@ public class BackgroundRunningService extends Service implements ClipboardManage
         System.out.println("BackgroundRunningService.onPrimaryClipChanged gfhjszdgjfasgfjahg");
 
         try {
-            if (!new AppPreference(getApplicationContext()).getdisableDownload()) {
+            if (!new Prefs(getApplicationContext()).getdisableDownload()) {
                 return;
             }
 
@@ -116,17 +121,6 @@ public class BackgroundRunningService extends Service implements ClipboardManage
             if (clip != null) {
                 paste = clip.getItemAt(0).getText().toString();
             }
-
-
-            if(paste != null && paste.contains("https://pin.it")
-                    || paste.contains("https://in.pinterest")
-                    || paste.contains("https://www.pinterest")){
-
-                new PinterestAsynTask(getApplicationContext(),paste).execute();
-
-
-            }
-
             if (paste != null && paste.contains("https://www.instagram.com") || paste.contains("https://www.facebook.com") ||
                     paste.contains("https://m.facebook.com")||
                     paste.contains("https://like.video") || paste.contains("https://l.likee.video")|| paste.contains("https://share.like.video") || paste.contains("https://mobile.like-video")
@@ -146,8 +140,8 @@ public class BackgroundRunningService extends Service implements ClipboardManage
     public static void startDownloadingLink(Context context, String copyData, boolean goButtonClick) {
 
         Intent downloadService = new Intent(context, ClipBoardService.class);
-        downloadService.putExtra(AppUtils.PASTE_MEDIA_URL, copyData)
-                .putExtra(AppUtils.GO_BUTTON_CLICK, goButtonClick);
+        downloadService.putExtra(PASTE_MEDIA_URL, copyData)
+                .putExtra(GO_BUTTON_CLICK, goButtonClick);
 
 //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 //            context.startForegroundService(downloadService);
@@ -160,9 +154,9 @@ public class BackgroundRunningService extends Service implements ClipboardManage
     public static void startDownloadingLink(Context context, String copyData, boolean goButtonClick,String pinteresturl,String isvideo) {
 
         Intent downloadService = new Intent(context, ClipBoardService.class);
-        downloadService.putExtra(AppUtils.PASTE_MEDIA_URL, copyData)
-                .putExtra(AppUtils.GO_BUTTON_CLICK, goButtonClick).putExtra(AppUtils.PINTEREST_URL,pinteresturl)
-        .putExtra(AppUtils.PINTEREST_VIDEO_IMAGE,isvideo);
+        downloadService.putExtra(PASTE_MEDIA_URL, copyData)
+                .putExtra(GO_BUTTON_CLICK, goButtonClick).putExtra(PINTEREST_URL,pinteresturl)
+        .putExtra(PINTEREST_VIDEO_IMAGE,isvideo);
 
 //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 //            context.startForegroundService(downloadService);
@@ -179,7 +173,7 @@ public class BackgroundRunningService extends Service implements ClipboardManage
         stopForeground(true);
         if (mClipboardManager != null) {
             if (mNotificationManager != null)
-                mNotificationManager.cancel(Const.NOTIFICATION_ID);
+                mNotificationManager.cancel(NOTIFICATION_ID);
         }
 
 
@@ -237,7 +231,7 @@ public class BackgroundRunningService extends Service implements ClipboardManage
         List<NotificationChannel> notificationChannels = new ArrayList<>();
         NotificationChannel recordingNotificationChannel = new NotificationChannel(
                 NOTIFICATION_CHANNEL_ID,
-                Const.channelName,
+                channelName,
                 NotificationManager.IMPORTANCE_DEFAULT
         );
         recordingNotificationChannel.enableLights(true);
@@ -252,12 +246,12 @@ public class BackgroundRunningService extends Service implements ClipboardManage
 
     private NotificationCompat.Builder createRecordingNotificationPrimary() {
 
-        Intent intent = new Intent(this, SplashActivityV3.class);
-        PendingIntent pcloseIntent = PendingIntent.getActivity(this, Const.NOTIFICATION_ID, intent,
+        Intent intent = new Intent(this, MainActivity.class);
+        PendingIntent pcloseIntent = PendingIntent.getActivity(this, NOTIFICATION_ID, intent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
 
         NotificationCompat.Builder notification1 = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
-                .setSmallIcon(R.drawable.status_app_icon)
+                .setSmallIcon(R.drawable.ic_download)
                 .setAutoCancel(true)
                 .setContentTitle("Auto Downloading Service Enabled")
                 .setPriority(NotificationManager.IMPORTANCE_DEFAULT);
@@ -280,15 +274,15 @@ public class BackgroundRunningService extends Service implements ClipboardManage
 
         RemoteViews contentView = new RemoteViews(this.getPackageName(), R.layout.notification_app);
 
-        Intent intent = new Intent(this, SplashActivityV3.class);
+        Intent intent = new Intent(this, MainActivity.class);
         intent.addCategory(this.getPackageName());
-        PendingIntent pSplashLaunchIntent = PendingIntent.getActivity(this, Const.NOTIFICATION_ID, intent,
+        PendingIntent pSplashLaunchIntent = PendingIntent.getActivity(this, NOTIFICATION_ID, intent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
 
-        Intent intent1 = new Intent(this, SplashActivityV3.class);
-        intent1.putExtra(AppUtils.onDefaultNotificationSetting, true);
+        Intent intent1 = new Intent(this, MainActivity.class);
+        intent1.putExtra(onDefaultNotificationSetting, true);
         intent.addCategory(this.getPackageName());
-        PendingIntent pSettingLaunchIntent = PendingIntent.getActivity(this, Const.NOTIFICATION_ID, intent1,
+        PendingIntent pSettingLaunchIntent = PendingIntent.getActivity(this, NOTIFICATION_ID, intent1,
                 PendingIntent.FLAG_UPDATE_CURRENT);
 
 
@@ -299,7 +293,7 @@ public class BackgroundRunningService extends Service implements ClipboardManage
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel(this.getResources().getString(R.string.fcm_defaultSenderId),
-                    Const.channelName,
+                    channelName,
                     NotificationManager.IMPORTANCE_DEFAULT);
 
             mNotificationManager.createNotificationChannel(channel);
@@ -310,7 +304,7 @@ public class BackgroundRunningService extends Service implements ClipboardManage
 
             //    builder.setContentIntent(pcloseIntent);
             builder.setCustomContentView(contentView);
-            builder.setSmallIcon(R.drawable.status_app_icon);
+            builder.setSmallIcon(R.drawable.ic_notifications_black_24dp);
             notification = builder.build();
 
         } else {
@@ -320,10 +314,10 @@ public class BackgroundRunningService extends Service implements ClipboardManage
             //  .setContentTitle("Auto Download Service Enabled");
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                mBuilder.setSmallIcon(R.drawable.status_app_icon);
+                mBuilder.setSmallIcon(R.drawable.ic_download_gallery);
 
             } else {
-                mBuilder.setSmallIcon(R.drawable.app_icon);
+                mBuilder.setSmallIcon(R.drawable.ic_insta);
             }
 
             mBuilder.setCustomContentView(contentView);
@@ -337,54 +331,9 @@ public class BackgroundRunningService extends Service implements ClipboardManage
         notification.defaults |= Notification.DEFAULT_SOUND;
         notification.defaults |= Notification.DEFAULT_VIBRATE;
 
-        mNotificationManager.notify(Const.NOTIFICATION_ID, notification);
+        mNotificationManager.notify(NOTIFICATION_ID, notification);
         return notification;
     }
 
-    class PinterestAsynTask extends AsyncTask<Void, Integer, String> {
-        private String pastedata;
-        private Context mContext;
-
-        PinterestAsynTask(Context context, String link){
-            this.pastedata=link;
-            this.mContext=context;
-        }
-
-        @Override
-        protected String doInBackground(Void... voids) {
-
-            try {
-                Document document = Jsoup.connect(pastedata).get();
-
-
-                Log.d("HomeFragmentV2", "Hello onClick gsdjfgsjddg"+" "+document.baseUri());
-                Api.getClient().registration(document.baseUri()).enqueue(new Callback<PinterestRequest>() {
-                    @Override
-                    public void onResponse(Call<PinterestRequest> call, Response<PinterestRequest> response) {
-
-                        Log.d("HomeFragmentV2", "Hello onResponse pipipipipi ok"+" "+response.body().getUrl()+" "+
-                                response.body().getMedia());
-
-                        if(response.body().getUrl()!=null && !response.body().getUrl().equalsIgnoreCase("")){
-                            startDownloadingLink(mContext, document.baseUri(), false,response.body().getUrl(),
-                                    response.body().getMedia());
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<PinterestRequest> call, Throwable t) {
-                        Log.d("HomeFragmentV2", "Hello onResponse pipipipipi failed"+" "+t.getStackTrace().toString());
-
-
-
-                    }
-
-                });
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-    }
 
 }

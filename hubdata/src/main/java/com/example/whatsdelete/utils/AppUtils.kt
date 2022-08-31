@@ -1,22 +1,29 @@
 package com.example.whatsdelete.utils
 
 import android.R.attr.data
+import android.app.Activity
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
+import android.content.pm.ApplicationInfo
+import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.net.Uri
 import android.os.Build
+import android.os.Environment
 import android.os.StrictMode
 import android.telephony.TelephonyManager
 import android.util.Log
+import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.browser.customtabs.CustomTabsIntent
 import java.io.File
 import java.net.MalformedURLException
 import java.net.URL
 import java.nio.file.Paths
-import java.text.SimpleDateFormat
-import java.util.*
+import java.text.DecimalFormat
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 
@@ -25,14 +32,29 @@ class AppUtils {
 
     companion object {
 
+        val MAIN_DIR =
+            Environment.getExternalStorageDirectory().absolutePath + File.separator + "SocialMediaHub"
+
+//    public static final String MAIN_DIR_ABOVE_PIE = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Android/media/com.q4u.whatsappstatus" + File.separator + "/hello";
+
+
+        //    public static final String MAIN_DIR_ABOVE_PIE = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Android/media/com.q4u.whatsappstatus" + File.separator + "/hello";
+        var BASE_APP_DIR: String? = null
+
+
+        //Created bcoz of new storage changes...
+        val MAIN_DIR_ABOVE_PIE =
+            Environment.getExternalStorageDirectory().absolutePath + "/Android/media/com.m24apps.socialvideo" + File.separator + "SocialMediaHub"
+
+
         fun showToast(msg: String?, ctx: Context?) {
             Toast.makeText(ctx, msg, Toast.LENGTH_SHORT).show()
         }
 
         fun getCountryCode(context: Context): String? {
             val tm = (context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager)
-            return tm.simCountryIso
-            //return "fr";
+//            return tm.simCountryIso
+            return "IN";
         }
 
 
@@ -282,7 +304,145 @@ class AppUtils {
                 return false
             }
         }
+
+
+        fun openCustomTab(
+            activity: Activity,
+             uri: Uri?,toolcolor:String
+        ) {
+            val  toolcolorTemp:String
+            // package name is the default package
+            // for our custom chrome tab
+            try {
+
+                // img_home.setVisibility(View.VISIBLE);
+                val customTabsIntent = CustomTabsIntent.Builder()
+
+
+
+                if(toolcolor!=null && !toolcolor.equals("")){
+                    toolcolorTemp=toolcolor
+                }else{
+                    toolcolorTemp="#024282"
+                }
+                customTabsIntent.setToolbarColor(
+                        Color.parseColor(toolcolorTemp)!!
+                )
+                val build = customTabsIntent.build()
+
+                val packageName = "com.android.chrome"
+                if (packageName != null) {
+                    // we are checking if the package name is not null
+                    // if package name is not null then we are calling
+                    // that custom chrome tab with intent by passing its
+                    // package name.
+                    build.intent.setPackage(packageName)
+
+                    // in that custom tab intent we are passing
+                    // our url which we have to browse.
+                    build.launchUrl(activity, uri!!)
+                } else {
+                    // if the custom tabs fails to load then we are simply
+                    // redirecting our user to users device default browser.
+                    activity.startActivity(Intent(Intent.ACTION_VIEW, uri))
+                }
+
+                /*new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    AHandler.getInstance().showFullAds(activity,false);
+                }
+            },450);*/
+            } catch (e: java.lang.Exception) {
+                println("AppUtils.openCustomTab sdgsddjghas"+" "+e.message)
+            }
+        }
+
+
+        fun isSystemPackage(pkgInfo: PackageInfo): Boolean {
+            return pkgInfo.applicationInfo.flags and ApplicationInfo.FLAG_SYSTEM != 0
+        }
+
+
+        fun openInstalledApp(context: Context, appPackageName: String) {
+            var intent = Intent(Intent.ACTION_MAIN)
+            val managerclock: PackageManager = context.getPackageManager()
+            intent = managerclock.getLaunchIntentForPackage(appPackageName)!!
+            intent.addCategory(Intent.CATEGORY_LAUNCHER)
+            context.startActivity(intent)
+        }
+
+
+        //Find the installed application Name.
+        fun getInstalledApps(context: Context): ArrayList<ApplicationInfo>? {
+            val res = ArrayList<ApplicationInfo>()
+            val packs = context.packageManager.getInstalledPackages(0) as ArrayList<PackageInfo>
+            var pkgArr: ArrayList<String>? = ArrayList<String>()
+            var verArr: ArrayList<String>? = ArrayList<String>()
+
+            for (i in packs.indices) {
+                val p = packs[i]
+                if (!isSystemPackage(p)) {
+                    //appname = p.applicationInfo.loadLabel(packageManager).toString();
+
+
+                    val verName = p.versionName
+                    val pkgName = p.packageName
+                    println("AppUtils.getInstalledApps hi test app" + " " + pkgName)
+                    pkgArr?.add(pkgName)
+                    verArr?.add(verName)
+                    res.add(ApplicationInfo())
+                }
+            }
+            return res
+        }
+
+
+
+        fun hideSoftKeyboard(activity: Activity) {
+            try {
+                val imm = activity.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+                //Find the currently focused view, so we can grab the correct window token from it.
+                var view = activity.currentFocus
+                //If no view currently has focus, create a new one, just so we can grab a window token from it
+                if (view == null) {
+                    view = View(activity)
+                }
+                imm.hideSoftInputFromWindow(view.windowToken, 0)
+                // inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
+            } catch (e: java.lang.Exception) {
+                e.printStackTrace()
+            }
+        }
+
+        fun getFileSize(size: Long): String? {
+            if (size <= 0) return "0"
+            val units = arrayOf("B", "KB", "MB", "GB", "TB")
+            val digitGroups = (Math.log10(size.toDouble()) / Math.log10(1024.0)).toInt()
+            return DecimalFormat("#,##0.#").format(
+                size / Math.pow(
+                    1024.0,
+                    digitGroups.toDouble()
+                )
+            ) + " " + units[digitGroups]
+        }
+
+
+
+
+        fun createAppDir(context: Context): String? {
+            val APP_DIR = context.getExternalFilesDir("SocialHubDownloader")!!.absolutePath
+            val file = File(APP_DIR)
+            if (!file.exists()) {
+                file.parentFile.mkdirs()
+            } else {
+                file.mkdir()
+            }
+            return APP_DIR
+        }
+
     }
+
 
 
 

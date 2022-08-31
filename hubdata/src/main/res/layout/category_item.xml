@@ -1,27 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:id="@+id/rv_select"
-    android:background="@drawable/category_rectangle"
+    android:gravity="center"
+    android:layout_centerInParent="true"
     android:orientation="horizontal">
 
-    <ImageView
-        android:id="@+id/category_image"
-        android:layout_width="16dp"
-        android:layout_height="16dp"
-        android:layout_centerVertical="true"
-        android:layout_marginStart="@dimen/margin10"
-        android:src="@drawable/ic_flames" />
 
-    <TextView
-        android:id="@+id/category_name"
+    <LinearLayout
+        android:layout_centerInParent="true"
+        android:id="@+id/ll_cat_container"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_marginStart="7dp"
-        android:textSize="10sp"
-        android:textColor="#6E6E6E"
-        android:layout_toEndOf="@+id/category_image"
-        android:text="trending" />
+        android:layout_marginStart="@dimen/margin10"
+        android:layout_marginEnd="@dimen/margin10"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/category_image"
+            android:layout_width="@dimen/margin20"
+            android:layout_height="@dimen/margin20"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_flames" />
+
+
+        <TextView
+            android:layout_marginStart="@dimen/margin10"
+            android:id="@+id/category_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="hjkhjkhkghfgfgh"
+            android:textSize="@dimen/txt_11"
+            android:textStyle="bold"
+            android:textColor="@color/text_color_202020"
+            />
+
+
+
+
+    </LinearLayout>
+
+
+
 </RelativeLayout>
