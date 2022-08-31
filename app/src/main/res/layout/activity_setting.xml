@@ -90,6 +90,7 @@
 
     <RelativeLayout
         android:id="@+id/rl_view"
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/rl_notification"
@@ -130,7 +131,8 @@
                         android:layout_height="match_parent"
                         android:layout_weight="0.25"
                         android:gravity="center"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:visibility="gone">
 
                         <ImageView
                             android:layout_width="20dp"
@@ -150,6 +152,7 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:visibility="gone"
                         android:id="@+id/ll_camera"
                         android:layout_width="100dp"
                         android:layout_height="match_parent"
@@ -174,6 +177,7 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:visibility="gone"
                         android:id="@+id/ll_whatsapp"
                         android:layout_width="100dp"
                         android:layout_height="match_parent"
@@ -203,7 +207,8 @@
                         android:layout_height="match_parent"
                         android:layout_weight="0.25"
                         android:gravity="center"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:visibility="gone">
 
                         <ImageView
                             android:layout_width="20dp"
@@ -217,7 +222,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:gravity="center"
-                            android:text="@string/status"
+                            android:text="Messenger"
                             android:textSize="8sp" />
                     </LinearLayout>
 
@@ -227,7 +232,8 @@
                         android:layout_height="match_parent"
                         android:layout_weight="0.25"
                         android:gravity="center"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:visibility="gone">
 
                         <ImageView
                             android:layout_width="20dp"
@@ -251,7 +257,8 @@
                         android:layout_height="match_parent"
                         android:layout_weight="0.25"
                         android:gravity="center"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:visibility="gone">
 
                         <ImageView
                             android:layout_width="20dp"
@@ -270,6 +277,7 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:visibility="gone"
                         android:id="@+id/ll_status"
                         android:layout_width="100dp"
                         android:layout_height="match_parent"
@@ -283,6 +291,54 @@
                             android:layout_gravity="center"
                             android:layout_marginTop="@dimen/_8sdp"
                             android:src="@drawable/ic_status_noti_icon" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:text="@string/status"
+                            android:textSize="8sp" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:visibility="gone"
+                        android:id="@+id/ll_video_downloader"
+                        android:layout_width="100dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.25"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="@dimen/_8sdp"
+                            android:src="@drawable/ic_video_noti_icon" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:text="@string/status"
+                            android:textSize="8sp" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:visibility="gone"
+                        android:id="@+id/ll_direct_chat"
+                        android:layout_width="100dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.25"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="@dimen/_8sdp"
+                            android:src="@drawable/ic_direct_chat_noti_icon" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -322,13 +378,13 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rec"
-                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_above="@+id/bottom_header"
                 android:layout_below="@+id/txt_header"
                 android:layout_marginStart="@dimen/_10sdp"
-                android:layout_marginTop="@dimen/_10sdp" />
+                android:layout_marginTop="@dimen/_10sdp"
+                android:visibility="gone" />
 
             <RelativeLayout
                 android:id="@+id/rl_search"
@@ -369,8 +425,8 @@
                 android:id="@+id/rl_camera"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
-                android:layout_marginStart="@dimen/_10sdp"
                 android:layout_below="@+id/rl_search"
+                android:layout_marginStart="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/_10sdp">
 
                 <ImageView
@@ -404,8 +460,8 @@
                 android:id="@+id/rl_whats_app"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
-                android:layout_marginStart="@dimen/_10sdp"
                 android:layout_below="@+id/rl_camera"
+                android:layout_marginStart="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/_10sdp">
 
                 <ImageView
@@ -539,6 +595,7 @@
                     android:layout_centerVertical="true"
                     android:button="@drawable/checkbox_selector" />
             </RelativeLayout>
+
             <TextView
                 android:id="@+id/bottom_header"
                 android:layout_width="wrap_content"
@@ -595,10 +652,10 @@
                             android:layout_below="@+id/img"
                             android:layout_centerHorizontal="true"
                             android:layout_marginTop="@dimen/_5sdp"
+                            android:layout_marginBottom="@dimen/_5sdp"
                             android:text="WA \n Status"
                             android:textAlignment="center"
                             android:textColor="#202020"
-                            android:layout_marginBottom="@dimen/_5sdp"
                             android:textSize="8sp" />
                     </RelativeLayout>
 
@@ -650,10 +707,10 @@
                             android:layout_below="@+id/img1"
                             android:layout_centerHorizontal="true"
                             android:layout_marginTop="@dimen/_5sdp"
+                            android:layout_marginBottom="@dimen/_5sdp"
                             android:text="Video \n Downloader"
                             android:textAlignment="center"
                             android:textColor="#202020"
-                            android:layout_marginBottom="@dimen/_5sdp"
                             android:textSize="8sp" />
                     </RelativeLayout>
 
