@@ -45,7 +45,7 @@ public class MainApplication extends Application {
 
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
         StrictMode.setVmPolicy(builder.build());
-       // Calldorado.start(this);
+        // Calldorado.start(this);
 
 
     }
@@ -53,6 +53,6 @@ public class MainApplication extends Application {
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
-      //  MultiDex.install(base);
+        //  MultiDex.install(base);
     }
 }
