@@ -100,7 +100,22 @@ class GalleryAdapter(
                 notifyDataSetChanged()
 
             } else {
-                Log.d("TAG", "onBindViewHolder4: ")
+                val gson = Gson()
+                val intent = Intent(context, StatusPriviewActivity::class.java)
+                intent.putExtra(
+                    "absoluteImgPath", galleryList[position].path
+                )
+                intent.putExtra("video_allList", gson.toJson(galleryList))
+                intent.putExtra(
+                    "imgName", galleryList[position].name
+                )
+                intent.putExtra(
+                    "isFromStatus", false
+                )
+                AllMediaListingImage_singleton.getInstance()
+                    .setAllStatusFiles(galleryList)
+                intent.putExtra("selectedPos", "" + position)
+                context.startActivity(intent)
 
             }
         })

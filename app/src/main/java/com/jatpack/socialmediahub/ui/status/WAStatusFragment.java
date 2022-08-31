@@ -37,6 +37,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SimpleItemAnimator;
 
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.jatpack.socialmediahub.R;
 import com.jatpack.socialmediahub.activities.SettingActivity;
 import com.jatpack.socialmediahub.helper.MediaPreferences;
@@ -56,13 +57,19 @@ import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.List;
 
-public class WAStatusFragment extends Fragment implements StatusFragmentContracts.StatusView, SetClick {
+public class WAStatusFragment extends Fragment implements StatusFragmentContracts.StatusView, SetClick, View.OnClickListener {
 
     Context context;
     private RecyclerView recyclerView;
     private WAStatusListAdapter adapter;
     private ItemOffsetView itemOffsetView;
     private Boolean selectAll = false;
+    private LinearLayout rl_saved_options;
+    private LinearLayout ll_select_all;
+    private LinearLayout ll_share;
+    private LinearLayout ll_download;
+    private RelativeLayout top_tool;
+    private TextView tvSelectAll;
     private WAStatusWith11ListAdapter waStatusWith11ListAdapter;
     private TextView allow_doc_permission;
     private RelativeLayout above_10_permission, main_layout;
@@ -77,6 +84,7 @@ public class WAStatusFragment extends Fragment implements StatusFragmentContract
     private ActionModeCallback actionModeCallback;
     private TextView no_data;
     private Button open, settings;
+    BottomNavigationView bottomNavigationView;
     private LinearLayout ll_noData;
     public static final int STATUS_DURATION = 2 * 60 * 1000; // 2 minute
     public static final long TIMER_Alarm_HOUR = 1000 * 60 * 60 * 12;//24 hour
@@ -84,6 +92,7 @@ public class WAStatusFragment extends Fragment implements StatusFragmentContract
 
     private AlarmManager alarmManager;
     private PendingIntent pendingIntent;
+    private Boolean from = false;
 
     public WAStatusFragment() {
         // Required empty public constructor
@@ -142,6 +151,16 @@ public class WAStatusFragment extends Fragment implements StatusFragmentContract
     }
 
     public void init(View view) {
+        bottomNavigationView = requireActivity().findViewById(R.id.nav_view);
+        top_tool = requireActivity().findViewById(R.id.top_tool);
+        tvSelectAll = view.findViewById(R.id.tvSelectAll);
+        rl_saved_options = view.findViewById(R.id.rl_saved_options);
+        ll_select_all = view.findViewById(R.id.ll_select_all);
+        ll_select_all.setOnClickListener(this);
+        ll_share = view.findViewById(R.id.ll_share);
+        ll_share.setOnClickListener(this);
+        ll_download = view.findViewById(R.id.ll_save);
+        ll_download.setOnClickListener(this);
         recyclerView = view.findViewById(R.id.gv_allMediaImage);
         itemOffsetView = new ItemOffsetView(getActivity(), com.intuit.sdp.R.dimen._5sdp);
         recyclerView.addItemDecoration(itemOffsetView);
@@ -345,17 +364,73 @@ public class WAStatusFragment extends Fragment implements StatusFragmentContract
     public void onLongClcik(@NonNull View view, int position) {
 
         if (adapter != null) {
-
+            from = true;
+            top_tool.setVisibility(View.GONE);
+            bottomNavigationView.setVisibility(View.GONE);
+            rl_saved_options.setVisibility(View.VISIBLE);
             getFilePathData();
             actionModeCallback = new ActionModeCallback(this, R.menu.action_menu, true);
             actionMode = getActivity().startActionMode(actionModeCallback);
             setPageTitle(1);
         }
         if (waStatusWith11ListAdapter != null) {
+            from = true;
+            top_tool.setVisibility(View.GONE);
+            bottomNavigationView.setVisibility(View.GONE);
+            rl_saved_options.setVisibility(View.VISIBLE);
             getFilePathData();
             actionModeCallback = new ActionModeCallback(this, R.menu.action_menu, false);
             actionMode = getActivity().startActionMode(actionModeCallback);
             setPageTitle(1);
+        }
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.ll_select_all:
+                if (from) {
+                    if (!selectAll) {
+                        selectAll = true;
+                        adapter.selectAll();
+                        tvSelectAll.setText("Unselect All");
+                    } else {
+                        selectAll = false;
+                        adapter.unSelectAll();
+                        tvSelectAll.setText("select All");
+                    }
+                } else {
+                    if (!selectAll) {
+                        selectAll = true;
+                        waStatusWith11ListAdapter.selectAll();
+                        tvSelectAll.setText("Unselect All");
+                    } else {
+                        selectAll = false;
+                        waStatusWith11ListAdapter.unSelectAll();
+                        tvSelectAll.setText("select All");
+                    }
+
+                }
+
+                break;
+            case R.id.ll_share:
+                if (from) {
+                    shareMultipleImage();
+                } else {
+                    shareMultipleImageFor11();
+                }
+                actionMode.finish();
+
+                break;
+            case R.id.ll_save:
+                if (from) {
+                    downloadMultipleImage();
+                } else {
+                    downloadMultipleImageFor11();
+                }
+
+                actionMode.finish();
+                break;
         }
     }
 
@@ -414,49 +489,7 @@ public class WAStatusFragment extends Fragment implements StatusFragmentContract
         public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
             // retrieve selected items and print them out
 
-            switch (item.getItemId()) {
-                case R.id.share_multiple:
-                    //Toast.makeText(MainActivity.this, "Option 1 selected", Toast.LENGTH_SHORT).show();
-                    if (from) {
-                        waStatusFragment.shareMultipleImage();
-                    } else {
-                        waStatusFragment.shareMultipleImageFor11();
-                    }
-                    waStatusFragment.actionMode.finish();
-                    return true;
-                case R.id.multiple_download:
-                    if (from) {
-                        waStatusFragment.downloadMultipleImage();
-                    } else {
-                        waStatusFragment.downloadMultipleImageFor11();
-                    }
-                    waStatusFragment.actionMode.finish();
-                    return true;
-                case R.id.select_all:
-
-                    if (from) {
-                        if (!waStatusFragment.selectAll) {
-                            waStatusFragment.selectAll = true;
-                            waStatusFragment.adapter.selectAll();
-                        } else {
-                            waStatusFragment.selectAll = false;
-                            waStatusFragment.adapter.unSelectAll();
-                        }
-                    } else {
-                        if (!waStatusFragment.selectAll) {
-                            waStatusFragment.selectAll = true;
-                            waStatusFragment.waStatusWith11ListAdapter.selectAll();
-                        } else {
-                            waStatusFragment.selectAll = false;
-                            waStatusFragment.waStatusWith11ListAdapter.unSelectAll();
-                        }
-
-                    }
-                    // mode.finish();
-                    return true;
-                default:
-                    return false;
-            }
+            return false;
 
 
         }
@@ -469,9 +502,15 @@ public class WAStatusFragment extends Fragment implements StatusFragmentContract
             //  waStatusFragment.actionMode.finish();
             if (waStatusFragment.adapter != null) {
                 waStatusFragment.adapter.removeAllSelected();
+                waStatusFragment.bottomNavigationView.setVisibility(View.VISIBLE);
+                waStatusFragment.rl_saved_options.setVisibility(View.GONE);
+                waStatusFragment.top_tool.setVisibility(View.VISIBLE);
             }
             if (waStatusFragment.waStatusWith11ListAdapter != null) {
                 waStatusFragment.waStatusWith11ListAdapter.removeAllSelected();
+                waStatusFragment.bottomNavigationView.setVisibility(View.VISIBLE);
+                waStatusFragment.rl_saved_options.setVisibility(View.GONE);
+                waStatusFragment.top_tool.setVisibility(View.VISIBLE);
             }
             waStatusFragment.actionMode = null;
 

@@ -72,12 +72,14 @@ class MyDownloadsFragment : AppCompatActivity(), SetClick {
     var tempList: Array<File>? = null
     var imageList: ArrayList<File>? = null
     var videoList: ArrayList<File>? = null
+    var tvSelectAll: TextView? = null
 
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.fragment_my_download)
+        tvSelectAll = findViewById(R.id.tvSelectAll)
         path = this.getExternalFilesDir(Constants.WA_Status_Gallery)?.absolutePath
         tempList = getExternalFilesDir(Constants.WA_Status_Gallery)!!.listFiles()
         executorService = Executors.newSingleThreadExecutor()
@@ -241,9 +243,11 @@ class MyDownloadsFragment : AppCompatActivity(), SetClick {
                 if (!selectAll!!) {
                     selectAll = true
                     adapterList?.selectAll()
+                    tvSelectAll?.text = "Unselect All"
                 } else {
                     selectAll = false
                     adapterList?.unSelectAll()
+                    tvSelectAll?.text = "select All"
                 }
             }
 
