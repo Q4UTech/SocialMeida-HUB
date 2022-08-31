@@ -135,6 +135,15 @@ class GalleryAdapter(
         }
         notifyDataSetChanged()
     }
+    fun unSelectAll() {
+        isLongClickEnabled = true
+        tempList.clear()
+        for (i in checkStatus.indices) {
+            checkStatus[i] = false
+            listenerSelection?.selectItems(tempList.size)
+        }
+        notifyDataSetChanged()
+    }
 
     fun getList(): List<File> {
         return galleryList
@@ -151,4 +160,6 @@ class GalleryAdapter(
         notifyDataSetChanged()
 
     }
+
+
 }

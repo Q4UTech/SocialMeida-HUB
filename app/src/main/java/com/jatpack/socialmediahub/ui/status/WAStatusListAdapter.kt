@@ -37,8 +37,8 @@ class WAStatusListAdapter(
     var isLongClickEnabled = false
     var visible = false
     private var listenerSelection: CounterSlection? = null
-    val videoRequestHandler: VideoRequestHandler = VideoRequestHandler()
-    val picassoInstance: Picasso = Picasso.Builder(mContext.getApplicationContext())
+    private val videoRequestHandler: VideoRequestHandler = VideoRequestHandler()
+    private val picassoInstance: Picasso = Picasso.Builder(mContext.applicationContext)
         .addRequestHandler(videoRequestHandler)
         .build()
 
@@ -142,7 +142,7 @@ class WAStatusListAdapter(
                     listenerSelection?.selectItems(tempList.size)
                 }
 
-                notifyItemChanged(position)
+                notifyItemChanged(position,status[position])
 
             } else {
                 Log.d("TAG", "onBindViewHolder4: ")
@@ -185,7 +185,7 @@ class WAStatusListAdapter(
                 listenerSelection?.selectItems(tempList.size)
 
             }
-            notifyItemChanged(position)
+            notifyItemChanged(position,status[position])
             listener.onLongClcik(it, position)
             true
         }
@@ -224,7 +224,15 @@ class WAStatusListAdapter(
         }
         notifyDataSetChanged()
     }
-
+    fun unSelectAll() {
+        isLongClickEnabled = true
+        tempList.clear()
+        for (i in checkStatus.indices) {
+            checkStatus[i] = false
+            listenerSelection?.selectItems(tempList.size)
+        }
+        notifyDataSetChanged()
+    }
     fun getList(): List<File?> {
         return status
     }
@@ -259,6 +267,10 @@ class WAStatusListAdapter(
             return oldItem == newItem
         }
 
+    }
+
+    override fun getItemId(position: Int): Long {
+        return super.getItemId(position)
     }
 
 }

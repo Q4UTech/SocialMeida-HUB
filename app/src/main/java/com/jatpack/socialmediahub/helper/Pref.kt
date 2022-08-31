@@ -7,6 +7,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.jatpack.socialmediahub.model.PersonNumber
 import java.lang.reflect.Type
+import java.text.FieldPosition
 
 class Pref(context: Context) {
     private var preferences: SharedPreferences? = null
@@ -18,6 +19,14 @@ class Pref(context: Context) {
 
     companion object {
         private const val NUMBER_LIST = "NUMBER_LIST"
+        private const val SAVED_POSITION = "SAVED_POSITION"
+        private const val CAMERA_PREF = "CAMERA_PREF"
+        private const val SEARCH_PREF = "SEARCH_PREF"
+        private const val WHATSAPP_PREF = "WHATSAPP_PREF"
+        private const val MESSAGE_PREF = "MESSAGE_PREF"
+        private const val MESSENGER_PREF = "MESSENGER_PREF"
+        private const val FACEBOOK_PREF = "FACEBOOK_PREF"
+
 
     }
 
@@ -26,15 +35,75 @@ class Pref(context: Context) {
         editor = preferences!!.edit()
         this.context = context
     }
+
     fun setNumberList(list: ArrayList<PersonNumber>?) {
         val gson = Gson()
         val json: String = gson.toJson(list)
         editor.putString(NUMBER_LIST, json)
         editor.commit()
     }
-    fun removeData() {
-        editor.remove(NUMBER_LIST)
+
+    fun setPositon(position: Int) {
+        editor.putInt(SAVED_POSITION, position)
         editor.commit()
+    }
+
+    fun getPostion(): Int? {
+        return preferences?.getInt(SAVED_POSITION, 0)
+    }
+
+    fun setSearchPref(status: Boolean) {
+        editor.putBoolean(SEARCH_PREF, status)
+        editor.commit()
+    }
+
+    fun getSearchPref(): Boolean? {
+        return preferences?.getBoolean(SEARCH_PREF, false)
+    }
+
+    fun setCameraPref(status: Boolean) {
+        editor.putBoolean(CAMERA_PREF, status)
+        editor.commit()
+    }
+
+    fun getCameraPref(): Boolean? {
+        return preferences?.getBoolean(CAMERA_PREF, false)
+    }
+
+    fun setWhatsAppPref(status: Boolean) {
+        editor.putBoolean(WHATSAPP_PREF, status)
+        editor.commit()
+    }
+
+    fun getWhatsAppPref(): Boolean? {
+        return preferences?.getBoolean(WHATSAPP_PREF, false)
+    }
+
+    fun setMessagePref(status: Boolean) {
+        editor.putBoolean(MESSAGE_PREF, status)
+        editor.commit()
+    }
+
+    fun getMessagePref(): Boolean? {
+        return preferences?.getBoolean(MESSAGE_PREF, false)
+    }
+
+    fun setMessengerPref(status: Boolean) {
+        editor.putBoolean(MESSENGER_PREF, status)
+        editor.commit()
+    }
+
+    fun getMessengerPref(): Boolean? {
+        return preferences?.getBoolean(MESSENGER_PREF, false)
+    }
+
+    fun setFacebookPref(status: Boolean) {
+        editor.putBoolean(FACEBOOK_PREF, status)
+        editor.commit()
+    }
+
+    fun getFacebookPref(): Boolean? {
+        return preferences?.getBoolean(FACEBOOK_PREF, false)
     }
 
     fun getNumberList(): ArrayList<PersonNumber>? {

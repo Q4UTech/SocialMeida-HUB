@@ -189,6 +189,15 @@ class WAStatusWith11ListAdapter(
         notifyDataSetChanged()
     }
 
+    fun unSelectAll() {
+        isLongClickEnabled = true
+        tempList.clear()
+        for (i in checkStatus.indices) {
+            checkStatus[i] = false
+            listenerSelection?.selectItems(tempList.size)
+        }
+        notifyDataSetChanged()
+    }
     fun getList(): List<DocumentFile?> {
         return status
     }

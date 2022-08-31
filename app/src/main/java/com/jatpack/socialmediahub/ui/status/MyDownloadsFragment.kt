@@ -65,6 +65,7 @@ class MyDownloadsFragment : AppCompatActivity(), SetClick {
     private var actionMode: ActionMode? = null
     private var actionModeCallback: ActionModeCallback? = null
     private var statusFileList: List<File>? = null
+    private var selectAll: Boolean? = false
 
     // private var asynTask: AsycnTask? = null
     var path: String? = null
@@ -237,7 +238,13 @@ class MyDownloadsFragment : AppCompatActivity(), SetClick {
                 actionMode?.finish()
             }
             ll_select_all?.setOnClickListener {
-                adapterList?.selectAll()
+                if (!selectAll!!) {
+                    selectAll = true
+                    adapterList?.selectAll()
+                } else {
+                    selectAll = false
+                    adapterList?.unSelectAll()
+                }
             }
 
 

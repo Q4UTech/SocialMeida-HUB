@@ -62,6 +62,7 @@ public class WAStatusFragment extends Fragment implements StatusFragmentContract
     private RecyclerView recyclerView;
     private WAStatusListAdapter adapter;
     private ItemOffsetView itemOffsetView;
+    private Boolean selectAll = false;
     private WAStatusWith11ListAdapter waStatusWith11ListAdapter;
     private TextView allow_doc_permission;
     private RelativeLayout above_10_permission, main_layout;
@@ -198,7 +199,7 @@ public class WAStatusFragment extends Fragment implements StatusFragmentContract
                 3));
 //        recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(adapter);
-        ((SimpleItemAnimator) recyclerView.getItemAnimator()).setSupportsChangeAnimations(false);
+        recyclerView.setItemAnimator(null);
         adapter.setCheckedListener(new WAStatusListAdapter.CounterSlection() {
             @Override
             public void selectItems(int itemSlectionCount) {
@@ -433,9 +434,22 @@ public class WAStatusFragment extends Fragment implements StatusFragmentContract
                 case R.id.select_all:
 
                     if (from) {
-                        waStatusFragment.adapter.selectAll();
+                        if (!waStatusFragment.selectAll) {
+                            waStatusFragment.selectAll = true;
+                            waStatusFragment.adapter.selectAll();
+                        } else {
+                            waStatusFragment.selectAll = false;
+                            waStatusFragment.adapter.unSelectAll();
+                        }
                     } else {
-                        waStatusFragment.waStatusWith11ListAdapter.selectAll();
+                        if (!waStatusFragment.selectAll) {
+                            waStatusFragment.selectAll = true;
+                            waStatusFragment.waStatusWith11ListAdapter.selectAll();
+                        } else {
+                            waStatusFragment.selectAll = false;
+                            waStatusFragment.waStatusWith11ListAdapter.unSelectAll();
+                        }
+
                     }
                     // mode.finish();
                     return true;

@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.appcompat.widget.AppCompatCheckBox
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.jatpack.socialmediahub.R
@@ -37,7 +38,7 @@ class NotificationAdapter(
     class MyViewHolder(item: View) : RecyclerView.ViewHolder(item) {
         val img = item.findViewById<ImageView>(R.id.img)
         val content = item.findViewById<TextView>(R.id.tv_notification_content)
-        val checkBox = item.findViewById<CheckBox>(R.id.dataTime)
+        val checkBox = item.findViewById<AppCompatCheckBox>(R.id.checkbox)
 
 
     }
@@ -53,7 +54,14 @@ class NotificationAdapter(
 
         holder.content.text = notificationList[position].content
         Glide.with(context).load(notificationList[position].image).into(holder.img)
-
+        if (notificationList[position].isSelected) {
+            holder.checkBox.isChecked = true
+        } else {
+            holder.checkBox.isChecked = false
+        }
+        holder.checkBox.setOnClickListener {
+            checkStatus[position] = !checkStatus[position]
+        }
 
     }
 
