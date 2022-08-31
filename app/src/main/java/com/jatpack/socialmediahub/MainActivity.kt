@@ -45,8 +45,6 @@ class MainActivity : AppCompatActivity() , View.OnClickListener{
         binding.openNavDrawer.setOnClickListener(this)
         binding.searchDrop.setOnClickListener(this)
         binding.llDownload.setOnClickListener(this)
-
-
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
         navView.setupWithNavController(navController)
 
