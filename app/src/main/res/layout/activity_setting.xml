@@ -6,52 +6,52 @@
     android:layout_height="match_parent"
     tools:context=".activities.SettingActivity">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
+    <RelativeLayout
+        android:id="@+id/topbar"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="#83d8fc"
-        android:visibility="gone">
+        android:layout_height="@dimen/_60sdp"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/app_grad">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/ivBack"
+            android:layout_width="@dimen/margin20"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:src="@drawable/back_arrow"
+            app:tint="#012A72" />
 
-            <ImageView
-                android:id="@+id/back"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_centerVertical="true"
-                android:src="@drawable/ic_back" />
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/_20sdp"
+            android:layout_toEndOf="@+id/ivBack"
+            android:text="@string/app_notification"
+            android:textColor="#012A72"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="@dimen/_10sdp"
-                android:layout_toEndOf="@id/back"
-                android:text="App notification"
-                android:textColor="@color/txt_color"
-                android:textSize="15sp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:layout_marginEnd="@dimen/_15sdp"
-                android:text="Save"
-                android:textColor="@color/txt_color"
-                android:textSize="15sp" />
-        </RelativeLayout>
-
-    </androidx.appcompat.widget.Toolbar>
+        <TextView
+            android:id="@+id/tvSave"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/_15sdp"
+            android:text="@string/save"
+            android:textColor="#012A72"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+    </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/rl_notification"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/toolbar"
+        android:layout_below="@id/topbar"
         android:layout_marginTop="@dimen/_15sdp">
 
         <LinearLayout
@@ -105,7 +105,7 @@
             android:textColor="#535353"
             android:textSize="15sp" />
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/txt"
@@ -116,8 +116,11 @@
             android:orientation="horizontal">
 
             <HorizontalScrollView
+                android:id="@+id/horizontal_scroll"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="@dimen/_40sdp"
+                android:layout_alignParentStart="true"
+                android:layout_toStartOf="@+id/ll_noti_bottom"
                 android:scrollbars="none">
 
                 <LinearLayout
@@ -144,21 +147,20 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:gravity="center"
+                            android:layout_gravity="center|bottom"
                             android:text="@string/search"
                             android:textAlignment="center"
                             android:textSize="8sp" />
                     </LinearLayout>
 
                     <LinearLayout
-                        android:visibility="gone"
                         android:id="@+id/ll_camera"
                         android:layout_width="100dp"
                         android:layout_height="match_parent"
                         android:layout_weight="0.25"
                         android:gravity="center"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:visibility="gone">
 
                         <ImageView
                             android:layout_width="20dp"
@@ -172,18 +174,18 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:gravity="center"
-                            android:text="@string/search_hint"
+                            android:text="@string/camera"
                             android:textSize="8sp" />
                     </LinearLayout>
 
                     <LinearLayout
-                        android:visibility="gone"
                         android:id="@+id/ll_whatsapp"
                         android:layout_width="100dp"
                         android:layout_height="match_parent"
                         android:layout_weight="0.25"
                         android:gravity="center"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:visibility="gone">
 
                         <ImageView
                             android:layout_width="20dp"
@@ -222,7 +224,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:gravity="center"
-                            android:text="Messenger"
+                            android:text="@string/message"
                             android:textSize="8sp" />
                     </LinearLayout>
 
@@ -247,7 +249,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:gravity="center"
-                            android:text="@string/status"
+                            android:text="@string/messenger"
                             android:textSize="8sp" />
                     </LinearLayout>
 
@@ -272,85 +274,97 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:gravity="center"
-                            android:text="@string/status"
+                            android:text="@string/facebook"
                             android:textSize="8sp" />
                     </LinearLayout>
 
-                    <LinearLayout
-                        android:visibility="gone"
-                        android:id="@+id/ll_status"
-                        android:layout_width="100dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0.25"
-                        android:gravity="center"
-                        android:orientation="vertical">
 
-                        <ImageView
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="@dimen/_8sdp"
-                            android:src="@drawable/ic_status_noti_icon" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:gravity="center"
-                            android:text="@string/status"
-                            android:textSize="8sp" />
-                    </LinearLayout>
-                    <LinearLayout
-                        android:visibility="gone"
-                        android:id="@+id/ll_video_downloader"
-                        android:layout_width="100dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0.25"
-                        android:gravity="center"
-                        android:orientation="vertical">
-
-                        <ImageView
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="@dimen/_8sdp"
-                            android:src="@drawable/ic_video_noti_icon" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:gravity="center"
-                            android:text="@string/status"
-                            android:textSize="8sp" />
-                    </LinearLayout>
-                    <LinearLayout
-                        android:visibility="gone"
-                        android:id="@+id/ll_direct_chat"
-                        android:layout_width="100dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0.25"
-                        android:gravity="center"
-                        android:orientation="vertical">
-
-                        <ImageView
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="@dimen/_8sdp"
-                            android:src="@drawable/ic_direct_chat_noti_icon" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:gravity="center"
-                            android:text="@string/status"
-                            android:textSize="8sp" />
-                    </LinearLayout>
                 </LinearLayout>
             </HorizontalScrollView>
-        </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_noti_bottom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true">
+
+                <LinearLayout
+                    android:id="@+id/ll_status"
+                    android:layout_width="@dimen/_50sdp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.2"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="@dimen/_8sdp"
+                        android:src="@drawable/ic_status_noti_icon" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="@string/status"
+                        android:textSize="8sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_video_downloader"
+                    android:layout_width="@dimen/_50sdp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.2"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="@dimen/_8sdp"
+                        android:src="@drawable/ic_video_noti_icon" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="@string/status"
+                        android:textSize="8sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_direct_chat"
+                    android:layout_width="@dimen/_50sdp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.2"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="@dimen/_8sdp"
+                        android:src="@drawable/ic_direct_chat_noti_icon" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="@string/status"
+                        android:textSize="8sp" />
+                </LinearLayout>
+            </LinearLayout>
+        </RelativeLayout>
     </RelativeLayout>
 
     <androidx.core.widget.NestedScrollView
@@ -418,7 +432,10 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
-                    android:button="@drawable/checkbox_selector" />
+                    android:layout_marginEnd="@dimen/margin20"
+                    android:button="@drawable/checkbox_selector"
+                    android:clickable="false"
+                    android:focusable="false" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -453,7 +470,10 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
-                    android:button="@drawable/checkbox_selector" />
+                    android:layout_marginEnd="@dimen/margin20"
+                    android:button="@drawable/checkbox_selector"
+                    android:clickable="false"
+                    android:focusable="false" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -488,7 +508,10 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
-                    android:button="@drawable/checkbox_selector" />
+                    android:layout_marginEnd="@dimen/margin20"
+                    android:button="@drawable/checkbox_selector"
+                    android:clickable="false"
+                    android:focusable="false" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -523,7 +546,10 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
-                    android:button="@drawable/checkbox_selector" />
+                    android:layout_marginEnd="@dimen/margin20"
+                    android:button="@drawable/checkbox_selector"
+                    android:clickable="false"
+                    android:focusable="false" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -558,7 +584,10 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
-                    android:button="@drawable/checkbox_selector" />
+                    android:layout_marginEnd="@dimen/margin20"
+                    android:button="@drawable/checkbox_selector"
+                    android:clickable="false"
+                    android:focusable="false" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -593,7 +622,10 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
-                    android:button="@drawable/checkbox_selector" />
+                    android:layout_marginEnd="@dimen/margin20"
+                    android:button="@drawable/checkbox_selector"
+                    android:clickable="false"
+                    android:focusable="false" />
             </RelativeLayout>
 
             <TextView

@@ -12,6 +12,7 @@ import android.widget.*
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.google.gson.Gson
 import com.jatpack.socialmediahub.R
 import com.jatpack.socialmediahub.util.AppUtils
@@ -202,16 +203,21 @@ class WAStatusListAdapter(
             }
 
 
-            picassoInstance.load(
+           /* picassoInstance.load(
                 VideoRequestHandler.SCHEME_VIDEO.toString() + ":" + status[position].path
-            ).placeholder(R.drawable.ic_placeholder_video).into(holder.img_media)
+            ).placeholder(R.drawable.ic_placeholder_video).into(holder.img_media)*/
 
+            Glide.with(mContext).load(/*VideoRequestHandler.SCHEME_VIDEO.toString() + ":" +*/ status[position].path).placeholder(R.drawable.ic_placeholder_video)
+                .into(holder.img_media)
 
         } else {
             holder.rl_play.visibility = View.GONE
-            Picasso.get().load(File(status[position].path)) //
+            Glide.with(mContext).load(File(status[position].path)) //
                 //.memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
                 .placeholder(R.drawable.ic_placeholder_image).into(holder.img_media)
+         /*   Picasso.get().load(File(status[position].path)) //
+                //.memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
+                .placeholder(R.drawable.ic_placeholder_image).into(holder.img_media)*/
         }
     }
 

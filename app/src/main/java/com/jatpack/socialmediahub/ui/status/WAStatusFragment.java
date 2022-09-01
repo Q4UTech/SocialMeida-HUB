@@ -3,10 +3,12 @@ package com.jatpack.socialmediahub.ui.status;
 import static android.app.Activity.RESULT_OK;
 import static android.content.Context.STORAGE_SERVICE;
 
+import android.app.ActionBar;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -29,6 +31,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.ActionBarContextView;
 import androidx.core.content.FileProvider;
 import androidx.documentfile.provider.DocumentFile;
 import androidx.fragment.app.Fragment;
@@ -103,10 +106,12 @@ public class WAStatusFragment extends Fragment implements StatusFragmentContract
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         context = getActivity();
+
         mediaPreferences = new MediaPreferences(context);
         View view = inflater.inflate(R.layout.fragment_allmedia_image, container, false);
         mPresenter = new StatusPresenter(this);
         init(view);
+
 //        getAlarmNotificationTime(TIMER_Alarm_HOUR);
 
 //        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(customReceiver,

@@ -7,7 +7,6 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.jatpack.socialmediahub.model.PersonNumber
 import java.lang.reflect.Type
-import java.text.FieldPosition
 
 class Pref(context: Context) {
     private var preferences: SharedPreferences? = null
@@ -26,6 +25,8 @@ class Pref(context: Context) {
         private const val MESSAGE_PREF = "MESSAGE_PREF"
         private const val MESSENGER_PREF = "MESSENGER_PREF"
         private const val FACEBOOK_PREF = "FACEBOOK_PREF"
+        private const val BOTTOM_POSITION = "BOTTOM_POSITION"
+        private const val NOTIFICATION_ENABLE = "NOTIFICATION_ENABLE"
 
 
     }
@@ -34,6 +35,15 @@ class Pref(context: Context) {
         setPreferences(PreferenceManager.getDefaultSharedPreferences(context))
         editor = preferences!!.edit()
         this.context = context
+    }
+
+    fun getAutoDeleteEnable(): Boolean {
+        return preferences!!.getBoolean(NOTIFICATION_ENABLE, false)
+    }
+
+    fun setAutoDeleteEnable(flag: Boolean) {
+        editor.putBoolean(NOTIFICATION_ENABLE, flag)
+        editor.commit()
     }
 
     fun setNumberList(list: ArrayList<PersonNumber>?) {
@@ -52,13 +62,22 @@ class Pref(context: Context) {
         return preferences?.getInt(SAVED_POSITION, 0)
     }
 
+    fun setBottomPosition(position: Int) {
+        editor.putInt(BOTTOM_POSITION, position)
+        editor.commit()
+    }
+
+    fun getBottomPosition(): Int? {
+        return preferences?.getInt(BOTTOM_POSITION, 0)
+    }
+
     fun setSearchPref(status: Boolean) {
         editor.putBoolean(SEARCH_PREF, status)
         editor.commit()
     }
 
     fun getSearchPref(): Boolean? {
-        return preferences?.getBoolean(SEARCH_PREF, false)
+        return preferences?.getBoolean(SEARCH_PREF, true)
     }
 
     fun setCameraPref(status: Boolean) {
@@ -67,7 +86,7 @@ class Pref(context: Context) {
     }
 
     fun getCameraPref(): Boolean? {
-        return preferences?.getBoolean(CAMERA_PREF, false)
+        return preferences?.getBoolean(CAMERA_PREF, true)
     }
 
     fun setWhatsAppPref(status: Boolean) {
@@ -76,7 +95,7 @@ class Pref(context: Context) {
     }
 
     fun getWhatsAppPref(): Boolean? {
-        return preferences?.getBoolean(WHATSAPP_PREF, false)
+        return preferences?.getBoolean(WHATSAPP_PREF, true)
     }
 
     fun setMessagePref(status: Boolean) {

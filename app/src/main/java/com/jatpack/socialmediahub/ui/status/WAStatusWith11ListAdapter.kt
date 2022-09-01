@@ -156,9 +156,11 @@ class WAStatusWith11ListAdapter(
 
         } else {
             holder.rl_play.visibility = View.GONE
-            Picasso.get().load(status[position].uri)
-                //.memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
+            Glide.with(mContext).load(status[position].uri)
                 .placeholder(R.drawable.ic_placeholder_image).into(holder.img_media)
+          /*  Picasso.get().load(status[position].uri)
+                //.memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
+                .placeholder(R.drawable.ic_placeholder_image).into(holder.img_media)*/
         }
         holder.parent_click.setOnLongClickListener {
             isLongClickEnabled = true

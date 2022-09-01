@@ -1,5 +1,6 @@
 package com.jatpack.socialmediahub.ui.status
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
@@ -73,15 +74,28 @@ class MyDownloadsFragment : AppCompatActivity(), SetClick {
     var imageList: ArrayList<File>? = null
     var videoList: ArrayList<File>? = null
     var tvSelectAll: TextView? = null
+    var ivBack: ImageView? = null
+    var save: TextView? = null
+    var rlTop: RelativeLayout? = null
 
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.fragment_my_download)
+        supportActionBar?.hide()
         tvSelectAll = findViewById(R.id.tvSelectAll)
         path = this.getExternalFilesDir(Constants.WA_Status_Gallery)?.absolutePath
         tempList = getExternalFilesDir(Constants.WA_Status_Gallery)!!.listFiles()
+        rlTop = findViewById(R.id.topbar)
+        ivBack = findViewById(R.id.ivBack)
+        ivBack?.setOnClickListener {
+            finish()
+        }
+        save = findViewById(R.id.tvSave)
+        save?.setOnClickListener {
+            Toast.makeText(this, "Setting Saved", Toast.LENGTH_SHORT).show()
+        }
         executorService = Executors.newSingleThreadExecutor()
         videoList = ArrayList()
         imageList = ArrayList()
@@ -224,6 +238,7 @@ class MyDownloadsFragment : AppCompatActivity(), SetClick {
 
     override fun onLongClcik(view: View, position: Int) {
         if (adapterList != null) {
+            rlTop?.visibility = View.GONE
             getFilePathData()
             actionModeCallback = ActionModeCallback(this, R.menu.download_menu, true)
             actionMode = startActionMode(actionModeCallback)
@@ -231,9 +246,8 @@ class MyDownloadsFragment : AppCompatActivity(), SetClick {
             rl_saved_options?.visibility = View.VISIBLE
 
             ll_save?.setOnClickListener {
-                //  downloadMultipleImage()
-                showBottomSheetDialog()
-
+                deleteMultipleImage()
+                actionMode?.finish()
             }
             ll_share?.setOnClickListener {
                 shareMultipleImage()
@@ -360,18 +374,7 @@ class MyDownloadsFragment : AppCompatActivity(), SetClick {
         override fun onCreateActionMode(mode: ActionMode, menu: Menu): Boolean {
             // inflate contextual menu
             mode.menuInflater.inflate(menu_lauout, menu)
-
-            // checkBox = (CheckBox) menu.findItem(R.id.select_all).getActionView();
-//            checkBox.setChecked(true);
-            /* checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    if (!flag) {
-                        recordedFragment.selectAll(isChecked);
-                    }
-                    flag = false;
-                }
-            });*/return true
+            return true
         }
 
         override fun onPrepareActionMode(mode: ActionMode, menu: Menu): Boolean {
@@ -379,32 +382,7 @@ class MyDownloadsFragment : AppCompatActivity(), SetClick {
         }
 
         override fun onActionItemClicked(mode: ActionMode, item: MenuItem): Boolean {
-            // retrieve selected items and print them out
-            /*  return when (item.itemId) {
-                  R.id.share_multiple -> {
-                      //Toast.makeText(MainActivity.this, "Option 1 selected", Toast.LENGTH_SHORT).show();
 
-                      myDownloadFragment.shareMultipleImage()
-
-                      myDownloadFragment.actionMode?.finish()
-                      true
-                  }
-                  R.id.multiple_download -> {
-
-                      myDownloadFragment.downloadMultipleImage()
-
-                      myDownloadFragment.actionMode?.finish()
-                      true
-                  }
-                  R.id.select_all -> {
-                      if (from) {
-                          myDownloadFragment.adapterList?.selectAll()
-                      }
-                      // mode.finish();
-                      true
-                  }
-                  else -> false
-              }*/
             return false
         }
 
@@ -417,6 +395,7 @@ class MyDownloadsFragment : AppCompatActivity(), SetClick {
             }
             myDownloadFragment.rl_saved_options?.visibility = View.GONE
             myDownloadFragment.ll_card_selection?.visibility = View.VISIBLE
+            myDownloadFragment.rlTop?.visibility = View.VISIBLE
             myDownloadFragment.actionMode = null
         }
 
