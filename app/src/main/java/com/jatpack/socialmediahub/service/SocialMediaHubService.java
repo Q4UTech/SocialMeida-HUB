@@ -118,19 +118,19 @@ public class SocialMediaHubService extends Service {
             remoteViews.setViewVisibility(R.id.ll_facebook, View.GONE);
         }
 
-        if (pref.getBottomPosition() == 0) {
+        if (pref.getPostion() == 0) {
             remoteViews.setViewVisibility(R.id.ll_status, View.VISIBLE);
         } else {
             remoteViews.setViewVisibility(R.id.ll_status, View.GONE);
         }
 
-        if (pref.getBottomPosition() == 1) {
+        if (pref.getPostion() == 1) {
             remoteViews.setViewVisibility(R.id.ll_video_downloader, View.VISIBLE);
         } else {
             remoteViews.setViewVisibility(R.id.ll_video_downloader, View.GONE);
         }
 
-        if (pref.getBottomPosition() == 2) {
+        if (pref.getPostion() == 2) {
             remoteViews.setViewVisibility(R.id.ll_direct_chat, View.VISIBLE);
         } else {
             remoteViews.setViewVisibility(R.id.ll_direct_chat, View.GONE);

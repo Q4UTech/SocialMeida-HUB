@@ -118,7 +118,7 @@
             <HorizontalScrollView
                 android:id="@+id/horizontal_scroll"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_40sdp"
+                android:layout_height="@dimen/_45sdp"
                 android:layout_alignParentStart="true"
                 android:layout_toStartOf="@+id/ll_noti_bottom"
                 android:scrollbars="none">
@@ -132,14 +132,14 @@
                         android:id="@+id/ll_search"
                         android:layout_width="100dp"
                         android:layout_height="match_parent"
-                        android:layout_weight="0.25"
+                        android:layout_weight="0.2"
                         android:gravity="center"
                         android:orientation="vertical"
                         android:visibility="gone">
 
                         <ImageView
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
+                            android:layout_width="@dimen/margin30dp"
+                            android:layout_height="@dimen/margin30dp"
                             android:layout_gravity="center"
                             android:layout_marginTop="@dimen/_5sdp"
                             android:src="@drawable/search" />
@@ -163,8 +163,8 @@
                         android:visibility="gone">
 
                         <ImageView
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
+                            android:layout_width="@dimen/margin30dp"
+                            android:layout_height="@dimen/margin30dp"
                             android:layout_gravity="center"
                             android:layout_marginTop="@dimen/_5sdp"
                             android:src="@drawable/ic_camera_icon" />
@@ -188,8 +188,8 @@
                         android:visibility="gone">
 
                         <ImageView
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
+                            android:layout_width="@dimen/margin30dp"
+                            android:layout_height="@dimen/margin30dp"
                             android:layout_gravity="center"
                             android:layout_marginTop="@dimen/_5sdp"
                             android:src="@drawable/ic_wa_noti_icon" />
@@ -213,8 +213,8 @@
                         android:visibility="gone">
 
                         <ImageView
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
+                            android:layout_width="@dimen/margin30dp"
+                            android:layout_height="@dimen/margin30dp"
                             android:layout_gravity="center"
                             android:layout_marginTop="@dimen/_8sdp"
                             android:src="@drawable/message" />
@@ -238,8 +238,8 @@
                         android:visibility="gone">
 
                         <ImageView
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
+                            android:layout_width="@dimen/margin30dp"
+                            android:layout_height="@dimen/margin30dp"
                             android:layout_gravity="center"
                             android:layout_marginTop="@dimen/_8sdp"
                             android:src="@drawable/messenger" />
@@ -263,8 +263,8 @@
                         android:visibility="gone">
 
                         <ImageView
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
+                            android:layout_width="@dimen/margin30dp"
+                            android:layout_height="@dimen/margin30dp"
                             android:layout_gravity="center"
                             android:layout_marginTop="@dimen/_8sdp"
                             android:src="@drawable/facebook" />
@@ -299,8 +299,8 @@
                     android:visibility="gone">
 
                     <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
+                        android:layout_width="@dimen/margin30dp"
+                        android:layout_height="@dimen/margin30dp"
                         android:layout_gravity="center"
                         android:layout_marginTop="@dimen/_8sdp"
                         android:src="@drawable/ic_status_noti_icon" />
@@ -324,8 +324,8 @@
                     android:visibility="gone">
 
                     <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
+                        android:layout_width="@dimen/margin30dp"
+                        android:layout_height="@dimen/margin30dp"
                         android:layout_gravity="center"
                         android:layout_marginTop="@dimen/_8sdp"
                         android:src="@drawable/ic_video_noti_icon" />
@@ -349,8 +349,8 @@
                     android:visibility="gone">
 
                     <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
+                        android:layout_width="@dimen/margin30dp"
+                        android:layout_height="@dimen/margin30dp"
                         android:layout_gravity="center"
                         android:layout_marginTop="@dimen/_8sdp"
                         android:src="@drawable/ic_direct_chat_noti_icon" />
