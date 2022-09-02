@@ -137,4 +137,6 @@
     <color name="rate_us_black">#424242</color>
     <color name="txt_color">#024282</color>
     <color name="custom_black">#202020</color>
+    <color name="button_light">#B0B0B0</color>
+
 </resources>

@@ -92,9 +92,9 @@ without saving their phone number in your device"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/txt_content"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginStart="@dimen/_15sdp"
                     android:layout_marginTop="@dimen/_25sdp"
-                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_15sdp"
                     android:background="@drawable/ic_whts_bg">
 
                     <com.rilixtech.CountryCodePicker
@@ -160,9 +160,9 @@ without saving their phone number in your device"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/rl_selector"
-                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginStart="@dimen/_15sdp"
                     android:layout_marginTop="@dimen/_10sdp"
-                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_15sdp"
                     android:background="@drawable/ic_recycle_bg" />
             </RelativeLayout>
         </RelativeLayout>

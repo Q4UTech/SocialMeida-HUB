@@ -37,11 +37,11 @@ class Pref(context: Context) {
         this.context = context
     }
 
-    fun getAutoDeleteEnable(): Boolean {
+    fun getAutoNotificationEnable(): Boolean {
         return preferences!!.getBoolean(NOTIFICATION_ENABLE, false)
     }
 
-    fun setAutoDeleteEnable(flag: Boolean) {
+    fun setAutoNotificationEnable(flag: Boolean) {
         editor.putBoolean(NOTIFICATION_ENABLE, flag)
         editor.commit()
     }

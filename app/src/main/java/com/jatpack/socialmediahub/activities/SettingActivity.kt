@@ -173,13 +173,13 @@ class SettingActivity : AppCompatActivity(), SetClick, View.OnClickListener {
 
         showBottomData()
         if (pref != null) {
-            pref?.getAutoDeleteEnable()?.let { serviceToggle?.setChecked(it) }
+            pref?.getAutoNotificationEnable()?.let { serviceToggle?.setChecked(it) }
         }
         serviceToggle?.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { buttonView, isChecked ->
             if (pref != null) {
-                pref?.setAutoDeleteEnable(isChecked)
+                pref?.setAutoNotificationEnable(isChecked)
 
-                pref?.getAutoDeleteEnable()?.let { serviceToggle?.setChecked(it) }
+                pref?.getAutoNotificationEnable()?.let { serviceToggle?.setChecked(it) }
             }
             if (isChecked) {
                 Log.d("TAG", "onCreate: " + isChecked)
