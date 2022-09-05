@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.whatsdelete.listener.openOnClick
 import com.example.whatsdelete.modal.CategoryDetailItem
 import com.example.whatsdelete.responce.ApplicationListData
-import com.jatpack.wastatustranding.R
+import com.pds.wastatustranding.R
 import com.squareup.picasso.Picasso
 
 class WhatsDelteCategoryItemAdapter(var context:Context,private val list: List<ApplicationListData>?,

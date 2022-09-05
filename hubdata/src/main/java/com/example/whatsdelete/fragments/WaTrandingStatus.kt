@@ -33,7 +33,7 @@ import com.example.whatsdelete.utils.Prefs
 import com.example.whatsdelete.viewmodel.ApiDataViewModel
 import com.example.whatsdelete.viewmodel.MyViewModelFactory
 import com.example.whatsdelete.viewmodel.WhatsDeleteRepository
-import com.jatpack.wastatustranding.R
+import com.pds.wastatustranding.R
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch

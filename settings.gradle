@@ -20,5 +20,6 @@
 rootProject.name = "SocialMediaHub"
 include ':app'
 include ':hubdata'
+include ':AppEngine'
 
 

@@ -1,26 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.jatpack.socialmediahub">
+    package="com.pds.socialmediahub">
 
     <uses-feature
         android:name="android.hardware.camera"
         android:required="true" />
 
     <uses-permission android:name="android.permission.BROADCAST_CLOSE_SYSTEM_DIALOGS" />
-    <uses-permission android:name="android.permission.BROADCAST_CLOSE_SYSTEM_DIALOGS" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="com.samsung.android.providers.context.permission.WRITE_USE_APP_FEATURE_SURVEY" /><!-- StartApp required permissions integration -->
+    <uses-permission android:name="com.samsung.android.providers.context.permission.WRITE_USE_APP_FEATURE_SURVEY" /> <!-- StartApp required permissions integration -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.SET_WALLPAPER" /> <!-- startapp entries -->
-
-
-
     <queries>
         <package android:name="com.whatsapp" />
     </queries>
@@ -42,47 +38,52 @@
         android:usesCleartextTraffic="true"
         tools:replace="android:allowBackup">
         <activity
+            android:name=".MainActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.SettingActivity"
             android:exported="false"
-            android:theme="@style/AppTheme.NoActionBar" />
+             />
+        <activity android:name=".engine.TransLaunchFullAdsActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
         <activity
-            android:name=".MainActivity"
+            android:name=".activities.SplashActivity"
             android:exported="true"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustNothing">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
         <service
-            android:name="com.jatpack.socialmediahub.ui.socialmediadownloader.services.ClipBoardService"
-            android:exported="false"/>
+            android:name="com.pds.socialmediahub.ui.socialmediadownloader.services.ClipBoardService"
+            android:exported="false" />
         <service
-            android:name="com.jatpack.socialmediahub.ui.socialmediadownloader.services.BackgroundRunningService"
+            android:name="com.pds.socialmediahub.ui.socialmediadownloader.services.BackgroundRunningService"
             android:exported="true"
             android:stopWithTask="false" />
 
         <activity
             android:name=".ui.status.StatusPriviewActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            />
         <activity
             android:name=".activities.BaseActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.status.MyDownloadsFragment"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
+             />
         <activity
             android:name=".activities.TutorialActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.directchat.WhatsAppWebView"
             android:screenOrientation="portrait" />
-
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -93,6 +94,7 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_path" />
         </provider>
+
         <service
             android:name=".service.SocialMediaHubService"
             android:enabled="true" />
