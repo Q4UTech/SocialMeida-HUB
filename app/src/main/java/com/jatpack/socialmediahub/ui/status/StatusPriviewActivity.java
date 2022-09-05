@@ -27,15 +27,12 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.FileProvider;
 import androidx.documentfile.provider.DocumentFile;
 import androidx.lifecycle.Observer;
@@ -59,10 +56,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Type;
 import java.nio.channels.FileChannel;
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 
@@ -98,7 +93,6 @@ public class StatusPriviewActivity extends BaseActivity implements View.OnClickL
         activity = this;
         mediaPreferences = new MediaPreferences(this);
         mediaPlayer = new MediaPlayer();
-
 
         init();
 
@@ -336,7 +330,13 @@ public class StatusPriviewActivity extends BaseActivity implements View.OnClickL
 
             lbl_tittle = findViewById(R.id.lbl_tittle);
             viewPager_imgDetail = findViewById(R.id.viewPager_imgDetail);
+            binding.ivBack.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
 
+                    finish();
+                }
+            });
 
            /* LinearLayout adsbanner = findViewById(R.id.adsbanner);
             adsbanner.addView(AHandler.getInstance().getBannerHeader(this));*/
@@ -584,7 +584,7 @@ public class StatusPriviewActivity extends BaseActivity implements View.OnClickL
 
             Uri urisqure = saveImage(cropToSquare(bitmap));
             PackageManager pm = getPackageManager();
-           // Log.d("TAG", "setSingleStatus5: " + urisqure);
+            // Log.d("TAG", "setSingleStatus5: " + urisqure);
             try {
                 // Raise exception if whatsapp doesn't exist
                 PackageInfo info = pm.getPackageInfo("com.whatsapp", PackageManager.GET_META_DATA);
@@ -1007,8 +1007,8 @@ public class StatusPriviewActivity extends BaseActivity implements View.OnClickL
         File file = null;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             file = new File(String.valueOf(statusDocumentFileList.get(imgSelectedPos).getUri()));
-        }else{
-            file=new File(String.valueOf(statusFileList.get(imgSelectedPos).getPath()));
+        } else {
+            file = new File(String.valueOf(statusFileList.get(imgSelectedPos).getPath()));
         }
         if (file.exists())
             file.delete();

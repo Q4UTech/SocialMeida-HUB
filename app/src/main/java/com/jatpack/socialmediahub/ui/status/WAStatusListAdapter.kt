@@ -1,5 +1,6 @@
 package com.jatpack.socialmediahub.ui.status
 
+
 import android.content.Context
 import android.content.Intent
 import android.media.MediaPlayer
@@ -12,14 +13,13 @@ import android.widget.*
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.google.gson.Gson
 import com.jatpack.socialmediahub.R
-import com.jatpack.socialmediahub.util.AppUtils
 import com.jatpack.socialmediahub.util.SetClick
+import com.jatpack.socialmediahub.util.Utilities
 import com.jatpack.socialmediahub.util.VideoRequestHandler
 import com.makeramen.roundedimageview.RoundedImageView
-
-
 import com.squareup.picasso.Picasso
 import java.io.File
 
@@ -142,7 +142,7 @@ class WAStatusListAdapter(
                     listenerSelection?.selectItems(tempList.size)
                 }
 
-                notifyItemChanged(position,status[position])
+                notifyItemChanged(position, status[position])
 
             } else {
                 Log.d("TAG", "onBindViewHolder4: ")
@@ -185,35 +185,38 @@ class WAStatusListAdapter(
                 listenerSelection?.selectItems(tempList.size)
 
             }
-            notifyItemChanged(position,status[position])
+            notifyItemChanged(position, status[position])
             listener.onLongClcik(it, position)
             true
         }
 
         if (status[position].path.endsWith(".mp4")) {
             holder.rl_play.visibility = View.VISIBLE
-            var durationTime: Long? = null
-            MediaPlayer.create(mContext, Uri.parse(status[position].path)).also {
-                durationTime = (it.duration / 1000).toLong()
-                holder.duration.text = durationTime?.let { AppUtils.timeConversion1(it) }
-                it.reset()
-                it.release()
 
-            }
+            var duration1 = Utilities.getDuration(mContext,Uri.parse(status[position].path))
+            holder.duration.text = duration1
 
+            /* picassoInstance.load(
+                 VideoRequestHandler.SCHEME_VIDEO.toString() + ":" + status[position].path
+             ).placeholder(R.drawable.ic_placeholder_video).into(holder.img_media)*/
 
-            picassoInstance.load(
-                VideoRequestHandler.SCHEME_VIDEO.toString() + ":" + status[position].path
-            ).placeholder(R.drawable.ic_placeholder_video).into(holder.img_media)
-
+            Glide.with(mContext)
+                .load(/*VideoRequestHandler.SCHEME_VIDEO.toString() + ":" +*/ status[position].path)
+                .placeholder(R.drawable.ic_placeholder_video)
+                .into(holder.img_media)
 
         } else {
             holder.rl_play.visibility = View.GONE
-            Picasso.get().load(File(status[position].path)) //
+            Glide.with(mContext).load(File(status[position].path)) //
                 //.memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
                 .placeholder(R.drawable.ic_placeholder_image).into(holder.img_media)
+            /*   Picasso.get().load(File(status[position].path)) //
+                   //.memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
+                   .placeholder(R.drawable.ic_placeholder_image).into(holder.img_media)*/
         }
     }
+
+
 
     fun removeAllSelected() {
         isLongClickEnabled = false
@@ -224,6 +227,7 @@ class WAStatusListAdapter(
         }
         notifyDataSetChanged()
     }
+
     fun unSelectAll() {
         isLongClickEnabled = true
         tempList.clear()
@@ -233,6 +237,7 @@ class WAStatusListAdapter(
         }
         notifyDataSetChanged()
     }
+
     fun getList(): List<File?> {
         return status
     }
@@ -242,9 +247,11 @@ class WAStatusListAdapter(
     }
 
     fun selectAll() {
+        tempList.clear()
         for (i in checkStatus.indices) {
             checkStatus[i] = true
-            listenerSelection?.selectItems(checkStatus.size)
+            tempList.add(status[i])
+            listenerSelection?.selectItems(tempList.size)
         }
         notifyDataSetChanged()
     }

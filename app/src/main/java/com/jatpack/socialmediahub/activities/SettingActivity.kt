@@ -10,7 +10,6 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatCheckBox
 import androidx.cardview.widget.CardView
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.jatpack.socialmediahub.R
 import com.jatpack.socialmediahub.adapter.BottomStatusAdapter
@@ -20,9 +19,16 @@ import com.jatpack.socialmediahub.model.BottomList
 import com.jatpack.socialmediahub.model.NotificatioListItem
 import com.jatpack.socialmediahub.service.SocialMediaHubService
 import com.jatpack.socialmediahub.util.SetClick
+import kotlinx.android.synthetic.main.activity_setting.*
 
 
 class SettingActivity : AppCompatActivity(), SetClick, View.OnClickListener {
+    val SEARCH_INDEX = 1
+    val CAMERA_INDEX = 2
+    val WHATS_APP_INDEX = 3
+    val MESSAGE_INDEX = 4
+    val MESSENGER_INDEX = 5
+    val FACEBOOK_INDEX = 6
     private var recyclerView: RecyclerView? = null
     private var notificationAdapter: NotificationAdapter? = null
     private var notificationList = ArrayList<NotificatioListItem>()
@@ -56,15 +62,55 @@ class SettingActivity : AppCompatActivity(), SetClick, View.OnClickListener {
     private var llMessege: LinearLayout? = null
     private var llMessenger: LinearLayout? = null
     private var llFacebook: LinearLayout? = null
+    private var notiDownloader: LinearLayout? = null
+    private var notiChat: LinearLayout? = null
+    private var notiStatus: LinearLayout? = null
+    private var countList = ArrayList<Int>()
+
+    var ivBack: ImageView? = null
+    var save: TextView? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_setting)
+        supportActionBar?.hide()
+        pref = Pref(this)
+        ivBack = findViewById(R.id.ivBack)
+        ivBack?.setOnClickListener {
+            finish()
+        }
+        save = findViewById(R.id.tvSave)
+        save?.setOnClickListener {
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                startForegroundService(
+                    Intent(
+                        this,
+                        SocialMediaHubService::class.java
+                    )
+                )
+
+            } else {
+                startService(
+                    Intent(
+                        this,
+                        SocialMediaHubService::class.java
+                    )
+                )
+
+            }
+            Toast.makeText(this, "Setting Saved", Toast.LENGTH_SHORT).show()
+            finish()
+        }
         serviceToggle = findViewById(R.id.serviceToggle)
         llSearch = findViewById(R.id.ll_search)
         llCamera = findViewById(R.id.ll_camera)
         llWhatsApp = findViewById(R.id.ll_whatsapp)
         llMessege = findViewById(R.id.ll_msg)
         llMessenger = findViewById(R.id.ll_messanger)
+        llFacebook = findViewById(R.id.ll_facebook)
+        notiDownloader = findViewById(R.id.ll_video_downloader)
+        notiChat = findViewById(R.id.ll_direct_chat)
+        notiStatus = findViewById(R.id.ll_status)
         llFacebook = findViewById(R.id.ll_facebook)
         cbSearch = findViewById(R.id.cb_search)
         cbCamera = findViewById(R.id.cb_camera)
@@ -94,19 +140,13 @@ class SettingActivity : AppCompatActivity(), SetClick, View.OnClickListener {
         ivStatus = findViewById(R.id.img_check1)
         ivDownload = findViewById(R.id.img_check2)
         ivChat = findViewById(R.id.img_check3)
-        pref = Pref(this)
+
         position = pref?.getPostion()
         showData()
         notificationList.add(NotificatioListItem(R.drawable.ic_search_option, "Search", true))
         notificationList.add(NotificatioListItem(R.drawable.ic_camera_option, "Camera", true))
         if (isAppInstalled("com.whatsapp")) {
-            /*  notificationList.add(
-                  NotificatioListItem(
-                      R.drawable.ic_whats_app_option,
-                      "Whats App",
-                      true
-                  )
-              )*/
+
             rlWhatsApp?.visibility = View.VISIBLE
         } else {
             rlWhatsApp?.visibility = View.GONE
@@ -114,16 +154,10 @@ class SettingActivity : AppCompatActivity(), SetClick, View.OnClickListener {
 
         notificationList.add(NotificatioListItem(R.drawable.ic_msg_option, "Message", true))
         if (isAppInstalled("com.facebook.orca")) {
-            /* notificationList.add(
-                 NotificatioListItem(
-                     R.drawable.ic_messanger_option,
-                     "Messanger",
-                     false
-                 )
-             )*/
-            rlFacebook?.visibility = View.VISIBLE
+
+            rlMessenger?.visibility = View.VISIBLE
         } else {
-            rlFacebook?.visibility = View.GONE
+            rlMessenger?.visibility = View.GONE
         }
         if (isAppInstalled("com.facebook.katana")) {
             //  notificationList.add(NotificatioListItem(R.drawable.ic_facebook, "Facebook", false))
@@ -138,8 +172,15 @@ class SettingActivity : AppCompatActivity(), SetClick, View.OnClickListener {
         bottomRecyclerView = findViewById(R.id.horizontal_rec)
 
         showBottomData()
+        if (pref != null) {
+            pref?.getAutoNotificationEnable()?.let { serviceToggle?.setChecked(it) }
+        }
         serviceToggle?.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { buttonView, isChecked ->
+            if (pref != null) {
+                pref?.setAutoNotificationEnable(isChecked)
 
+                pref?.getAutoNotificationEnable()?.let { serviceToggle?.setChecked(it) }
+            }
             if (isChecked) {
                 Log.d("TAG", "onCreate: " + isChecked)
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -179,18 +220,30 @@ class SettingActivity : AppCompatActivity(), SetClick, View.OnClickListener {
             when (position) {
                 0 -> {
                     ivStatus?.visibility = View.VISIBLE
+                    notiStatus?.visibility = View.VISIBLE
+                    notiDownloader?.visibility = View.GONE
+                    notiChat?.visibility = View.GONE
                     ivDownload?.visibility = View.GONE
                     ivChat?.visibility = View.GONE
+                    pref?.setBottomPosition(0)
                 }
                 1 -> {
                     ivStatus?.visibility = View.GONE
                     ivDownload?.visibility = View.VISIBLE
+                    notiStatus?.visibility = View.GONE
+                    notiDownloader?.visibility = View.VISIBLE
+                    notiChat?.visibility = View.GONE
                     ivChat?.visibility = View.GONE
+                    pref?.setBottomPosition(1)
                 }
                 2 -> {
                     ivStatus?.visibility = View.GONE
                     ivDownload?.visibility = View.GONE
                     ivChat?.visibility = View.VISIBLE
+                    notiStatus?.visibility = View.GONE
+                    notiDownloader?.visibility = View.GONE
+                    notiChat?.visibility = View.VISIBLE
+                    pref?.setBottomPosition(2)
                 }
             }
         }
@@ -201,23 +254,55 @@ class SettingActivity : AppCompatActivity(), SetClick, View.OnClickListener {
           val layoutManager = LinearLayoutManager(this)
           recyclerView?.layoutManager = layoutManager
           recyclerView?.adapter = notificationAdapter*/
-        pref?.setSearchPref(true)
-        pref?.setCameraPref(true)
-        pref?.setWhatsAppPref(true)
-        pref?.setMessagePref(true)
+        /* pref?.setSearchPref(true)
+         pref?.setCameraPref(true)
+         pref?.setWhatsAppPref(true)
+         pref?.setMessagePref(true)*/
 
         if (pref?.getSearchPref() == true) {
             cbSearch?.isChecked = true
+            llSearch?.visibility = View.VISIBLE
+            if (!checkIndex(SEARCH_INDEX)) {
+                countList.add(SEARCH_INDEX)
+            }
         }
         if (pref?.getCameraPref() == true) {
             cbCamera?.isChecked = true
+            llCamera?.visibility = View.VISIBLE
+            if (!checkIndex(CAMERA_INDEX)) {
+                countList.add(CAMERA_INDEX)
+            }
         }
         if (pref?.getWhatsAppPref() == true) {
             cbWhatsApp?.isChecked = true
+            llWhatsApp?.visibility = View.VISIBLE
+            if (!checkIndex(WHATS_APP_INDEX)) {
+                countList.add(WHATS_APP_INDEX)
+            }
         }
         if (pref?.getMessagePref() == true) {
             cbMessage?.isChecked = true
+            llMessege?.visibility = View.VISIBLE
+            if (!checkIndex(MESSAGE_INDEX)) {
+                countList.add(MESSAGE_INDEX)
+            }
         }
+        if (pref?.getMessengerPref() == true) {
+            cbMessenger?.isChecked = true
+            llMessenger?.visibility = View.VISIBLE
+            if (!checkIndex(MESSENGER_INDEX)) {
+                countList.add(MESSENGER_INDEX)
+            }
+        }
+
+        if (pref?.getFacebookPref() == true) {
+            cbFacebook?.isChecked = true
+            llFacebook?.visibility = View.VISIBLE
+            if (!checkIndex(FACEBOOK_INDEX)) {
+                countList.add(FACEBOOK_INDEX)
+            }
+        }
+        Log.d("TAG", "showData: " + countList.size)
     }
 
     override fun onClick(view: View, position: Int) {
@@ -237,61 +322,148 @@ class SettingActivity : AppCompatActivity(), SetClick, View.OnClickListener {
                 ivStatus?.visibility = View.VISIBLE
                 ivDownload?.visibility = View.GONE
                 ivChat?.visibility = View.GONE
+                notiStatus?.visibility = View.VISIBLE
+                notiDownloader?.visibility = View.GONE
+                notiChat?.visibility = View.GONE
             }
             R.id.cv_video_downloader -> {
                 pref?.setPositon(1)
                 ivStatus?.visibility = View.GONE
                 ivDownload?.visibility = View.VISIBLE
                 ivChat?.visibility = View.GONE
+                notiStatus?.visibility = View.GONE
+                notiDownloader?.visibility = View.VISIBLE
+                notiChat?.visibility = View.GONE
             }
             R.id.cv_direct_chat -> {
                 pref?.setPositon(2)
                 ivStatus?.visibility = View.GONE
                 ivDownload?.visibility = View.GONE
                 ivChat?.visibility = View.VISIBLE
+                notiStatus?.visibility = View.GONE
+                notiDownloader?.visibility = View.GONE
+                notiChat?.visibility = View.VISIBLE
             }
             R.id.rl_search -> {
+
                 if (pref?.getSearchPref() == true) {
                     llSearch?.visibility = View.GONE
                     pref?.setSearchPref(false)
-                    cbSearch?.isChecked = true
-                } else {
-                    pref?.setSearchPref(true)
-                    llSearch?.visibility = View.VISIBLE
                     cbSearch?.isChecked = false
+                    removeIndex(SEARCH_INDEX)
+                } else {
+
+                    if (getIndexListSize() < 3) {
+                        pref?.setSearchPref(true)
+                        llSearch?.visibility = View.VISIBLE
+                        cbSearch?.isChecked = true
+                        addIndex(SEARCH_INDEX)
+                        Log.d("TAG", "showData1: " + getIndexListSize())
+                    } else {
+                        Toast.makeText(this, "Only 3 items at a time", Toast.LENGTH_SHORT).show()
+                    }
+
                 }
             }
             R.id.rl_camera -> {
+
                 if (pref?.getCameraPref() == true) {
                     llCamera?.visibility = View.GONE
-                    pref?.setSearchPref(false)
-                    cbCamera?.isChecked = true
-                } else {
-                    pref?.setCameraPref(true)
-                    llCamera?.visibility = View.VISIBLE
+                    pref?.setCameraPref(false)
                     cbCamera?.isChecked = false
+                    removeIndex(CAMERA_INDEX)
+                } else {
+                    if (getIndexListSize() < 3) {
+                        pref?.setCameraPref(true)
+                        llCamera?.visibility = View.VISIBLE
+                        cbCamera?.isChecked = true
+                        addIndex(CAMERA_INDEX)
+                        Log.d("TAG", "showData2: " + getIndexListSize())
+                    } else {
+                        Toast.makeText(this, "Only 3 items at a time", Toast.LENGTH_SHORT).show()
+                    }
+
+
                 }
             }
             R.id.rl_whats_app -> {
+
                 if (pref?.getWhatsAppPref() == true) {
                     llWhatsApp?.visibility = View.GONE
                     pref?.setWhatsAppPref(false)
-                    cbCamera?.isChecked = true
+                    cbWhatsApp?.isChecked = false
+                    removeIndex(WHATS_APP_INDEX)
                 } else {
-                    pref?.setCameraPref(true)
-                    llWhatsApp?.visibility = View.VISIBLE
-                    cbCamera?.isChecked = false
+                    if (getIndexListSize() < 3) {
+                        pref?.setWhatsAppPref(true)
+                        llWhatsApp?.visibility = View.VISIBLE
+                        cbWhatsApp?.isChecked = true
+                        addIndex(WHATS_APP_INDEX)
+                        Log.d("TAG", "showData3: " + getIndexListSize())
+                    } else {
+                        Toast.makeText(this, "Only 3 items at a time", Toast.LENGTH_SHORT).show()
+                    }
+
                 }
             }
             R.id.rl_msg -> {
+
                 if (pref?.getMessagePref() == true) {
                     llMessege?.visibility = View.GONE
-                    pref?.setWhatsAppPref(false)
-                    cbCamera?.isChecked = true
+                    pref?.setMessagePref(false)
+                    cbMessage?.isChecked = false
+                    removeIndex(MESSAGE_INDEX)
                 } else {
-                    pref?.setMessagePref(true)
-                    llMessege?.visibility = View.VISIBLE
-                    cbCamera?.isChecked = false
+                    if (getIndexListSize() < 3) {
+                        pref?.setMessagePref(true)
+                        llMessege?.visibility = View.VISIBLE
+                        cbMessage?.isChecked = true
+                        addIndex(MESSAGE_INDEX)
+                        Log.d("TAG", "showData4: " + getIndexListSize())
+                    } else {
+                        Toast.makeText(this, "Only 3 items at a time", Toast.LENGTH_SHORT).show()
+                    }
+
+                }
+            }
+            R.id.rl_messanger -> {
+
+                if (pref?.getMessengerPref() == true) {
+                    llMessenger?.visibility = View.GONE
+                    pref?.setMessengerPref(false)
+                    cbMessenger?.isChecked = false
+                    removeIndex(MESSENGER_INDEX)
+                } else {
+                    if (getIndexListSize() < 3) {
+                        pref?.setMessengerPref(true)
+                        llMessenger?.visibility = View.VISIBLE
+                        cbMessenger?.isChecked = true
+                        addIndex(MESSENGER_INDEX)
+                        Log.d("TAG", "showData5: " + getIndexListSize())
+                    } else {
+                        Toast.makeText(this, "Only 3 items at a time", Toast.LENGTH_SHORT).show()
+                    }
+
+                }
+            }
+            R.id.rl_facebook -> {
+
+                if (pref?.getFacebookPref() == true) {
+                    llFacebook?.visibility = View.GONE
+                    pref?.setFacebookPref(false)
+                    cbFacebook?.isChecked = false
+                    removeIndex(FACEBOOK_INDEX)
+                } else {
+                    if (getIndexListSize() < 3) {
+                        pref?.setFacebookPref(true)
+                        llFacebook?.visibility = View.VISIBLE
+                        cbFacebook?.isChecked = true
+                        addIndex(FACEBOOK_INDEX)
+                        Log.d("TAG", "showData6: " + getIndexListSize())
+                    } else {
+                        Toast.makeText(this, "Only 3 items at a time", Toast.LENGTH_SHORT).show()
+                    }
+
                 }
             }
         }
@@ -304,5 +476,26 @@ class SettingActivity : AppCompatActivity(), SetClick, View.OnClickListener {
         } catch (ignored: PackageManager.NameNotFoundException) {
             false
         }
+    }
+
+    fun checkIndex(index: Int): Boolean {
+        return countList.contains(index)
+    }
+
+    fun addIndex(index: Int) {
+        if (!countList.contains(index)) {
+            countList.add(index)
+        }
+
+    }
+
+    fun removeIndex(index: Int) {
+        if (countList.contains(index)) {
+            countList.remove(index)
+        }
+    }
+
+    fun getIndexListSize(): Int {
+        return countList.size
     }
 }

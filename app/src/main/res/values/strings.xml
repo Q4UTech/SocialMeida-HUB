@@ -41,4 +41,13 @@
     <string name="whatsapp">WhatsApp</string>
     <string name="status">Status</string>
     <string name="search">Search</string>
+    <string name="app_notification">App notification</string>
+    <string name="save">Save</string>
+    <string name="downloads">Downloads</string>
+    <string name="all_social">All social</string>
+    <string name="camera">Camera</string>
+    <string name="message">Message</string>
+    <string name="messenger">Messenger</string>
+    <string name="facebook">Facebook</string>
+    <string name="preview">Preview</string>
 </resources>

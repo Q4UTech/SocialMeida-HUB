@@ -6,7 +6,7 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:openDrawer="start">
+    tools:openDrawer="">
     <RelativeLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
@@ -16,10 +16,10 @@
             android:id="@+id/top_tool"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="@dimen/_10sdp"
-            android:paddingBottom="@dimen/_10sdp"
+            android:layout_alignParentTop="true"
             android:background="@drawable/app_grad"
-            android:layout_alignParentTop="true">
+            android:paddingTop="@dimen/_10sdp"
+            android:paddingBottom="@dimen/_10sdp">
 
 
             <ImageView
@@ -90,15 +90,17 @@
                     android:id="@+id/searchBoxEditText"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
-                    android:layout_marginStart="@dimen/_5sdp"
+                    android:layout_centerVertical="true"
                     android:layout_toLeftOf="@+id/ll_download"
                     android:layout_toRightOf="@+id/search_drop"
                     android:background="@android:color/transparent"
+                    android:drawableStart="@drawable/ic_group_search"
+                    android:drawablePadding="5dp"
                     android:ems="10"
                     android:hint="Search"
                     android:imeOptions="actionSearch"
                     android:inputType="text"
-                    android:paddingStart="@dimen/_10sdp"
+                    android:paddingStart="8dp"
                     android:textAlignment="viewStart"
                     android:textColor="@color/black"
                     android:textColorHint="#9B9B9B"
@@ -107,15 +109,15 @@
 
 
                 <LinearLayout
-                    android:visibility="gone"
-                    android:animateLayoutChanges="true"
                     android:id="@+id/ll_download"
                     android:layout_width="50dp"
                     android:layout_height="match_parent"
                     android:layout_alignParentEnd="true"
+                    android:animateLayoutChanges="true"
                     android:background="@drawable/left_corner"
                     android:gravity="center"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:visibility="gone">
 
                     <ImageView
                         android:layout_width="wrap_content"
@@ -145,9 +147,9 @@
             android:id="@+id/nav_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
             android:layout_marginStart="0dp"
             android:layout_marginEnd="0dp"
-            android:layout_alignParentBottom="true"
             android:background="?android:attr/windowBackground"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"

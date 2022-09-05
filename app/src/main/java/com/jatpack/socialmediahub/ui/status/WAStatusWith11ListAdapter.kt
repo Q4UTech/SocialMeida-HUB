@@ -3,7 +3,6 @@ package com.jatpack.socialmediahub.ui.status
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +15,7 @@ import com.bumptech.glide.Glide
 import com.google.gson.Gson
 import com.jatpack.socialmediahub.R
 import com.jatpack.socialmediahub.util.SetClick
+import com.jatpack.socialmediahub.util.Utilities
 import com.jatpack.socialmediahub.util.VideoRequestHandler
 import com.makeramen.roundedimageview.RoundedImageView
 
@@ -56,6 +56,7 @@ class WAStatusWith11ListAdapter(
         val checkBox = view.findViewById<ImageView>(R.id.ch_select)
         val fl_download = view.findViewById<FrameLayout>(R.id.fl_download)
         val rl_play = view.findViewById<RelativeLayout>(R.id.rl_play)
+        val duration = view.findViewById<TextView>(R.id.rl_play)
 
         /*  fun bind(file: DocumentFile,picassoInstance : Picasso,context:Context,status :ArrayList<DocumentFile>){
 
@@ -142,7 +143,8 @@ class WAStatusWith11ListAdapter(
 
         if (status[position].uri.path!!.endsWith(".mp4")) {
             holder.rl_play.visibility = View.VISIBLE
-
+            var duration1 =  Utilities.getDuration(mContext,status[position].uri)
+            holder.duration.text = duration1
 //                picassoInstance.load(
 //                    VideoRequestHandler.SCHEME_VIDEO.toString() + ":" + file.uri
 //                ).into(img_media)
@@ -156,9 +158,11 @@ class WAStatusWith11ListAdapter(
 
         } else {
             holder.rl_play.visibility = View.GONE
-            Picasso.get().load(status[position].uri)
-                //.memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
+            Glide.with(mContext).load(status[position].uri)
                 .placeholder(R.drawable.ic_placeholder_image).into(holder.img_media)
+          /*  Picasso.get().load(status[position].uri)
+                //.memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
+                .placeholder(R.drawable.ic_placeholder_image).into(holder.img_media)*/
         }
         holder.parent_click.setOnLongClickListener {
             isLongClickEnabled = true
@@ -203,9 +207,11 @@ class WAStatusWith11ListAdapter(
     }
 
     fun selectAll() {
+        tempList.clear()
         for (i in status.indices) {
             checkStatus[i] = true
-            listenerSelection?.selectItems(checkStatus.size)
+            tempList.add(status[i])
+            listenerSelection?.selectItems(tempList.size)
 
         }
         notifyDataSetChanged()
@@ -231,4 +237,5 @@ class WAStatusWith11ListAdapter(
         }
 
     }
+
 }

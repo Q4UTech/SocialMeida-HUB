@@ -113,10 +113,10 @@ public class MediaPreferences {
         editor.commit();
     }
 
-   /* public long getNotificationtiming() {
+    public long getNotificationtiming() {
         long value = preferences.getLong("notificationtime", NotificationValue.TIMER_3_HOUR);
         return value;
-    }*/
+    }
 
     public long getServiceTime() {
         return preferences.getLong(TIME_KEY, AppUtils.View_5);

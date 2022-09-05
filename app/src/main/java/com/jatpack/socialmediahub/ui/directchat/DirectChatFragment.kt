@@ -8,6 +8,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
+import android.view.WindowManager
 import android.webkit.WebStorage
 import android.widget.*
 import androidx.fragment.app.Fragment
@@ -42,7 +43,11 @@ class DirectChatFragment : Fragment(R.layout.fragment_notifications), SetClick {
 
     // This property is only valid between onCreateView and
     // onDestroyView.
-
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        requireActivity().window
+            .setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -111,9 +116,11 @@ class DirectChatFragment : Fragment(R.layout.fragment_notifications), SetClick {
             override fun afterTextChanged(p0: Editable?) {
 
                 if (p0?.length!! > 0) {
-                    senMsg?.background = resources.getDrawable(R.drawable.ic_send_active,null)
+                    senMsg?.background = resources.getDrawable(R.drawable.ic_send_active, null)
+                    senMsg?.setTextColor(resources.getColor(R.color.white))
                 } else {
-                    senMsg?.background = resources.getDrawable(R.drawable.ic_senc_inactive,null)
+                    senMsg?.background = resources.getDrawable(R.drawable.ic_senc_inactive, null)
+                    senMsg?.setTextColor(resources.getColor(R.color.button_light))
                 }
             }
         })

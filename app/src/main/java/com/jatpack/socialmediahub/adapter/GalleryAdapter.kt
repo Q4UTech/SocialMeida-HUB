@@ -16,12 +16,9 @@ import com.bumptech.glide.Glide
 import com.google.gson.Gson
 import com.jatpack.socialmediahub.R
 import com.jatpack.socialmediahub.ui.status.AllMediaListingImage_singleton
-import com.jatpack.socialmediahub.ui.status.MyDownloadsFragment
 import com.jatpack.socialmediahub.ui.status.StatusPriviewActivity
-import com.jatpack.socialmediahub.ui.status.WAStatusListAdapter
-import com.jatpack.socialmediahub.util.AppUtils
 import com.jatpack.socialmediahub.util.SetClick
-import com.squareup.picasso.Picasso
+import com.jatpack.socialmediahub.util.Utilities
 import java.io.File
 
 class GalleryAdapter(
@@ -66,9 +63,8 @@ class GalleryAdapter(
 
             if (MediaPlayer.create(context, Uri.parse(galleryList[position].path)) != null) {
                 Log.d("TAG", "onBindViewHolder: " + Uri.parse(galleryList[position].path))
-                val mediaPlayer =
-                    MediaPlayer.create(context, Uri.parse(galleryList[position].path));
-                holder.duration.text = AppUtils.timeConversion1(mediaPlayer.duration.toLong())
+                var duration = Utilities.getDuration(context, Uri.parse(galleryList[position].path))
+                holder.duration.text = duration
             } else {
                 Log.d("TAG", "onBindViewHolder1: " + Uri.parse(galleryList[position].path))
             }
@@ -100,7 +96,22 @@ class GalleryAdapter(
                 notifyDataSetChanged()
 
             } else {
-                Log.d("TAG", "onBindViewHolder4: ")
+                val gson = Gson()
+                val intent = Intent(context, StatusPriviewActivity::class.java)
+                intent.putExtra(
+                    "absoluteImgPath", galleryList[position].path
+                )
+                intent.putExtra("video_allList", gson.toJson(galleryList))
+                intent.putExtra(
+                    "imgName", galleryList[position].name
+                )
+                intent.putExtra(
+                    "isFromStatus", false
+                )
+                AllMediaListingImage_singleton.getInstance()
+                    .setAllStatusFiles(galleryList)
+                intent.putExtra("selectedPos", "" + position)
+                context.startActivity(intent)
 
             }
         })
@@ -135,6 +146,7 @@ class GalleryAdapter(
         }
         notifyDataSetChanged()
     }
+
     fun unSelectAll() {
         isLongClickEnabled = true
         tempList.clear()
