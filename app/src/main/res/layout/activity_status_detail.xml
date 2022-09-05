@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/white_inapp"
     android:orientation="vertical">
 
@@ -10,8 +11,49 @@
     <!--        android:id="@+id/toolbarImgDetail"-->
     <!--        layout="@layout/layout_toolbar1_img_text_img" />-->
 
-
     <RelativeLayout
+        android:id="@+id/topbar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_60sdp"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/app_grad">
+
+        <ImageView
+            android:id="@+id/ivBack"
+            android:layout_width="@dimen/margin20"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/margin20dp"
+            android:src="@drawable/back_arrow"
+            app:tint="#012A72" />
+
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/_20sdp"
+            android:layout_toEndOf="@+id/ivBack"
+            android:text="@string/preview"
+            android:textColor="#012A72"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvSave"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/_15sdp"
+            android:text="@string/save"
+            android:textColor="#012A72"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_below="@+id/topbar"
         android:id="@+id/status_image_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

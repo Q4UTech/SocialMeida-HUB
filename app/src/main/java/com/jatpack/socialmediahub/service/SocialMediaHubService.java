@@ -1,5 +1,6 @@
 package com.jatpack.socialmediahub.service;
 
+import android.Manifest;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -20,6 +21,7 @@ import android.widget.RemoteViews;
 import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
+import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 
 import com.jatpack.socialmediahub.MainActivity;
@@ -29,6 +31,7 @@ import com.jatpack.socialmediahub.helper.Pref;
 
 public class SocialMediaHubService extends Service {
     private Handler handler;
+    private Context mContext;
     private int ID = 1;
     Pref pref;
 
@@ -65,7 +68,7 @@ public class SocialMediaHubService extends Service {
     private void startMyOwnForeground() {
         String NOTIFICATION_CHANNEL_ID = "quantum4u_notification_channel_whatsapp";
         String channelName = "quantum4u";
-        NotificationChannel chan = new NotificationChannel(NOTIFICATION_CHANNEL_ID, channelName, NotificationManager.IMPORTANCE_HIGH);
+        NotificationChannel chan = new NotificationChannel(NOTIFICATION_CHANNEL_ID, channelName, NotificationManager.IMPORTANCE_DEFAULT);
         chan.setLightColor(Color.BLUE);
         chan.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
         NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
@@ -183,12 +186,14 @@ public class SocialMediaHubService extends Service {
             switch (action) {
                 case "search_action":
                     startActivity(new Intent(this, MainActivity.class));
+                    closingBroadcast();
                     break;
                 case "camera_action":
                     try {
                         Intent cameraIntent = new Intent("android.media.action.IMAGE_CAPTURE");
                         cameraIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(cameraIntent);
+                        closingBroadcast();
                     } catch (Exception e) {
                         Log.d("TAG", "handleNotification: " + e.getMessage());
                     }
@@ -198,6 +203,7 @@ public class SocialMediaHubService extends Service {
                     try {
                         Intent waPackage = getPackageManager().getLaunchIntentForPackage("com.whatsapp");
                         startActivity(waPackage);
+                        closingBroadcast();
                     } catch (Exception e) {
                         Toast.makeText(this, "Whatsapp app not installed in your phone", Toast.LENGTH_LONG).show();
                         e.printStackTrace();
@@ -207,6 +213,7 @@ public class SocialMediaHubService extends Service {
                     try {
                         Intent msg = getPackageManager().getLaunchIntentForPackage(Telephony.Sms.getDefaultSmsPackage(this));
                         startActivity(msg);
+                        closingBroadcast();
                     } catch (Exception e) {
                         Toast.makeText(this, "Message app not installed in your phone", Toast.LENGTH_LONG).show();
                         e.printStackTrace();
@@ -216,6 +223,7 @@ public class SocialMediaHubService extends Service {
                     try {
                         Intent messengerPackage = getPackageManager().getLaunchIntentForPackage("com.facebook.orca");
                         startActivity(messengerPackage);
+                        closingBroadcast();
                     } catch (Exception e) {
                         Toast.makeText(this, "Messenger app not installed in your phone", Toast.LENGTH_LONG).show();
                         e.printStackTrace();
@@ -225,6 +233,7 @@ public class SocialMediaHubService extends Service {
                     try {
                         Intent fbPackage = getPackageManager().getLaunchIntentForPackage("com.facebook.katana");
                         startActivity(fbPackage);
+                        closingBroadcast();
                     } catch (Exception e) {
                         Toast.makeText(this, "Facebook app not installed in your phone", Toast.LENGTH_LONG).show();
                         e.printStackTrace();
@@ -234,25 +243,48 @@ public class SocialMediaHubService extends Service {
                     Intent setting = new Intent(this, SettingActivity.class);
                     setting.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(setting);
+                    closingBroadcast();
                     break;
                 case "wa_status_action":
                     Intent waStatus = new Intent(this, MainActivity.class);
                     waStatus.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(waStatus);
+                    closingBroadcast();
                     break;
                 case "download_action":
                     Intent downloadIntent = new Intent(this, MainActivity.class);
                     downloadIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(downloadIntent);
+                    closingBroadcast();
                     break;
                 case "chat_action":
                     Intent chatIntent = new Intent(this, MainActivity.class);
                     chatIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(chatIntent);
+                    closingBroadcast();
                     break;
 
 
             }
         }
     }
+
+    private void closingBroadcast() {
+        sendBroadcast(new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
+    }
+
+    public boolean isStoragePermissionGrantedonly() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (getBaseContext().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    == PackageManager.PERMISSION_GRANTED) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return true;
+        }
+    }
+
+
 }

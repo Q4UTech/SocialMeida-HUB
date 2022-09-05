@@ -11,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
+import androidx.documentfile.provider.DocumentFile
 import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
 import androidx.viewpager.widget.ViewPager.OnPageChangeListener
@@ -27,8 +28,8 @@ class StatusFragment : Fragment() {
     private var preferences: MediaPreferences? = null
 
     private var tabcountvideo = false
-    private var pager:ViewPager?=null
-    private var tabs:TabLayout?=null
+    private var pager: ViewPager? = null
+    private var tabs: TabLayout? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -50,11 +51,10 @@ class StatusFragment : Fragment() {
 //        }
 
 
-
         println("StatusFragment.onCreateView hello 001")
         val root = inflater.inflate(R.layout.fragment_status, container, false)
-        pager=root.findViewById(R.id.pager)
-        tabs=root.findViewById(R.id.tabs)
+        pager = root.findViewById(R.id.pager)
+        tabs = root.findViewById(R.id.tabs)
         preferences = MediaPreferences(activity)
 
 
@@ -73,8 +73,11 @@ class StatusFragment : Fragment() {
         pager!!.setOnPageChangeListener(object : OnPageChangeListener {
             override fun onPageScrolled(i: Int, v: Float, i1: Int) {
                 println("onscrool 1 gfhafHga $i")
-                tabcountvideo = if (i == 1) { true }
-                else { false }
+                tabcountvideo = if (i == 1) {
+                    true
+                } else {
+                    false
+                }
             }
 
             override fun onPageSelected(i: Int) {
@@ -110,6 +113,7 @@ class StatusFragment : Fragment() {
                     "%3A" +
                     statusDir
             intent.putExtra(str, Uri.parse(stringBuilder))
+            startActivity(intent)
             println("FindPathActivity.onActivityResult fileUri0022bbb: " + Uri.parse(stringBuilder))
         } else {
             intent = Intent("android.intent.action.OPEN_DOCUMENT_TREE")
@@ -141,11 +145,9 @@ class StatusFragment : Fragment() {
     }
 
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         println("StatusFragment.onCreateView hello 002")
-
 
 
     }
@@ -161,10 +163,11 @@ class StatusFragment : Fragment() {
 //        }
 
 
-
 //        System.out.println("temp = chk111" + documentFile.get(2).canRead()+" "+documentFile.get(2).canWrite()+ " ");
 
 
     }
+
+
 
 }

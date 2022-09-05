@@ -50,7 +50,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:orientation="vertical"
-            android:visibility="visible">
+            android:visibility="gone">
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -71,22 +71,76 @@
                 android:textStyle="bold" />
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/ll_below_10_permission"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_status_saver_bg_small" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:padding="@dimen/_5sdp"
+                android:text="To Get All Status"
+                android:textColor="#212121"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/wa_status_permission_text"
+                android:textAlignment="center"
+                android:textColor="#8C8C8C"
+                android:textSize="8sp" />
+
+            <TextView
+                android:id="@+id/below_10_permission"
+                android:layout_width="@dimen/_220sdp"
+                android:layout_height="@dimen/_35sdp"
+                android:layout_below="@+id/rl_container"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:background="@drawable/rounded_btn_inapp"
+                android:gravity="center"
+                android:paddingStart="@dimen/_20sdp"
+                android:paddingEnd="@dimen/_20sdp"
+                android:text="@string/btn_allow"
+                android:textAllCaps="true"
+                android:textColor="#FFFFFF"
+                android:textSize="12sp" />
+        </LinearLayout>
+
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/gv_allMediaImage"
-            android:layout_above="@+id/rl_saved_options"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:stretchMode="columnWidth"/>
+            android:layout_above="@+id/rl_saved_options"
+            android:stretchMode="columnWidth" />
+
         <LinearLayout
             android:id="@+id/rl_saved_options"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:background="@android:color/white"
             android:layout_alignParentBottom="true"
+            android:background="@android:color/white"
             android:orientation="horizontal"
-            android:padding="@dimen/_10sdp">
+            android:padding="@dimen/_10sdp"
+            android:visibility="gone">
 
             <!--<TextView
                 android:id="@+id/div_tv"
@@ -117,6 +171,7 @@
                     android:textSize="10sp" />
 
             </LinearLayout>
+
             <LinearLayout
                 android:id="@+id/ll_share"
                 android:layout_width="0dp"
@@ -142,7 +197,6 @@
             </LinearLayout>
 
 
-
             <LinearLayout
                 android:id="@+id/ll_save"
                 android:layout_width="0dp"
@@ -156,11 +210,11 @@
                     android:layout_height="wrap_content">
 
                     <ImageView
-                        android:visibility="gone"
                         android:id="@+id/video_delete"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/ic_video_delete" />
+                        android:background="@drawable/ic_video_delete"
+                        android:visibility="gone" />
 
                     <ImageView
                         android:id="@+id/video_save"

@@ -9,9 +9,8 @@
         android:id="@+id/topbar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_60sdp"
-        android:background="@drawable/app_grad"
         android:layout_alignParentTop="true"
-        >
+        android:background="@drawable/app_grad">
 
         <ImageView
             android:id="@+id/ivBack"
@@ -58,11 +57,29 @@
         android:layout_marginBottom="@dimen/_4sdp"
         android:textColor="@android:color/black"
         android:textSize="12sp" />
+    <TextView
+        android:id="@+id/total_downloads_videos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/topbar"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_4sdp"
+        android:layout_marginBottom="@dimen/_4sdp"
+        android:textColor="@android:color/black"
+        android:textSize="12sp" />
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_View"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:visibility="visible"
+        android:layout_below="@+id/total_downloads" />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/video_recycler_View"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
         android:layout_below="@+id/total_downloads" />
 
     <androidx.cardview.widget.CardView
@@ -139,10 +156,10 @@
     <LinearLayout
         android:id="@+id/rl_saved_options"
         android:layout_width="match_parent"
-        android:background="@android:color/white"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="4dp"
+        android:background="@android:color/white"
         android:orientation="horizontal"
         android:padding="@dimen/_10sdp"
         android:visibility="gone">
@@ -165,12 +182,16 @@
                 android:id="@+id/repost"
                 android:layout_width="@dimen/_10sdp"
                 android:layout_height="@dimen/_8sdp"
-                android:background="@drawable/ic_select_all" />
+                android:background="@drawable/ic_select_all"
+                android:clickable="false"
+                android:focusable="false" />
 
             <TextView
                 android:id="@+id/tvSelectAll"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:clickable="false"
+                android:focusable="false"
                 android:text="@string/select_all"
                 android:textColor="@color/txt_color"
                 android:textSize="10sp" />
@@ -190,11 +211,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:background="@drawable/ic_share_file" />
+                android:background="@drawable/ic_share_file"
+                android:clickable="false"
+                android:focusable="false" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:clickable="false"
+                android:focusable="false"
                 android:text="@string/share"
                 android:textColor="@color/txt_color"
                 android:textSize="10sp" />
@@ -219,6 +244,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/ic_video_delete"
+                    android:clickable="false"
+                    android:focusable="false"
                     android:visibility="visible" />
 
                 <ImageView
@@ -226,13 +253,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/ic_download_file"
+                    android:clickable="false"
+                    android:focusable="false"
                     android:visibility="gone" />
             </RelativeLayout>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/download"
+                android:text="@string/delete"
                 android:textColor="@color/txt_color"
                 android:textSize="10sp" />
 
@@ -259,5 +288,23 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="@string/no_staus_display" />
+    </LinearLayout><LinearLayout
+        android:id="@+id/ll_nodata_video"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_frame" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="No status found 11" />
     </LinearLayout>
 </RelativeLayout>

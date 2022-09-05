@@ -1,8 +1,6 @@
 package com.jatpack.socialmediahub.adapter
 
 import android.content.Context
-import android.media.MediaPlayer
-import android.net.Uri
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -12,10 +10,8 @@ import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.jatpack.socialmediahub.R
 import com.jatpack.socialmediahub.model.PersonNumber
-import com.jatpack.socialmediahub.util.AppUtils
 import com.jatpack.socialmediahub.util.SetClick
 import java.io.File
 

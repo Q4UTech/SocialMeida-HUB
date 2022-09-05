@@ -1,8 +1,11 @@
 package com.jatpack.socialmediahub
 
+import android.Manifest
+import android.app.AlertDialog
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
-import android.os.AsyncTask
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -12,8 +15,10 @@ import android.widget.PopupWindow
 import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout.DrawerListener
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.whatsdelete.constants.Constants
@@ -21,15 +26,9 @@ import com.example.whatsdelete.utils.AppUtils
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.jatpack.socialmediahub.activities.SettingActivity
 import com.jatpack.socialmediahub.databinding.ActivityMainBinding
-import com.jatpack.socialmediahub.ui.socialmediadownloader.services.BackgroundRunningService
 import com.jatpack.socialmediahub.ui.socialmediadownloader.services.ClipBoardService
 import com.jatpack.socialmediahub.ui.status.MyDownloadsFragment
 import kotlinx.android.synthetic.main.activity_main.*
-import org.jsoup.Jsoup
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import java.io.IOException
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -188,6 +187,82 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         // }
     }
 
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when (requestCode) {
+            102 -> if (grantResults.size > 0 && grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                showADialog("Must require Storage Permission in order for app to work.",
+                    "Allow", "Deny", object : ADialogClicked {
+                        override fun onPositiveClicked(dialog: DialogInterface?) {
+                            if (dialog != null) {
+                                dialog.dismiss()
+                                requestStoragePermission()
+                            }
+                        }
 
+                        override fun onNegativeClicked(dialog: DialogInterface?) {
+                            dialog?.dismiss()
+                        }
+                    })
+            } else {
+                val intent = Intent("list_refresh");
+
+                LocalBroadcastManager.getInstance(this)
+                    .sendBroadcast(intent);
+            }
+        }
+    }
+
+    interface ADialogClicked {
+        fun onPositiveClicked(dialog: DialogInterface?)
+        fun onNegativeClicked(dialog: DialogInterface?)
+    }
+
+    fun showADialog(
+        message: String,
+        buttonPositive: String?,
+        buttonNegative: String?,
+        l: ADialogClicked
+    ) {
+        val builder = AlertDialog.Builder(this)
+        builder.setIcon(android.R.drawable.ic_dialog_alert)
+        builder.setMessage("" + message)
+        builder.setCancelable(true)
+        builder.setPositiveButton(
+            buttonPositive
+        ) { dialog: DialogInterface?, id: Int ->
+            /*if (dialog != null) {
+            dialog.dismiss();
+        }*/l.onPositiveClicked(dialog)
+        }
+        builder.setNegativeButton(
+            buttonNegative
+        ) { dialog: DialogInterface?, id: Int ->
+            /*if (dialog != null) {
+                 dialog.dismiss();
+             }*/l.onNegativeClicked(dialog)
+        }
+        builder.setOnCancelListener { dialog: DialogInterface? -> }
+        val dialog = builder.create()
+
+        /* try {
+            dialog.setCanceledOnTouchOutside(false);
+            if (!isFinishing()) {
+                dialog.show();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }*/
+    }
+
+    fun requestStoragePermission() {
+        ActivityCompat.requestPermissions(
+            this, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), 102
+        )
+    }
 }
 

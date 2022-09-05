@@ -3,12 +3,14 @@ package com.jatpack.socialmediahub.ui.status;
 import static android.app.Activity.RESULT_OK;
 import static android.content.Context.STORAGE_SERVICE;
 
-import android.app.ActionBar;
+import android.Manifest;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
+import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -22,7 +24,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -31,14 +32,13 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.ActionBarContextView;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.FileProvider;
 import androidx.documentfile.provider.DocumentFile;
 import androidx.fragment.app.Fragment;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.SimpleItemAnimator;
-
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.jatpack.socialmediahub.R;
@@ -47,6 +47,7 @@ import com.jatpack.socialmediahub.helper.MediaPreferences;
 import com.jatpack.socialmediahub.util.AppUtils;
 import com.jatpack.socialmediahub.util.ItemOffsetView;
 import com.jatpack.socialmediahub.util.SetClick;
+import com.jatpack.socialmediahub.util.Utilities;
 
 
 import org.apache.commons.io.FileUtils;
@@ -76,6 +77,7 @@ public class WAStatusFragment extends Fragment implements StatusFragmentContract
     private WAStatusWith11ListAdapter waStatusWith11ListAdapter;
     private TextView allow_doc_permission;
     private RelativeLayout above_10_permission, main_layout;
+    private LinearLayout ll_below_10_permission;
     private LinearLayout ll_small_wa_permission, ll_wa_big_container;
     public static final int WA_STATUS_FOLDER_REQ_CODE = 1001;
     public static final String WA_STATUS_FOLDER_REQ_RECEIVER = "SuceesReceiver";
@@ -85,7 +87,7 @@ public class WAStatusFragment extends Fragment implements StatusFragmentContract
     List<File> statusFileList = null;
     private ActionMode actionMode;
     private ActionModeCallback actionModeCallback;
-    private TextView no_data;
+    private TextView no_data, below_10_permission;
     private Button open, settings;
     BottomNavigationView bottomNavigationView;
     private LinearLayout ll_noData;
@@ -100,6 +102,7 @@ public class WAStatusFragment extends Fragment implements StatusFragmentContract
     public WAStatusFragment() {
         // Required empty public constructor
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -121,11 +124,11 @@ public class WAStatusFragment extends Fragment implements StatusFragmentContract
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             if (mediaPreferences != null && !mediaPreferences.getDocumetFilePath().equals("NA")) {
                 above_10_permission.setVisibility(View.GONE);
-                main_layout.setVisibility(View.VISIBLE);
+                ll_below_10_permission.setVisibility(View.VISIBLE);
                 fetchFile();
             } else {
                 above_10_permission.setVisibility(View.VISIBLE);
-                main_layout.setVisibility(View.GONE);
+                ll_below_10_permission.setVisibility(View.GONE);
 
                 allow_doc_permission.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -139,9 +142,23 @@ public class WAStatusFragment extends Fragment implements StatusFragmentContract
 
         } else {
             above_10_permission.setVisibility(View.GONE);
-            main_layout.setVisibility(View.VISIBLE);
-            mPresenter = new StatusPresenter(this);
-            mPresenter.start(context);
+            ll_below_10_permission.setVisibility(View.VISIBLE);
+            if (isStoragePermissionGrantedonly()) {
+                load_imgList();
+            }
+            below_10_permission.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (!isStoragePermissionGrantedonly()) {
+                        requestStoragePermission();
+                    } else {
+                        //  mPresenter = new StatusPresenter(this);
+                        load_imgList();
+                    }
+                }
+            });
+
+
         }
 
 
@@ -151,7 +168,9 @@ public class WAStatusFragment extends Fragment implements StatusFragmentContract
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction("list_refresh");
+        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(broadcastReceiver, intentFilter);
         setHasOptionsMenu(true);
     }
 
@@ -174,6 +193,8 @@ public class WAStatusFragment extends Fragment implements StatusFragmentContract
         no_data = view.findViewById(R.id.no_data);
         ll_noData = view.findViewById(R.id.ll_nodata);
         above_10_permission = view.findViewById(R.id.above_10_permission);
+        ll_below_10_permission = view.findViewById(R.id.ll_below_10_permission);
+        below_10_permission = view.findViewById(R.id.below_10_permission);
         ll_small_wa_permission = view.findViewById(R.id.ll_small_wa_permission);
         ll_wa_big_container = view.findViewById(R.id.ll_wa_big_container);
         iv_wa_doc_permission = view.findViewById(R.id.iv_wa_doc_permission);
@@ -204,7 +225,9 @@ public class WAStatusFragment extends Fragment implements StatusFragmentContract
     }
 
     public void load_imgList() {
+        ll_below_10_permission.setVisibility(View.GONE);
         mPresenter.start(context);
+
     }
 
 
@@ -333,7 +356,9 @@ public class WAStatusFragment extends Fragment implements StatusFragmentContract
         if (mediaPreferences != null && mediaPreferences.getRefresh()) {
             mediaPreferences.setRefresh(false);
             try {
+
                 load_imgList();
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -510,12 +535,16 @@ public class WAStatusFragment extends Fragment implements StatusFragmentContract
                 waStatusFragment.bottomNavigationView.setVisibility(View.VISIBLE);
                 waStatusFragment.rl_saved_options.setVisibility(View.GONE);
                 waStatusFragment.top_tool.setVisibility(View.VISIBLE);
+                waStatusFragment.selectAll = false;
+                waStatusFragment.tvSelectAll.setText("select All");
             }
             if (waStatusFragment.waStatusWith11ListAdapter != null) {
                 waStatusFragment.waStatusWith11ListAdapter.removeAllSelected();
                 waStatusFragment.bottomNavigationView.setVisibility(View.VISIBLE);
                 waStatusFragment.rl_saved_options.setVisibility(View.GONE);
                 waStatusFragment.top_tool.setVisibility(View.VISIBLE);
+                waStatusFragment.selectAll = false;
+                waStatusFragment.tvSelectAll.setText("select All");
             }
             waStatusFragment.actionMode = null;
 
@@ -575,7 +604,7 @@ public class WAStatusFragment extends Fragment implements StatusFragmentContract
             }
 
         }
-        shareFileImage(uriArrayList);
+        Utilities.Companion.shareFileImage(requireActivity(), uriArrayList);
     }
 
     private void shareMultipleImageFor11() {
@@ -590,61 +619,23 @@ public class WAStatusFragment extends Fragment implements StatusFragmentContract
             }
 
         }
-        shareFileImage(uriArrayList);
+        Utilities.Companion.shareFileImage(requireActivity(), uriArrayList);
     }
 
-    public void shareFileImage(ArrayList<Uri> path) {
-
-        Log.d("TAG", "shareMutliple1: ");
-        Intent sendIntent = new Intent();
-
-        sendIntent.setAction(Intent.ACTION_SEND_MULTIPLE);
-        sendIntent.putExtra(Intent.EXTRA_STREAM, path);
-        sendIntent.setType("*/*");
-
-        Intent shareIntent = Intent.createChooser(sendIntent, null);
-        requireActivity().startActivity(shareIntent);
-
-    }
-//    private void setStatusAlarm() {
-//        Log.d("StatusAlarmReceiver", "Hello onReceive alarmmmm 002 aaa");
-//        int i = 1;
-//        Intent myIntent = new Intent(context, StatusAlarmReceiver.class);
-//        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, myIntent, 0);
-//        myIntent.setAction(Intent.ACTION_MAIN);
-//        myIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-//        AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(ALARM_SERVICE);
-//        if (alarmManager != null) {
-////                alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 1000,
-////                        2 * 60 * 1000, pendingIntent);
+//    public void shareFileImage(ArrayList<Uri> path) {
 //
-//            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, SystemClock.elapsedRealtime()
-//                    + (i * 1000), STATUS_DURATION, pendingIntent);
-//        }
+//        Log.d("TAG", "shareMutliple1: ");
+//        Intent sendIntent = new Intent();
 //
+//        sendIntent.setAction(Intent.ACTION_SEND_MULTIPLE);
+//        sendIntent.putExtra(Intent.EXTRA_STREAM, path);
+//        sendIntent.setType("*/*");
 //
+//        Intent shareIntent = Intent.createChooser(sendIntent, null);
+//        requireActivity().startActivity(shareIntent);
 //
 //    }
 
-
-//    private void getAlarmNotificationTime(long timing) {
-//
-//        int i = 60;
-//        Log.d("MyAppAlarmReceiver", "Hello onReceive test notii 001 cc");
-//        if (alarmManager == null && pendingIntent == null) {
-//            Log.d("MyAppAlarmReceiver", "Hello onReceive test notii 001 dd");
-//            Intent intent = new Intent(getActivity(), StatusAlarmReceiver.class);
-//            intent.setAction(Intent.ACTION_MAIN);
-//            intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-//            pendingIntent = PendingIntent.getBroadcast(getActivity(), 0, intent, 0);
-//            alarmManager = (AlarmManager) getActivity().getSystemService(ALARM_SERVICE);
-//            alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime()
-//                    + timing, timing, pendingIntent);
-//        } else {
-//
-//
-//        }
-//    }
 
     public void copyFileOrDirectory(String srcDir, String dstDir) {
 
@@ -750,5 +741,35 @@ public class WAStatusFragment extends Fragment implements StatusFragmentContract
             statusFileList = adapter.getList();
         }
     }
+
+    public boolean isStoragePermissionGrantedonly() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (requireActivity().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    == PackageManager.PERMISSION_GRANTED) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return true;
+        }
+    }
+
+    public void requestStoragePermission() {
+
+        ActivityCompat.requestPermissions(requireActivity()
+                , new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 102);
+    }
+
+    BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Log.d("TAG", "onReceive called: ");
+            load_imgList();
+
+
+        }
+    };
+
 
 }

@@ -6,7 +6,7 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:openDrawer="start">
+    tools:openDrawer="">
     <RelativeLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
@@ -90,15 +90,17 @@
                     android:id="@+id/searchBoxEditText"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
-                    android:layout_marginStart="@dimen/_5sdp"
+                    android:layout_centerVertical="true"
                     android:layout_toLeftOf="@+id/ll_download"
                     android:layout_toRightOf="@+id/search_drop"
                     android:background="@android:color/transparent"
+                    android:drawableStart="@drawable/ic_group_search"
+                    android:drawablePadding="5dp"
                     android:ems="10"
                     android:hint="Search"
                     android:imeOptions="actionSearch"
                     android:inputType="text"
-                    android:paddingStart="@dimen/_10sdp"
+                    android:paddingStart="8dp"
                     android:textAlignment="viewStart"
                     android:textColor="@color/black"
                     android:textColorHint="#9B9B9B"
