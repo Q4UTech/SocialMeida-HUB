@@ -96,6 +96,7 @@
         <service
             android:name=".service.SocialMediaHubService"
             android:enabled="true" />
+
         <receiver
             android:name=".receivers.BootReceiver"
             android:enabled="true"
