@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/bottom_sheet_download"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/arc_promt_bg"
+    app:behavior_hideable="true"
+    app:behavior_peekHeight="0dp"
+    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+    tools:ignore="MissingDefaultResource">
+
+
+    <ImageView
+        android:id="@+id/iv_close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/margin10dp"
+        android:layout_marginTop="@dimen/margin_5"
+        android:layout_marginRight="@dimen/margin_left_20"
+        android:src="@drawable/ic_close"
+        android:layout_alignParentRight="true"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:id="@+id/rl_bottom_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/margin_left_30"
+                android:text="@string/download"
+                android:textColor="@color/black"
+                android:textSize="@dimen/tv_size16"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:id="@+id/rl_ads"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_title"
+                android:layout_marginLeft="@dimen/margin15dp"
+                android:layout_marginTop="@dimen/margin15dp"
+                android:layout_marginRight="@dimen/margin10dp"
+                android:background="@color/black"
+                android:orientation="vertical" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/rl_ads"
+                android:layout_marginTop="@dimen/margin10dp"
+                android:layout_marginBottom="@dimen/margin_left_30">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_left_30"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tv_cancel"
+                        android:layout_width="@dimen/margin130dp"
+                        android:layout_height="@dimen/margin_bottom_40"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="@dimen/margin10dp"
+                        android:layout_marginTop="@dimen/margin10dp"
+                        android:background="@drawable/cancel_button_bg"
+                        android:gravity="center"
+                        android:text="@string/cancel"
+                        android:textColor="@color/st_color"
+                        android:textSize="@dimen/tv_size12" />
+
+                    <TextView
+                        android:id="@+id/tv_view"
+                        android:layout_width="@dimen/margin130dp"
+                        android:layout_height="@dimen/margin_bottom_40"
+                        android:layout_alignParentRight="true"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="@dimen/margin10dp"
+                        android:layout_marginRight="@dimen/margin10dp"
+                        android:background="@drawable/post_button_bg"
+                        android:gravity="center"
+                        android:text="View"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/tv_size12" />
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+</RelativeLayout>
+

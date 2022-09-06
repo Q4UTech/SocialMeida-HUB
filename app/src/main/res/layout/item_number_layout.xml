@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/_45sdp">
+    <RelativeLayout
+        android:id="@+id/rl"
+        android:layout_centerVertical="true"
+        android:layout_width="match_parent"
+        android:layout_toStartOf="@+id/cross"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/person_img"
+            android:layout_width="@dimen/_25sdp"
+            android:layout_height="@dimen/_25sdp"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:src="@drawable/ic_person_bg" />
+
+        <LinearLayout
+            android:id="@+id/ll_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/_10sdp"
+
+            android:layout_toEndOf="@+id/person_img"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/contact"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="9589347589"
+                android:textColor="#202020"
+                android:textSize="10sp" />
+
+            <TextView
+                android:id="@+id/dataTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textColor="#B0B0B0"
+                android:textSize="8sp" />
+        </LinearLayout>
+
+    </RelativeLayout>
+
+
+    <ImageView
+        android:id="@+id/cross"
+        android:padding="@dimen/_10sdp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:layout_marginEnd="@dimen/_15sdp"
+        android:src="@drawable/ic_cross" />
+</RelativeLayout>

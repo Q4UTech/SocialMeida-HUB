@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    app:cardBackgroundColor="@color/white"
+    app:cardCornerRadius="@dimen/margin10"
+    app:cardElevation="4dp"
+    android:elevation="4dp"
+    android:animateLayoutChanges="true"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:orientation="vertical"
+        android:padding="2dp"
+        android:layout_margin="@dimen/margin10"
+        android:animateLayoutChanges="true"
+        android:layout_height="wrap_content">
+
+
+        <ImageView
+            android:id="@+id/google_click"
+            android:layout_width="wrap_content"
+            android:src="@drawable/ic_search"
+            android:padding="@dimen/_4sdp"
+            android:layout_height="wrap_content"/>
+
+
+        <TextView
+            android:layout_marginTop="@dimen/margine5"
+            android:layout_marginBottom="@dimen/margine5"
+            android:layout_width="match_parent"
+            android:background="@drawable/search_div_grad"
+            android:layout_height="1dp"/>
+
+        <ImageView
+            android:padding="@dimen/_4sdp"
+            android:id="@+id/down_video"
+            android:layout_width="wrap_content"
+            android:src="@drawable/ic_video_downloader_nav"
+            android:layout_height="wrap_content"/>
+
+
+
+
+    </LinearLayout>
+
+
+</androidx.cardview.widget.CardView>

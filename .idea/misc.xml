@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/AndroidStudioProjects/SocialMeida-HUB/AppEngine/src/main/res/drawable/splash_btn.xml" value="0.142" />
+        <entry key="..\:/AndroidStudioProjects/SocialMeida-HUB/AppEngine/src/main/res/layout/splash_tnc.xml" value="0.16770833333333332" />
+        <entry key="..\:/AndroidStudioProjects/SocialMeida-HUB/app/src/main/res/layout/activity_main.xml" value="0.16770833333333332" />
+        <entry key="..\:/AndroidStudioProjects/SocialMeida-HUB/app/src/main/res/layout/activity_setting.xml" value="0.16770833333333332" />
+        <entry key="..\:/AndroidStudioProjects/SocialMeida-HUB/app/src/main/res/layout/activity_splash.xml" value="0.16770833333333332" />
+        <entry key="..\:/AndroidStudioProjects/SocialMeida-HUB/app/src/main/res/layout/activity_status_detail.xml" value="0.16770833333333332" />
+        <entry key="..\:/AndroidStudioProjects/SocialMeida-HUB/app/src/main/res/layout/fragment_notifications.xml" value="0.1" />
+        <entry key="..\:/AndroidStudioProjects/SocialMeida-HUB/app/src/main/res/layout/item_number_layout.xml" value="0.16770833333333332" />
+        <entry key="..\:/AndroidStudioProjects/SocialMeida-HUB/app/src/main/res/layout/nav_header_main.xml" value="0.16770833333333332" />
+        <entry key="..\:/AndroidStudioProjects/SocialMeida-HUB/app/src/main/res/layout/socialhub_custom_notification.xml" value="0.16770833333333332" />
+        <entry key="..\:/AndroidStudioProjects/SocialMeida-HUB/app/src/main/res/menu/bottom_nav_menu.xml" value="0.16770833333333332" />
+        <entry key="..\:/AndroidStudioProjects/SocialMeida-HUB/hubdata/src/main/res/layout/fragment_detail.xml" value="0.16770833333333332" />
+        <entry key="..\:/AndroidStudioProjects/SocialMeida-HUB/hubdata/src/main/res/layout/fragment_home_cat.xml" value="0.16770833333333332" />
+      </map>
+    </option>
+  </component>
+  <component name="ExternalStorageConfigurationManager" enabled="true" />
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK" />
+</project>

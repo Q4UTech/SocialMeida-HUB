@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="margin10">10dp</dimen>
+    <dimen name="text_8">8sp</dimen>
+    <dimen name="margin8">8dp</dimen>
+    <dimen name="margin20">20dp</dimen>
+    <dimen name="item_offset">8dp</dimen>
+    <dimen name="txt_10">10sp</dimen>
+    <dimen name="txt_11">11sp</dimen>
+    <dimen name="margin15">15dp</dimen>
+    <dimen name="margin_30">30dp</dimen>
+    <dimen name="margine5">5dp</dimen>
+    <dimen name="header_txt_size">16sp</dimen>
+    <dimen name="txt_14sp">14sp</dimen>
+    <dimen name="app_grid_size">45dp</dimen>
+</resources>
