@@ -21,7 +21,7 @@ import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.whatsdelete.utils.AppUtils
-import com.jatpack.wastatustranding.R
+import com.pds.wastatustranding.R
 import com.squareup.picasso.Picasso
 import java.io.*
 import java.lang.ref.WeakReference

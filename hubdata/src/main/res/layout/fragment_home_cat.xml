@@ -67,15 +67,13 @@
                                 android:layout_width="match_parent"
                                 android:layout_gravity="center"
                                 android:gravity="center"
-                                android:background="@drawable/bottom_round_corner"
                                 android:layout_height="match_parent">
 
                                 <LinearLayout
                                     android:id="@+id/native_ads"
                                     android:layout_width="match_parent"
-                                    android:layout_height="210dp"
+                                    android:layout_height="wrap_content"
                                     android:layout_gravity="center"
-                                    android:background="@drawable/temp_ads"
                                     android:gravity="center"
                                     android:orientation="horizontal"
                                     app:layout_collapseMode="parallax" />

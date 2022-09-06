@@ -8,7 +8,7 @@ import android.widget.ImageView
 import android.widget.RelativeLayout
 import androidx.viewpager.widget.PagerAdapter
 import com.bumptech.glide.Glide
-import com.jatpack.wastatustranding.R
+import com.pds.wastatustranding.R
 import java.util.*
 
 

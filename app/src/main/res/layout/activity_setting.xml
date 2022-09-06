@@ -6,52 +6,52 @@
     android:layout_height="match_parent"
     tools:context=".activities.SettingActivity">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
+    <RelativeLayout
+        android:id="@+id/topbar"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="#83d8fc"
-        android:visibility="gone">
+        android:layout_height="@dimen/_60sdp"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/app_grad">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/ivBack"
+            android:layout_width="@dimen/margin20"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/margin20dp"
+            android:src="@drawable/back_arrow"
+            app:tint="#012A72" />
 
-            <ImageView
-                android:id="@+id/back"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_centerVertical="true"
-                android:src="@drawable/ic_back" />
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/_20sdp"
+            android:layout_toEndOf="@+id/ivBack"
+            android:text="@string/app_notification"
+            android:textColor="#012A72"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="@dimen/_10sdp"
-                android:layout_toEndOf="@id/back"
-                android:text="App notification"
-                android:textColor="@color/txt_color"
-                android:textSize="15sp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:layout_marginEnd="@dimen/_15sdp"
-                android:text="Save"
-                android:textColor="@color/txt_color"
-                android:textSize="15sp" />
-        </RelativeLayout>
-
-    </androidx.appcompat.widget.Toolbar>
+        <TextView
+            android:id="@+id/tvSave"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/_15sdp"
+            android:text="@string/save"
+            android:textColor="#012A72"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+    </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/rl_notification"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/toolbar"
+        android:layout_below="@id/topbar"
         android:layout_marginTop="@dimen/_15sdp">
 
         <LinearLayout
@@ -90,6 +90,7 @@
 
     <RelativeLayout
         android:id="@+id/rl_view"
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/rl_notification"
@@ -115,8 +116,10 @@
             android:orientation="horizontal">
 
             <HorizontalScrollView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:id="@+id/horizontal_scroll"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/_45sdp"
+                android:layout_weight="0.8"
                 android:scrollbars="none">
 
                 <LinearLayout
@@ -128,13 +131,13 @@
                         android:id="@+id/ll_search"
                         android:layout_width="100dp"
                         android:layout_height="match_parent"
-                        android:layout_weight="0.25"
                         android:gravity="center"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:visibility="gone">
 
                         <ImageView
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
+                            android:layout_width="@dimen/margin30dp"
+                            android:layout_height="@dimen/margin30dp"
                             android:layout_gravity="center"
                             android:layout_marginTop="@dimen/_5sdp"
                             android:src="@drawable/search" />
@@ -142,10 +145,10 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:gravity="center"
+                            android:layout_gravity="center|bottom"
                             android:text="@string/search"
                             android:textAlignment="center"
+                            android:textColor="@color/custom_black"
                             android:textSize="8sp" />
                     </LinearLayout>
 
@@ -153,13 +156,14 @@
                         android:id="@+id/ll_camera"
                         android:layout_width="100dp"
                         android:layout_height="match_parent"
-                        android:layout_weight="0.25"
+
                         android:gravity="center"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:visibility="gone">
 
                         <ImageView
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
+                            android:layout_width="@dimen/margin30dp"
+                            android:layout_height="@dimen/margin30dp"
                             android:layout_gravity="center"
                             android:layout_marginTop="@dimen/_5sdp"
                             android:src="@drawable/ic_camera_icon" />
@@ -169,7 +173,8 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:gravity="center"
-                            android:text="@string/search_hint"
+                            android:text="@string/camera"
+                            android:textColor="@color/custom_black"
                             android:textSize="8sp" />
                     </LinearLayout>
 
@@ -177,13 +182,14 @@
                         android:id="@+id/ll_whatsapp"
                         android:layout_width="100dp"
                         android:layout_height="match_parent"
-                        android:layout_weight="0.25"
+                        android:layout_marginEnd="@dimen/margin10dp"
                         android:gravity="center"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:visibility="gone">
 
                         <ImageView
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
+                            android:layout_width="@dimen/margin30dp"
+                            android:layout_height="@dimen/margin30dp"
                             android:layout_gravity="center"
                             android:layout_marginTop="@dimen/_5sdp"
                             android:src="@drawable/ic_wa_noti_icon" />
@@ -194,6 +200,7 @@
                             android:layout_gravity="center"
                             android:gravity="center"
                             android:text="@string/whatsapp"
+                            android:textColor="@color/custom_black"
                             android:textSize="8sp" />
                     </LinearLayout>
 
@@ -201,13 +208,14 @@
                         android:id="@+id/ll_msg"
                         android:layout_width="100dp"
                         android:layout_height="match_parent"
-                        android:layout_weight="0.25"
+                        android:layout_marginEnd="@dimen/margin10dp"
                         android:gravity="center"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:visibility="gone">
 
                         <ImageView
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
+                            android:layout_width="@dimen/margin30dp"
+                            android:layout_height="@dimen/margin30dp"
                             android:layout_gravity="center"
                             android:layout_marginTop="@dimen/_8sdp"
                             android:src="@drawable/message" />
@@ -217,7 +225,8 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:gravity="center"
-                            android:text="@string/status"
+                            android:text="@string/message"
+                            android:textColor="@color/custom_black"
                             android:textSize="8sp" />
                     </LinearLayout>
 
@@ -225,13 +234,14 @@
                         android:id="@+id/ll_messanger"
                         android:layout_width="100dp"
                         android:layout_height="match_parent"
-                        android:layout_weight="0.25"
+                        android:layout_marginEnd="@dimen/margin10dp"
                         android:gravity="center"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:visibility="gone">
 
                         <ImageView
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
+                            android:layout_width="@dimen/margin30dp"
+                            android:layout_height="@dimen/margin30dp"
                             android:layout_gravity="center"
                             android:layout_marginTop="@dimen/_8sdp"
                             android:src="@drawable/messenger" />
@@ -241,7 +251,8 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:gravity="center"
-                            android:text="@string/status"
+                            android:text="@string/messenger"
+                            android:textColor="@color/custom_black"
                             android:textSize="8sp" />
                     </LinearLayout>
 
@@ -249,13 +260,14 @@
                         android:id="@+id/ll_facebook"
                         android:layout_width="100dp"
                         android:layout_height="match_parent"
-                        android:layout_weight="0.25"
+                        android:layout_marginEnd="@dimen/margin10dp"
                         android:gravity="center"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:visibility="gone">
 
                         <ImageView
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
+                            android:layout_width="@dimen/margin30dp"
+                            android:layout_height="@dimen/margin30dp"
                             android:layout_gravity="center"
                             android:layout_marginTop="@dimen/_8sdp"
                             android:src="@drawable/facebook" />
@@ -265,49 +277,112 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:gravity="center"
-                            android:text="@string/status"
+                            android:text="@string/facebook"
+                            android:textColor="@color/custom_black"
                             android:textSize="8sp" />
                     </LinearLayout>
 
-                    <LinearLayout
-                        android:id="@+id/ll_status"
-                        android:layout_width="100dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0.25"
-                        android:gravity="center"
-                        android:orientation="vertical">
 
-                        <ImageView
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="@dimen/_8sdp"
-                            android:src="@drawable/ic_status_noti_icon" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:gravity="center"
-                            android:text="@string/status"
-                            android:textSize="8sp" />
-                    </LinearLayout>
                 </LinearLayout>
             </HorizontalScrollView>
+
+            <LinearLayout
+                android:id="@+id/ll_noti_bottom"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.2"
+                android:gravity="center_horizontal">
+
+                <LinearLayout
+                    android:id="@+id/ll_status"
+                    android:layout_width="100dp"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:layout_width="@dimen/margin30dp"
+                        android:layout_height="@dimen/margin30dp"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="@dimen/_8sdp"
+                        android:src="@drawable/ic_status_noti_icon" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="@string/status"
+                        android:textColor="@color/custom_black"
+                        android:textSize="8sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_video_downloader"
+                    android:layout_width="100dp"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:layout_width="@dimen/margin30dp"
+                        android:layout_height="@dimen/margin30dp"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="@dimen/_8sdp"
+                        android:src="@drawable/ic_video_noti_icon" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="@string/downloader"
+                        android:textColor="@color/custom_black"
+                        android:textSize="8sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_direct_chat"
+                    android:layout_width="100dp"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:layout_width="@dimen/margin30dp"
+                        android:layout_height="@dimen/margin30dp"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="@dimen/_8sdp"
+                        android:src="@drawable/ic_direct_chat_noti_icon" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="@string/chat"
+                        android:textColor="@color/custom_black"
+                        android:textSize="8sp" />
+                </LinearLayout>
+            </LinearLayout>
         </LinearLayout>
     </RelativeLayout>
 
-    <androidx.core.widget.NestedScrollView
+  <!--  <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/rl_view"
         android:layout_margin="@dimen/margin10dp"
         android:background="@drawable/ic_notification_rec"
-        android:fillViewport="true">
+        android:fillViewport="true">-->
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_below="@+id/rl_view"
             android:layout_marginBottom="@dimen/_10sdp">
 
             <TextView
@@ -322,223 +397,265 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rec"
-                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_above="@+id/bottom_header"
                 android:layout_below="@+id/txt_header"
                 android:layout_marginStart="@dimen/_10sdp"
-                android:layout_marginTop="@dimen/_10sdp" />
+                android:layout_marginTop="@dimen/_10sdp"
+                android:visibility="gone" />
 
-            <RelativeLayout
-                android:id="@+id/rl_search"
-                android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:layout_below="@+id/txt_header"
-                android:layout_marginStart="@dimen/_10sdp"
-                android:layout_marginTop="@dimen/_10sdp">
 
-                <ImageView
-                    android:id="@+id/img_search"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:layout_alignParentStart="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="@dimen/_10sdp"
-                    android:src="@drawable/ic_search_option" />
 
-                <TextView
-                    android:id="@+id/tv_notification_content"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="@dimen/_15sdp"
-                    android:layout_toEndOf="@+id/img_search"
-                    android:text="@string/search" />
+                <androidx.core.widget.NestedScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fillViewport="true"
+                    android:fitsSystemWindows="true"
+                    android:layout_below="@+id/txt_header"
+                    android:layout_above="@+id/bottom_header"
+                    android:layout_margin="@dimen/margin10"
+                    android:background="@drawable/ic_notification_rec"
+                 >
 
-                <androidx.appcompat.widget.AppCompatCheckBox
-                    android:id="@+id/cb_search"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:button="@drawable/checkbox_selector" />
-            </RelativeLayout>
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/margin10">
 
-            <RelativeLayout
-                android:id="@+id/rl_camera"
-                android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:layout_marginStart="@dimen/_10sdp"
-                android:layout_below="@+id/rl_search"
-                android:layout_marginTop="@dimen/_10sdp">
+                        <RelativeLayout
+                            android:id="@+id/rl_search"
+                            android:layout_width="match_parent"
+                            android:layout_height="45dp"
+                            android:layout_marginStart="@dimen/_10sdp"
+                            android:layout_marginTop="@dimen/_10sdp">
 
-                <ImageView
-                    android:id="@+id/img_camera"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:layout_alignParentStart="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="@dimen/_10sdp"
-                    android:src="@drawable/ic_camera_option" />
+                            <ImageView
+                                android:id="@+id/img_search"
+                                android:layout_width="32dp"
+                                android:layout_height="32dp"
+                                android:layout_alignParentStart="true"
+                                android:layout_centerVertical="true"
+                                android:layout_marginStart="@dimen/_10sdp"
+                                android:src="@drawable/ic_search_option" />
 
-                <TextView
-                    android:id="@+id/tv_camera_content"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="@dimen/_15sdp"
-                    android:layout_toEndOf="@+id/img_camera"
-                    android:text="Camera" />
+                            <TextView
+                                android:id="@+id/tv_notification_content"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:layout_marginStart="@dimen/_15sdp"
+                                android:layout_toEndOf="@+id/img_search"
+                                android:text="@string/search" />
 
-                <androidx.appcompat.widget.AppCompatCheckBox
-                    android:id="@+id/cb_camera"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:button="@drawable/checkbox_selector" />
-            </RelativeLayout>
+                            <androidx.appcompat.widget.AppCompatCheckBox
+                                android:id="@+id/cb_search"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:layout_centerVertical="true"
+                                android:layout_marginEnd="@dimen/margin20"
+                                android:button="@drawable/checkbox_selector"
+                                android:clickable="false"
+                                android:focusable="false" />
+                        </RelativeLayout>
 
-            <RelativeLayout
-                android:id="@+id/rl_whats_app"
-                android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:layout_marginStart="@dimen/_10sdp"
-                android:layout_below="@+id/rl_camera"
-                android:layout_marginTop="@dimen/_10sdp">
+                        <RelativeLayout
+                            android:id="@+id/rl_camera"
+                            android:layout_width="match_parent"
+                            android:layout_height="45dp"
+                            android:layout_below="@+id/rl_search"
+                            android:layout_marginStart="@dimen/_10sdp"
+                            android:layout_marginTop="@dimen/_10sdp">
 
-                <ImageView
-                    android:id="@+id/iv_whatsapp"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:layout_alignParentStart="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="@dimen/_10sdp"
-                    android:src="@drawable/ic_whats_app_option" />
+                            <ImageView
+                                android:id="@+id/img_camera"
+                                android:layout_width="32dp"
+                                android:layout_height="32dp"
+                                android:layout_alignParentStart="true"
+                                android:layout_centerVertical="true"
+                                android:layout_marginStart="@dimen/_10sdp"
+                                android:src="@drawable/ic_camera_option" />
 
-                <TextView
-                    android:id="@+id/tv_whats_app"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="@dimen/_15sdp"
-                    android:layout_toEndOf="@+id/iv_whatsapp"
-                    android:text="WhatsApp" />
+                            <TextView
+                                android:id="@+id/tv_camera_content"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:layout_marginStart="@dimen/_15sdp"
+                                android:layout_toEndOf="@+id/img_camera"
+                                android:text="Camera" />
 
-                <androidx.appcompat.widget.AppCompatCheckBox
-                    android:id="@+id/cb_whats_app"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:button="@drawable/checkbox_selector" />
-            </RelativeLayout>
+                            <androidx.appcompat.widget.AppCompatCheckBox
+                                android:id="@+id/cb_camera"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:layout_centerVertical="true"
+                                android:layout_marginEnd="@dimen/margin20"
+                                android:button="@drawable/checkbox_selector"
+                                android:clickable="false"
+                                android:focusable="false" />
+                        </RelativeLayout>
 
-            <RelativeLayout
-                android:id="@+id/rl_msg"
-                android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:layout_below="@+id/rl_whats_app"
-                android:layout_marginStart="@dimen/_10sdp"
-                android:layout_marginTop="@dimen/_10sdp">
+                        <RelativeLayout
+                            android:id="@+id/rl_whats_app"
+                            android:layout_width="match_parent"
+                            android:layout_height="45dp"
+                            android:layout_below="@+id/rl_camera"
+                            android:layout_marginStart="@dimen/_10sdp"
+                            android:layout_marginTop="@dimen/_10sdp">
 
-                <ImageView
-                    android:id="@+id/iv_msg"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:layout_alignParentStart="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="@dimen/_10sdp"
-                    android:src="@drawable/ic_msg_option" />
+                            <ImageView
+                                android:id="@+id/iv_whatsapp"
+                                android:layout_width="32dp"
+                                android:layout_height="32dp"
+                                android:layout_alignParentStart="true"
+                                android:layout_centerVertical="true"
+                                android:layout_marginStart="@dimen/_10sdp"
+                                android:src="@drawable/ic_whats_app_option" />
 
-                <TextView
-                    android:id="@+id/tv_msg"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="@dimen/_15sdp"
-                    android:layout_toEndOf="@+id/iv_msg"
-                    android:text="Message" />
+                            <TextView
+                                android:id="@+id/tv_whats_app"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:layout_marginStart="@dimen/_15sdp"
+                                android:layout_toEndOf="@+id/iv_whatsapp"
+                                android:text="WhatsApp" />
 
-                <androidx.appcompat.widget.AppCompatCheckBox
-                    android:id="@+id/cb_msg"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:button="@drawable/checkbox_selector" />
-            </RelativeLayout>
+                            <androidx.appcompat.widget.AppCompatCheckBox
+                                android:id="@+id/cb_whats_app"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:layout_centerVertical="true"
+                                android:layout_marginEnd="@dimen/margin20"
+                                android:button="@drawable/checkbox_selector"
+                                android:clickable="false"
+                                android:focusable="false" />
+                        </RelativeLayout>
 
-            <RelativeLayout
-                android:id="@+id/rl_messanger"
-                android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:layout_below="@+id/rl_msg"
-                android:layout_marginStart="@dimen/_10sdp"
-                android:layout_marginTop="@dimen/_10sdp">
+                        <RelativeLayout
+                            android:id="@+id/rl_msg"
+                            android:layout_width="match_parent"
+                            android:layout_height="45dp"
+                            android:layout_below="@+id/rl_whats_app"
+                            android:layout_marginStart="@dimen/_10sdp"
+                            android:layout_marginTop="@dimen/_10sdp">
 
-                <ImageView
-                    android:id="@+id/iv_messanger"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:layout_alignParentStart="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="@dimen/_10sdp"
-                    android:src="@drawable/ic_messanger_option" />
+                            <ImageView
+                                android:id="@+id/iv_msg"
+                                android:layout_width="32dp"
+                                android:layout_height="32dp"
+                                android:layout_alignParentStart="true"
+                                android:layout_centerVertical="true"
+                                android:layout_marginStart="@dimen/_10sdp"
+                                android:src="@drawable/ic_msg_option" />
 
-                <TextView
-                    android:id="@+id/tv_messanger"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="@dimen/_15sdp"
-                    android:layout_toEndOf="@+id/iv_messanger"
-                    android:text="Messenger" />
+                            <TextView
+                                android:id="@+id/tv_msg"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:layout_marginStart="@dimen/_15sdp"
+                                android:layout_toEndOf="@+id/iv_msg"
+                                android:text="Message" />
 
-                <androidx.appcompat.widget.AppCompatCheckBox
-                    android:id="@+id/cb_messanger"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:button="@drawable/checkbox_selector" />
-            </RelativeLayout>
+                            <androidx.appcompat.widget.AppCompatCheckBox
+                                android:id="@+id/cb_msg"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:layout_centerVertical="true"
+                                android:layout_marginEnd="@dimen/margin20"
+                                android:button="@drawable/checkbox_selector"
+                                android:clickable="false"
+                                android:focusable="false" />
+                        </RelativeLayout>
 
-            <RelativeLayout
-                android:id="@+id/rl_facebook"
-                android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:layout_below="@+id/rl_messanger"
-                android:layout_marginStart="@dimen/_10sdp"
-                android:layout_marginTop="@dimen/_10sdp">
+                        <RelativeLayout
+                            android:id="@+id/rl_messanger"
+                            android:layout_width="match_parent"
+                            android:layout_height="45dp"
+                            android:layout_below="@+id/rl_msg"
+                            android:layout_marginStart="@dimen/_10sdp"
+                            android:layout_marginTop="@dimen/_10sdp">
 
-                <ImageView
-                    android:id="@+id/iv_facebook"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:layout_alignParentStart="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="@dimen/_10sdp"
-                    android:src="@drawable/ic_facebook" />
+                            <ImageView
+                                android:id="@+id/iv_messanger"
+                                android:layout_width="32dp"
+                                android:layout_height="32dp"
+                                android:layout_alignParentStart="true"
+                                android:layout_centerVertical="true"
+                                android:layout_marginStart="@dimen/_10sdp"
+                                android:src="@drawable/ic_messanger_option" />
 
-                <TextView
-                    android:id="@+id/tv_facebook"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="@dimen/_15sdp"
-                    android:layout_toEndOf="@+id/iv_facebook"
-                    android:text="Facebook" />
+                            <TextView
+                                android:id="@+id/tv_messanger"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:layout_marginStart="@dimen/_15sdp"
+                                android:layout_toEndOf="@+id/iv_messanger"
+                                android:text="Messenger" />
 
-                <androidx.appcompat.widget.AppCompatCheckBox
-                    android:id="@+id/cb_facebook"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:button="@drawable/checkbox_selector" />
-            </RelativeLayout>
+                            <androidx.appcompat.widget.AppCompatCheckBox
+                                android:id="@+id/cb_messanger"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:layout_centerVertical="true"
+                                android:layout_marginEnd="@dimen/margin20"
+                                android:button="@drawable/checkbox_selector"
+                                android:clickable="false"
+                                android:focusable="false" />
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:id="@+id/rl_facebook"
+                            android:layout_width="match_parent"
+                            android:layout_height="45dp"
+                            android:layout_below="@+id/rl_messanger"
+                            android:layout_marginStart="@dimen/_10sdp"
+                            android:layout_marginTop="@dimen/_10sdp">
+
+                            <ImageView
+                                android:id="@+id/iv_facebook"
+                                android:layout_width="32dp"
+                                android:layout_height="32dp"
+                                android:layout_alignParentStart="true"
+                                android:layout_centerVertical="true"
+                                android:layout_marginStart="@dimen/_10sdp"
+                                android:src="@drawable/ic_facebook" />
+
+                            <TextView
+                                android:id="@+id/tv_facebook"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:layout_marginStart="@dimen/_15sdp"
+                                android:layout_toEndOf="@+id/iv_facebook"
+                                android:text="Facebook" />
+
+                            <androidx.appcompat.widget.AppCompatCheckBox
+                                android:id="@+id/cb_facebook"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:layout_centerVertical="true"
+                                android:layout_marginEnd="@dimen/margin20"
+                                android:button="@drawable/checkbox_selector"
+                                android:clickable="false"
+                                android:focusable="false" />
+                        </RelativeLayout>
+                    </RelativeLayout>
+                </androidx.core.widget.NestedScrollView>
+
+            <!---->
+
+
+
             <TextView
                 android:id="@+id/bottom_header"
                 android:layout_width="wrap_content"
@@ -595,10 +712,10 @@
                             android:layout_below="@+id/img"
                             android:layout_centerHorizontal="true"
                             android:layout_marginTop="@dimen/_5sdp"
+                            android:layout_marginBottom="@dimen/_5sdp"
                             android:text="WA \n Status"
                             android:textAlignment="center"
                             android:textColor="#202020"
-                            android:layout_marginBottom="@dimen/_5sdp"
                             android:textSize="8sp" />
                     </RelativeLayout>
 
@@ -650,10 +767,10 @@
                             android:layout_below="@+id/img1"
                             android:layout_centerHorizontal="true"
                             android:layout_marginTop="@dimen/_5sdp"
+                            android:layout_marginBottom="@dimen/_5sdp"
                             android:text="Video \n Downloader"
                             android:textAlignment="center"
                             android:textColor="#202020"
-                            android:layout_marginBottom="@dimen/_5sdp"
                             android:textSize="8sp" />
                     </RelativeLayout>
 
@@ -727,6 +844,6 @@
                 </androidx.cardview.widget.CardView>
             </LinearLayout>
         </RelativeLayout>
-    </androidx.core.widget.NestedScrollView>
+    <!--</androidx.core.widget.NestedScrollView>-->
 
 </RelativeLayout>

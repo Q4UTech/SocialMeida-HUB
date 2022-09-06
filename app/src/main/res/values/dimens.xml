@@ -791,4 +791,5 @@
     <dimen name="margin120dp">120dp</dimen>
     <dimen name="margin80dp">180dp</dimen>
     <dimen name="padding10dp">10dp</dimen>
+    <dimen name="txt_15">15sp</dimen>
 </resources>

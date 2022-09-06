@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Social Media hub</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="showdata">Show Data From</string>
+    <string name="showdata_asset">Default Value</string>
+    <string name="showdata_server">Server Value</string>
+
+    <string name="termsCond">Terms of Service</string>
+    <string name="privacy_policy">Privacy Policy</string>
+    <string name="termsCondnew"> &amp; Terms of Service</string>
+
+    <string name="fcm_defaultSenderId">644997633585</string>
+    <string name="upgradetopro_text">"* No Ads\n\n* All Feature Upgrades Free\n\n* No Monthly Charges\n\n* No Recurring, Lifetime Payment Once"</string>
+
+    <!--Provider app id -->
+    <string name="fb_login_protocol_scheme">fb430751108384536</string>
+    <string name="app_id_facebook">430751108384536</string>
+    <string name="app_id_admob">ca-app-pub-3940256099942544~3347511713</string>
+    <string name="app_id_mediation_applovin_sdk_key">Ahu_LcSo_HVLiOo3XK_d76tslui3CfrS6JPXiqtc7m29KtC63i_HWrOO9fHQCo_f02vZyWQBGaRmE4cIvTqCLf</string>
+
+    <string name="ads_loading">Ads Loading....</string>
+    <string name="replay">Replay</string>
+    <string name="learn_more">Learn More</string>
+    <string name="sponsored">Sponsored</string>
+
+    <string name="close">Close</string>
+    <string name="exit">Exit</string>
+
+    <string name="more_apps">More Apps</string>
+    <string name="rate_apps">Rate Us</string>
+    <string name="five_star">5 Star</string>
+    <string name="play_store">Play Store</string>
+
+    <string name="share_app">Share App</string>
+    <string name="innovation_that_make_lives_simpler">Innovation that make lives simpler</string>
+    <string name="enter_correct_number">Please Enter Correct number!!</string>
+    <string name="action_need_network_connection">This action requires Internet Connection</string>
+
+    <string name="view_details">View Details</string>
+    <string name="ad_flag">Ad</string>
+</resources>

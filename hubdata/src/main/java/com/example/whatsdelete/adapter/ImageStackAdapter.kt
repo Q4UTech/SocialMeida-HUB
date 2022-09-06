@@ -13,7 +13,7 @@ import com.bumptech.glide.Glide
 import com.example.whatsdelete.listener.setClick
 import com.example.whatsdelete.modal.Data
 import com.example.whatsdelete.utils.CircleImageView
-import com.jatpack.wastatustranding.R
+import com.pds.wastatustranding.R
 import com.squareup.picasso.Picasso
 
 class ImageStackAdapter(private val context : Context, private val list: ArrayList<String>): RecyclerView.Adapter<ImageStackAdapter.ViewHolder>() {

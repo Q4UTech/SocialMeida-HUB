@@ -8,10 +8,11 @@
         android:layout_width="match_parent"
         android:layout_toStartOf="@+id/cross"
         android:layout_height="wrap_content">
+
         <ImageView
             android:id="@+id/person_img"
-            android:layout_width="@dimen/_35sdp"
-            android:layout_height="@dimen/_35sdp"
+            android:layout_width="@dimen/_25sdp"
+            android:layout_height="@dimen/_25sdp"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
             android:layout_marginStart="@dimen/_10sdp"
