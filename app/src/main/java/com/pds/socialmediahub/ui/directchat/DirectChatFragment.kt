@@ -21,6 +21,7 @@ import com.pds.socialmediahub.helper.Pref
 import com.pds.socialmediahub.model.PersonNumber
 import com.pds.socialmediahub.util.SetClick
 import com.rilixtech.CountryCodePicker
+import engine.app.adshandler.AHandler
 
 
 class DirectChatFragment : Fragment(R.layout.fragment_notifications), SetClick {
@@ -37,7 +38,7 @@ class DirectChatFragment : Fragment(R.layout.fragment_notifications), SetClick {
     private var tvMsg: TextView? = null
     private var phNumber: EditText? = null
     private var ccp: CountryCodePicker? = null
-    var clicked: Boolean? = false
+    var clicked: Boolean = false
     private var tempList: ArrayList<PersonNumber> = ArrayList()
 
 
@@ -45,13 +46,13 @@ class DirectChatFragment : Fragment(R.layout.fragment_notifications), SetClick {
     // onDestroyView.
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        requireActivity().window
-            .setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+        numberPref = Pref(requireActivity())
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        numberPref = Pref(requireActivity())
+
         tempNumberList = ArrayList()
 
         rlWhatApp = view.findViewById(R.id.rl_whats_app)
@@ -62,7 +63,8 @@ class DirectChatFragment : Fragment(R.layout.fragment_notifications), SetClick {
         tvMsg = view.findViewById(R.id.tvMsg)
 
         openList?.setOnClickListener {
-            if (!clicked!!) {
+            Log.d("TAG", "onViewCreated: ")
+            if (!clicked) {
                 clicked = true
                 loadData()
 
@@ -91,7 +93,7 @@ class DirectChatFragment : Fragment(R.layout.fragment_notifications), SetClick {
                 tempList.addAll(it)
 
             }
-            Log.d("TAG", "onCreateView22: " + tempNumberList?.size)
+            Log.d("TAG", "onCreateView22: " + numberPref?.getNumberList()?.size)
 
 
             if (phNumber != null && phNumber?.length()!! > 9) {
@@ -101,7 +103,8 @@ class DirectChatFragment : Fragment(R.layout.fragment_notifications), SetClick {
                 )
             }
         }
-
+        view.findViewById<LinearLayout>(R.id.ll_ads)
+            .addView(AHandler.getInstance().getNativeLarge(requireActivity()))
         /*  if (numberPref?.getNumberList() != null) {*/
 
         tvMsg?.addTextChangedListener(object : TextWatcher {
@@ -141,7 +144,7 @@ class DirectChatFragment : Fragment(R.layout.fragment_notifications), SetClick {
     private fun loadData() {
 
         tempNumberList = numberPref?.getNumberList()
-
+        Log.d("TAG", "onCreateView11: " + tempNumberList?.size)
         if (tempNumberList != null && tempNumberList?.size!! > 0) {
             recyclerView?.visibility = View.VISIBLE
             Log.d("TAG", "onCreateView: " + tempNumberList?.size)

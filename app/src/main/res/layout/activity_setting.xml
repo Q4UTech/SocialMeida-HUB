@@ -338,7 +338,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:gravity="center"
-                        android:text="@string/status"
+                        android:text="@string/downloader"
                         android:textColor="@color/custom_black"
                         android:textSize="8sp" />
                 </LinearLayout>
@@ -363,7 +363,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:gravity="center"
-                        android:text="@string/status"
+                        android:text="@string/chat"
                         android:textColor="@color/custom_black"
                         android:textSize="8sp" />
                 </LinearLayout>
@@ -371,17 +371,18 @@
         </LinearLayout>
     </RelativeLayout>
 
-    <androidx.core.widget.NestedScrollView
+  <!--  <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/rl_view"
         android:layout_margin="@dimen/margin10dp"
         android:background="@drawable/ic_notification_rec"
-        android:fillViewport="true">
+        android:fillViewport="true">-->
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_below="@+id/rl_view"
             android:layout_marginBottom="@dimen/_10sdp">
 
             <TextView
@@ -404,233 +405,256 @@
                 android:layout_marginTop="@dimen/_10sdp"
                 android:visibility="gone" />
 
-            <RelativeLayout
-                android:id="@+id/rl_search"
-                android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:layout_below="@+id/txt_header"
-                android:layout_marginStart="@dimen/_10sdp"
-                android:layout_marginTop="@dimen/_10sdp">
 
-                <ImageView
-                    android:id="@+id/img_search"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:layout_alignParentStart="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="@dimen/_10sdp"
-                    android:src="@drawable/ic_search_option" />
 
-                <TextView
-                    android:id="@+id/tv_notification_content"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="@dimen/_15sdp"
-                    android:layout_toEndOf="@+id/img_search"
-                    android:text="@string/search" />
+                <androidx.core.widget.NestedScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fillViewport="true"
+                    android:fitsSystemWindows="true"
+                    android:layout_below="@+id/txt_header"
+                    android:layout_above="@+id/bottom_header"
+                    android:layout_margin="@dimen/margin10"
+                    android:background="@drawable/ic_notification_rec"
+                 >
 
-                <androidx.appcompat.widget.AppCompatCheckBox
-                    android:id="@+id/cb_search"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginEnd="@dimen/margin20"
-                    android:button="@drawable/checkbox_selector"
-                    android:clickable="false"
-                    android:focusable="false" />
-            </RelativeLayout>
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/margin10">
 
-            <RelativeLayout
-                android:id="@+id/rl_camera"
-                android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:layout_below="@+id/rl_search"
-                android:layout_marginStart="@dimen/_10sdp"
-                android:layout_marginTop="@dimen/_10sdp">
+                        <RelativeLayout
+                            android:id="@+id/rl_search"
+                            android:layout_width="match_parent"
+                            android:layout_height="45dp"
+                            android:layout_marginStart="@dimen/_10sdp"
+                            android:layout_marginTop="@dimen/_10sdp">
 
-                <ImageView
-                    android:id="@+id/img_camera"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:layout_alignParentStart="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="@dimen/_10sdp"
-                    android:src="@drawable/ic_camera_option" />
+                            <ImageView
+                                android:id="@+id/img_search"
+                                android:layout_width="32dp"
+                                android:layout_height="32dp"
+                                android:layout_alignParentStart="true"
+                                android:layout_centerVertical="true"
+                                android:layout_marginStart="@dimen/_10sdp"
+                                android:src="@drawable/ic_search_option" />
 
-                <TextView
-                    android:id="@+id/tv_camera_content"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="@dimen/_15sdp"
-                    android:layout_toEndOf="@+id/img_camera"
-                    android:text="Camera" />
+                            <TextView
+                                android:id="@+id/tv_notification_content"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:layout_marginStart="@dimen/_15sdp"
+                                android:layout_toEndOf="@+id/img_search"
+                                android:text="@string/search" />
 
-                <androidx.appcompat.widget.AppCompatCheckBox
-                    android:id="@+id/cb_camera"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginEnd="@dimen/margin20"
-                    android:button="@drawable/checkbox_selector"
-                    android:clickable="false"
-                    android:focusable="false" />
-            </RelativeLayout>
+                            <androidx.appcompat.widget.AppCompatCheckBox
+                                android:id="@+id/cb_search"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:layout_centerVertical="true"
+                                android:layout_marginEnd="@dimen/margin20"
+                                android:button="@drawable/checkbox_selector"
+                                android:clickable="false"
+                                android:focusable="false" />
+                        </RelativeLayout>
 
-            <RelativeLayout
-                android:id="@+id/rl_whats_app"
-                android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:layout_below="@+id/rl_camera"
-                android:layout_marginStart="@dimen/_10sdp"
-                android:layout_marginTop="@dimen/_10sdp">
+                        <RelativeLayout
+                            android:id="@+id/rl_camera"
+                            android:layout_width="match_parent"
+                            android:layout_height="45dp"
+                            android:layout_below="@+id/rl_search"
+                            android:layout_marginStart="@dimen/_10sdp"
+                            android:layout_marginTop="@dimen/_10sdp">
 
-                <ImageView
-                    android:id="@+id/iv_whatsapp"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:layout_alignParentStart="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="@dimen/_10sdp"
-                    android:src="@drawable/ic_whats_app_option" />
+                            <ImageView
+                                android:id="@+id/img_camera"
+                                android:layout_width="32dp"
+                                android:layout_height="32dp"
+                                android:layout_alignParentStart="true"
+                                android:layout_centerVertical="true"
+                                android:layout_marginStart="@dimen/_10sdp"
+                                android:src="@drawable/ic_camera_option" />
 
-                <TextView
-                    android:id="@+id/tv_whats_app"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="@dimen/_15sdp"
-                    android:layout_toEndOf="@+id/iv_whatsapp"
-                    android:text="WhatsApp" />
+                            <TextView
+                                android:id="@+id/tv_camera_content"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:layout_marginStart="@dimen/_15sdp"
+                                android:layout_toEndOf="@+id/img_camera"
+                                android:text="Camera" />
 
-                <androidx.appcompat.widget.AppCompatCheckBox
-                    android:id="@+id/cb_whats_app"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginEnd="@dimen/margin20"
-                    android:button="@drawable/checkbox_selector"
-                    android:clickable="false"
-                    android:focusable="false" />
-            </RelativeLayout>
+                            <androidx.appcompat.widget.AppCompatCheckBox
+                                android:id="@+id/cb_camera"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:layout_centerVertical="true"
+                                android:layout_marginEnd="@dimen/margin20"
+                                android:button="@drawable/checkbox_selector"
+                                android:clickable="false"
+                                android:focusable="false" />
+                        </RelativeLayout>
 
-            <RelativeLayout
-                android:id="@+id/rl_msg"
-                android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:layout_below="@+id/rl_whats_app"
-                android:layout_marginStart="@dimen/_10sdp"
-                android:layout_marginTop="@dimen/_10sdp">
+                        <RelativeLayout
+                            android:id="@+id/rl_whats_app"
+                            android:layout_width="match_parent"
+                            android:layout_height="45dp"
+                            android:layout_below="@+id/rl_camera"
+                            android:layout_marginStart="@dimen/_10sdp"
+                            android:layout_marginTop="@dimen/_10sdp">
 
-                <ImageView
-                    android:id="@+id/iv_msg"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:layout_alignParentStart="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="@dimen/_10sdp"
-                    android:src="@drawable/ic_msg_option" />
+                            <ImageView
+                                android:id="@+id/iv_whatsapp"
+                                android:layout_width="32dp"
+                                android:layout_height="32dp"
+                                android:layout_alignParentStart="true"
+                                android:layout_centerVertical="true"
+                                android:layout_marginStart="@dimen/_10sdp"
+                                android:src="@drawable/ic_whats_app_option" />
 
-                <TextView
-                    android:id="@+id/tv_msg"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="@dimen/_15sdp"
-                    android:layout_toEndOf="@+id/iv_msg"
-                    android:text="Message" />
+                            <TextView
+                                android:id="@+id/tv_whats_app"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:layout_marginStart="@dimen/_15sdp"
+                                android:layout_toEndOf="@+id/iv_whatsapp"
+                                android:text="WhatsApp" />
 
-                <androidx.appcompat.widget.AppCompatCheckBox
-                    android:id="@+id/cb_msg"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginEnd="@dimen/margin20"
-                    android:button="@drawable/checkbox_selector"
-                    android:clickable="false"
-                    android:focusable="false" />
-            </RelativeLayout>
+                            <androidx.appcompat.widget.AppCompatCheckBox
+                                android:id="@+id/cb_whats_app"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:layout_centerVertical="true"
+                                android:layout_marginEnd="@dimen/margin20"
+                                android:button="@drawable/checkbox_selector"
+                                android:clickable="false"
+                                android:focusable="false" />
+                        </RelativeLayout>
 
-            <RelativeLayout
-                android:id="@+id/rl_messanger"
-                android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:layout_below="@+id/rl_msg"
-                android:layout_marginStart="@dimen/_10sdp"
-                android:layout_marginTop="@dimen/_10sdp">
+                        <RelativeLayout
+                            android:id="@+id/rl_msg"
+                            android:layout_width="match_parent"
+                            android:layout_height="45dp"
+                            android:layout_below="@+id/rl_whats_app"
+                            android:layout_marginStart="@dimen/_10sdp"
+                            android:layout_marginTop="@dimen/_10sdp">
 
-                <ImageView
-                    android:id="@+id/iv_messanger"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:layout_alignParentStart="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="@dimen/_10sdp"
-                    android:src="@drawable/ic_messanger_option" />
+                            <ImageView
+                                android:id="@+id/iv_msg"
+                                android:layout_width="32dp"
+                                android:layout_height="32dp"
+                                android:layout_alignParentStart="true"
+                                android:layout_centerVertical="true"
+                                android:layout_marginStart="@dimen/_10sdp"
+                                android:src="@drawable/ic_msg_option" />
 
-                <TextView
-                    android:id="@+id/tv_messanger"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="@dimen/_15sdp"
-                    android:layout_toEndOf="@+id/iv_messanger"
-                    android:text="Messenger" />
+                            <TextView
+                                android:id="@+id/tv_msg"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:layout_marginStart="@dimen/_15sdp"
+                                android:layout_toEndOf="@+id/iv_msg"
+                                android:text="Message" />
 
-                <androidx.appcompat.widget.AppCompatCheckBox
-                    android:id="@+id/cb_messanger"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginEnd="@dimen/margin20"
-                    android:button="@drawable/checkbox_selector"
-                    android:clickable="false"
-                    android:focusable="false" />
-            </RelativeLayout>
+                            <androidx.appcompat.widget.AppCompatCheckBox
+                                android:id="@+id/cb_msg"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:layout_centerVertical="true"
+                                android:layout_marginEnd="@dimen/margin20"
+                                android:button="@drawable/checkbox_selector"
+                                android:clickable="false"
+                                android:focusable="false" />
+                        </RelativeLayout>
 
-            <RelativeLayout
-                android:id="@+id/rl_facebook"
-                android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:layout_below="@+id/rl_messanger"
-                android:layout_marginStart="@dimen/_10sdp"
-                android:layout_marginTop="@dimen/_10sdp">
+                        <RelativeLayout
+                            android:id="@+id/rl_messanger"
+                            android:layout_width="match_parent"
+                            android:layout_height="45dp"
+                            android:layout_below="@+id/rl_msg"
+                            android:layout_marginStart="@dimen/_10sdp"
+                            android:layout_marginTop="@dimen/_10sdp">
 
-                <ImageView
-                    android:id="@+id/iv_facebook"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:layout_alignParentStart="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="@dimen/_10sdp"
-                    android:src="@drawable/ic_facebook" />
+                            <ImageView
+                                android:id="@+id/iv_messanger"
+                                android:layout_width="32dp"
+                                android:layout_height="32dp"
+                                android:layout_alignParentStart="true"
+                                android:layout_centerVertical="true"
+                                android:layout_marginStart="@dimen/_10sdp"
+                                android:src="@drawable/ic_messanger_option" />
 
-                <TextView
-                    android:id="@+id/tv_facebook"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="@dimen/_15sdp"
-                    android:layout_toEndOf="@+id/iv_facebook"
-                    android:text="Facebook" />
+                            <TextView
+                                android:id="@+id/tv_messanger"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:layout_marginStart="@dimen/_15sdp"
+                                android:layout_toEndOf="@+id/iv_messanger"
+                                android:text="Messenger" />
 
-                <androidx.appcompat.widget.AppCompatCheckBox
-                    android:id="@+id/cb_facebook"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginEnd="@dimen/margin20"
-                    android:button="@drawable/checkbox_selector"
-                    android:clickable="false"
-                    android:focusable="false" />
-            </RelativeLayout>
+                            <androidx.appcompat.widget.AppCompatCheckBox
+                                android:id="@+id/cb_messanger"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:layout_centerVertical="true"
+                                android:layout_marginEnd="@dimen/margin20"
+                                android:button="@drawable/checkbox_selector"
+                                android:clickable="false"
+                                android:focusable="false" />
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:id="@+id/rl_facebook"
+                            android:layout_width="match_parent"
+                            android:layout_height="45dp"
+                            android:layout_below="@+id/rl_messanger"
+                            android:layout_marginStart="@dimen/_10sdp"
+                            android:layout_marginTop="@dimen/_10sdp">
+
+                            <ImageView
+                                android:id="@+id/iv_facebook"
+                                android:layout_width="32dp"
+                                android:layout_height="32dp"
+                                android:layout_alignParentStart="true"
+                                android:layout_centerVertical="true"
+                                android:layout_marginStart="@dimen/_10sdp"
+                                android:src="@drawable/ic_facebook" />
+
+                            <TextView
+                                android:id="@+id/tv_facebook"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:layout_marginStart="@dimen/_15sdp"
+                                android:layout_toEndOf="@+id/iv_facebook"
+                                android:text="Facebook" />
+
+                            <androidx.appcompat.widget.AppCompatCheckBox
+                                android:id="@+id/cb_facebook"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:layout_centerVertical="true"
+                                android:layout_marginEnd="@dimen/margin20"
+                                android:button="@drawable/checkbox_selector"
+                                android:clickable="false"
+                                android:focusable="false" />
+                        </RelativeLayout>
+                    </RelativeLayout>
+                </androidx.core.widget.NestedScrollView>
+
+            <!---->
+
+
 
             <TextView
                 android:id="@+id/bottom_header"
@@ -820,6 +844,6 @@
                 </androidx.cardview.widget.CardView>
             </LinearLayout>
         </RelativeLayout>
-    </androidx.core.widget.NestedScrollView>
+    <!--</androidx.core.widget.NestedScrollView>-->
 
 </RelativeLayout>

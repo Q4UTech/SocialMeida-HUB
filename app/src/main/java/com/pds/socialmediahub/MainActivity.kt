@@ -11,10 +11,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.ImageView
-import android.widget.PopupWindow
-import android.widget.RelativeLayout
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.view.GravityCompat
@@ -32,14 +29,19 @@ import com.pds.socialmediahub.ui.socialmediadownloader.services.ClipBoardService
 import com.pds.socialmediahub.ui.status.MyDownloadsFragment
 import engine.app.adshandler.AHandler
 import engine.app.fcm.MapperUtils
+import engine.app.inapp.InAppUpdateManager
+import engine.app.listener.InAppUpdateListener
+import engine.app.server.v2.Slave
+import engine.app.serviceprovider.Utils
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_splash.*
 
-class MainActivity : AppCompatActivity(), View.OnClickListener {
+class MainActivity : AppCompatActivity(), InAppUpdateListener, View.OnClickListener {
 
     private lateinit var binding: ActivityMainBinding
     private var isSocialMediaClicked: Boolean = false
-    private var navController:NavController?=null
-
+    private var navController: NavController? = null
+    private lateinit var inAppUpdateManager: InAppUpdateManager
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -53,9 +55,14 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         binding.llDownload.setOnClickListener(this)
         binding.navSetting.setOnClickListener(this)
         binding.ivDownloaded.setOnClickListener(this)
-         navController = findNavController(R.id.nav_host_fragment_activity_main)
+        binding.navRate.setOnClickListener(this)
+        binding.navAboutUs.setOnClickListener(this)
+        binding.navShareApp.setOnClickListener(this)
+        binding.navMore.setOnClickListener(this)
+        binding.navShareFeedback.setOnClickListener(this)
+        navController = findNavController(R.id.nav_host_fragment_activity_main)
         navView.setupWithNavController(navController!!)
-       callingForMapper(this@MainActivity)
+        callingForMapper(this@MainActivity)
         binding.drawerLayout.addDrawerListener(object : DrawerListener {
             override fun onDrawerSlide(drawerView: View, slideOffset: Float) {}
             override fun onDrawerOpened(drawerView: View) {
@@ -70,7 +77,36 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
             override fun onDrawerStateChanged(newState: Int) {}
         })
+        navView.setOnItemSelectedListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.navigation_home -> {
+                    navController?.navigate(R.id.navigation_home)
+                    AHandler.getInstance().showFullAds(this@MainActivity, false)
+                    true
+                }
+                R.id.navigation_dashboard -> {
+                    navController?.navigate(R.id.navigation_dashboard)
+                    AHandler.getInstance().showFullAds(this@MainActivity, false)
+                    true
+                }
+                R.id.navigation_notifications -> {
+                    navController?.navigate(R.id.navigation_notifications)
+                    AHandler.getInstance().showFullAds(this@MainActivity, false)
+                    true
+                }
+            }
+            false
+        }
+        findViewById<LinearLayout>(R.id.ads_layout).addView(
+            AHandler.getInstance().getBannerHeader(this)
+        )
+        inAppUpdateManager = InAppUpdateManager(this)
+        inAppUpdateManager.checkForAppUpdate(this)
+    }
 
+    override fun onResume() {
+        super.onResume()
+        inAppUpdateManager.checkNewAppVersionState()
     }
 
     override fun onClick(v: View?) {
@@ -90,6 +126,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             R.id.nav_setting -> {
                 startActivity(Intent(this, SettingActivity::class.java))
                 closeMenuDrawer()
+                AHandler.getInstance().showFullAds(this, false)
             }
             R.id.iv_downloaded -> {
 
@@ -129,6 +166,21 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                     }
 
                 }
+            }
+            R.id.nav_rate -> {
+                Utils().rateUs(this)
+            }
+            R.id.nav_aboutUs -> {
+
+            }
+            R.id.nav_share_app -> {
+                Utils().shareUrl(this)
+            }
+            R.id.nav_more -> {
+                Utils().moreApps(this)
+            }
+            R.id.nav_shareFeedback -> {
+                Utils().sendFeedback(this)
             }
         }
     }
@@ -287,24 +339,33 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                     MapperUtils.DL_CHAT_PAGE -> {
                         navController?.navigate(R.id.navigation_notifications)
                     }
-                   /* MapperUtils.DL_BLOCK_PAGE -> {
-                        viewPager?.currentItem = 2
-                    }
-                    MapperUtils.DL_ADD_BLOCK_DIAL -> {
-                        context.startActivity(Intent(context, BlockNumberActivity::class.java))
-                    }
-                    MapperUtils.DL_ADD_BLOCK_CONTACT -> {
-                        context.startActivity(Intent(context, BlockContactActivity::class.java))
-                    }
+                    /* MapperUtils.DL_BLOCK_PAGE -> {
+                         viewPager?.currentItem = 2
+                     }
+                     MapperUtils.DL_ADD_BLOCK_DIAL -> {
+                         context.startActivity(Intent(context, BlockNumberActivity::class.java))
+                     }
+                     MapperUtils.DL_ADD_BLOCK_CONTACT -> {
+                         context.startActivity(Intent(context, BlockContactActivity::class.java))
+                     }
 
-                    MapperUtils.DL_Permission_CDO -> {
-                        checkPermissionCDO()
-                    }*/
+                     MapperUtils.DL_Permission_CDO -> {
+                         checkPermissionCDO()
+                     }*/
                 }
             }
         } catch (e: java.lang.Exception) {
             e.printStackTrace()
         }
+    }
+
+    override fun onUpdateAvailable() {
+        println("InAppUpdateManager MainActivity.onUpdateAvailable ")
+    }
+
+    override fun onUpdateNotAvailable() {
+        println("InAppUpdateManager MainActivity.onUpdateNotAvailable ")
+        AHandler.getInstance().v2CallonAppLaunch(this)
     }
 }
 

@@ -27,8 +27,9 @@ public class MapperUtils {
     public static final String DL_RESTORE = "DL_RESTORE";
 
 
-    public static final String DL_SEARCH_PAGE = "DL_ACTIVITY_PAGE";
+    public static final String DL_SEARCH_PAGE = "DL_SEARCH_PAGE";
     public static final String DL_DOWNLOAD_PAGE = "DL_DOWNLOAD_PAGE";
     public static final String DL_CHAT_PAGE = "DL_CHAT_PAGE";
+    public static final String DL_SETTING_PAGE = "DL_SETTING_PAGE";
 
 }

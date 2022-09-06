@@ -90,6 +90,9 @@ public class MapperActivity extends Activity {
             case MapperUtils.DL_ACTIVITY_PAGE:
             case MapperUtils.DL_PROFILE_PAGE:
             case MapperUtils.DL_PEDOMETER_HOME:
+            case MapperUtils.DL_SEARCH_PAGE:
+            case MapperUtils.DL_DOWNLOAD_PAGE:
+            case MapperUtils.DL_CHAT_PAGE:
             case MapperUtils.DL_RESTORE:
                 launchAppWithMapper(type, value);
                 break;

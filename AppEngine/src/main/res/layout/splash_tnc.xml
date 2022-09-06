@@ -15,12 +15,13 @@
         android:orientation="horizontal">
 
         <TextView
+            android:textSize="9sp"
             android:id="@+id/tvPrivacy1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="I agree to "
-            android:textColor="@color/white_inapp" />
+            android:text="By clicking on “Start” you are agree "
+            android:textColor="#202020" />
 
 
         <LinearLayout
@@ -30,32 +31,35 @@
             android:gravity="center"
             android:orientation="horizontal">
             <TextView
+                android:textSize="9sp"
                 android:id="@+id/tvPrivacy"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:text="@string/privacy_policy"
-                android:textColor="@color/header4"
-                android:textColorHighlight="@color/header4"
-                android:textColorLink="@color/header4" />
+                android:textColor="#24a7f2"
+                android:textColorHighlight="#24a7f2"
+                android:textColorLink="#24a7f2" />
 
             <TextView
+                android:textSize="9sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp"
                 android:text=" &amp; "
-                android:textColor="@color/white_inapp" />
+                android:textColor="#202020" />
 
             <TextView
+                android:textSize="9sp"
                 android:id="@+id/tvTerms"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:text="@string/termsCond"
-                android:textColor="@color/header4"
-                android:textColorHighlight="@color/header4"
-                android:textColorLink="@color/header4" />
+                android:textColor="#24a7f2"
+                android:textColorHighlight="#24a7f2"
+                android:textColorLink="#24a7f2" />
 
 
 

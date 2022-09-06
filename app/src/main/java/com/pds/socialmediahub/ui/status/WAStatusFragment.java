@@ -61,6 +61,8 @@ import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.List;
 
+import engine.app.adshandler.AHandler;
+
 public class WAStatusFragment extends Fragment implements StatusFragmentContracts.StatusView, SetClick, View.OnClickListener {
 
     Context context;
@@ -102,6 +104,7 @@ public class WAStatusFragment extends Fragment implements StatusFragmentContract
     public WAStatusFragment() {
         // Required empty public constructor
     }
+
 
 
     @Override

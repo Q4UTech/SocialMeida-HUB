@@ -172,15 +172,15 @@ public class SocialMediaHubService extends Service {
 
         Intent waStatusIntent = new Intent(this, SocialMediaHubService.class).setAction("wa_status_action");
         PendingIntent waStatusPendingIntent = PendingIntent.getService(this, 0, waStatusIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        remoteViews.setOnClickPendingIntent(R.id.ivSetting, waStatusPendingIntent);
+        remoteViews.setOnClickPendingIntent(R.id.ll_status, waStatusPendingIntent);
 
         Intent downloadIntent = new Intent(this, SocialMediaHubService.class).setAction("download_action");
         PendingIntent downloadPendingIntent = PendingIntent.getService(this, 0, downloadIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        remoteViews.setOnClickPendingIntent(R.id.ivSetting, downloadPendingIntent);
+        remoteViews.setOnClickPendingIntent(R.id.ll_video_downloader, downloadPendingIntent);
 
         Intent chatIntent = new Intent(this, SocialMediaHubService.class).setAction("chat_action");
         PendingIntent chatPendingIntent = PendingIntent.getService(this, 0, chatIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        remoteViews.setOnClickPendingIntent(R.id.ivSetting, chatPendingIntent);
+        remoteViews.setOnClickPendingIntent(R.id.ll_direct_chat, chatPendingIntent);
     }
 
     private void handleNotification(Intent intent) {
@@ -252,25 +252,25 @@ public class SocialMediaHubService extends Service {
                     break;
                 case "wa_status_action":
                     Intent waStatus = new Intent(this, SplashActivity.class).putExtra(MapperUtils.keyType, MapperUtils.keyDeeplink)
-                            .putExtra(MapperUtils.keyValue, MapperUtils.DL_SEARCH_PAGE)
+                            .putExtra(MapperUtils.keyValue, MapperUtils.DL_DOWNLOAD_PAGE)
                             .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
                     startActivity(waStatus);
                     closingBroadcast();
                     break;
                 case "download_action":
-                    Intent downloadIntent = new Intent(this, SplashActivity.class).putExtra(MapperUtils.keyType, MapperUtils.keyDeeplink)
-                            .putExtra(MapperUtils.keyValue, MapperUtils.DL_DOWNLOAD_PAGE)
+                    Intent homeFragment = new Intent(this, SplashActivity.class).putExtra(MapperUtils.keyType, MapperUtils.keyDeeplink)
+                            .putExtra(MapperUtils.keyValue, MapperUtils.DL_SEARCH_PAGE)
                             .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(downloadIntent);
+                    startActivity(homeFragment);
                     closingBroadcast();
                     break;
                 case "chat_action":
-                    Intent chatIntent = new Intent(this, SplashActivity.class).putExtra(MapperUtils.keyType, MapperUtils.keyDeeplink)
+                    Intent chatFragmentIntent = new Intent(this, SplashActivity.class).putExtra(MapperUtils.keyType, MapperUtils.keyDeeplink)
                             .putExtra(MapperUtils.keyValue, MapperUtils.DL_CHAT_PAGE)
                             .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
-                    startActivity(chatIntent);
+                    startActivity(chatFragmentIntent);
                     closingBroadcast();
                     break;
 
