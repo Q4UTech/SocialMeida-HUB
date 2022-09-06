@@ -3,7 +3,7 @@ package com.example.whatsdelete
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.whatsdelete.fragments.WaTrandingStatus
-import com.jatpack.wastatustranding.R
+import com.pds.wastatustranding.R
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

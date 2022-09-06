@@ -1,4 +1,4 @@
-package com.jatpack.socialmediahub
+package com.pds.socialmediahub
 
 import org.junit.Test
 

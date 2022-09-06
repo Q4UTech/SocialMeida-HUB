@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="margin10">10dp</dimen>
+    <dimen name="text_8">8sp</dimen>
     <dimen name="margin8">8dp</dimen>
     <dimen name="margin20">20dp</dimen>
     <dimen name="item_offset">8dp</dimen>

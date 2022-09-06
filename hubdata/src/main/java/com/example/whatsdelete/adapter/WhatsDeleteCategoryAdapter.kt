@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.whatsdelete.listener.setClick
 import com.example.whatsdelete.modal.Data
 import com.example.whatsdelete.responce.CategoryListData
-import com.jatpack.wastatustranding.R
+import com.pds.wastatustranding.R
 import com.squareup.picasso.Picasso
 
 

@@ -1,0 +1,109 @@
+plugins {
+    id 'com.android.library'
+    id 'kotlin-android-extensions'
+    id 'kotlin-android'
+}
+
+apply {
+    from 'config.gradle'
+}
+//apply plugin: 'applovin-quality-service'
+//applovin {
+//    apiKey "YOUR_AD_REVIEW_KEY_HERE"
+//}
+
+android {
+    compileSdkVersion 32
+
+    defaultConfig {
+        minSdkVersion 21
+        targetSdkVersion 32
+        //engine version don't remove it...
+        //Add-ons (Admobmediation, show rate issue,unused tag removal,encyption all api data,add userid in all api,analytics)
+        // in engine and adding missing account details...
+        //Date 1-March-2022
+        versionName "V101.30.03"
+
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+}
+
+dependencies {
+    implementation fileTree(include: '*.jar', dir: 'libs')
+    api 'com.google.firebase:firebase-core:20.1.2'
+    api 'com.google.android.gms:play-services-ads:20.6.0'
+
+    api 'com.google.firebase:firebase-ads:20.6.0'
+    api 'com.google.firebase:firebase-messaging:23.0.2'
+    api 'androidx.appcompat:appcompat:1.3.1'
+    api 'androidx.cardview:cardview:1.0.0'
+    api 'com.google.android.material:material:1.4.0'
+    api 'androidx.browser:browser:1.4.0'
+    api 'com.google.code.gson:gson:2.8.8'
+    api 'com.squareup.picasso:picasso:2.71828'
+    api 'com.android.volley:volley:1.2.1'
+
+    // Applovin SDK
+    api 'com.applovin:applovin-sdk:+'
+     api "com.applovin:applovin-sdk:11.3.0"
+
+
+    //Applovin Mediation Adaptor
+    api 'com.applovin.mediation:unityads-adapter:+'
+    api 'com.applovin.mediation:facebook-adapter:+'
+    api 'com.applovin.mediation:google-adapter:+'
+    api 'com.applovin.mediation:ironsource-adapter:+'
+
+
+   /* //IronSource ADS SDK
+    implementation 'com.google.android.gms:play-softwareupdate.dailyuseapps.services-ads-identifier:18.0.1'
+    implementation 'com.ironsource.sdk:mediationsdk:7.2.1'*/
+
+    //Facebook SDK
+    api 'androidx.annotation:annotation:1.3.0'
+    api 'com.facebook.android:audience-network-sdk:6.8.0'
+    api('com.facebook.android:facebook-android-sdk:5.15.3')
+
+    // This dependency is downloaded from the Google’s Maven repository.
+    // So, make sure you also include that repository in your project's build.gradle file.
+    api 'com.google.android.play:core:1.10.3'
+    api 'androidx.lifecycle:lifecycle-extensions:2.2.0'
+    api 'androidx.multidex:multidex:2.0.1'
+
+    //Play Install Referrer Library
+    implementation 'com.android.installreferrer:installreferrer:2.2'
+
+    //appnext
+    // For the Interstitial and Rewarded/Fullscreen video ad unit:
+    api 'com.appnext.sdk:ads:2.5.4.472'
+    // For the Banners ad unit:
+    api 'com.appnext.sdk:banners:2.5.4.472'
+    // For the New Native Ads ad unit:
+    api 'com.appnext.sdk:native-ads2:2.5.4.472'
+
+    // Add the Google Analytics SDK. Import the BoM for the Firebase platform
+    implementation platform('com.google.firebase:firebase-bom:26.4.0')
+    //Recommended: Add the Google Analytics SDK.
+    implementation 'com.google.firebase:firebase-analytics-ktx'
+    implementation 'androidx.core:core-ktx:1.6.0'
+
+    //for animation...
+    api "com.airbnb.android:lottie:4.2.0"
+
+    // new inapp
+    api "com.android.billingclient:billing:4.1.0"
+
+
+}

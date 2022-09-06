@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.jatpack.socialmediahub.ui.directchat.CustomWebView
+    <com.pds.socialmediahub.ui.directchat.CustomWebView
         android:id="@+id/webview"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

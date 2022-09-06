@@ -12,7 +12,6 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.example.whatsdelete.adapter.InstalledAppItemAdapter
@@ -26,7 +25,6 @@ import com.example.whatsdelete.listener.setClick
 import com.example.whatsdelete.request.ApplicationListRequest
 import com.example.whatsdelete.request.CategoryListRequest
 import com.example.whatsdelete.responce.ApplicationListData
-import com.example.whatsdelete.responce.ApplicationListResponce
 import com.example.whatsdelete.responce.CategoryListData
 import com.example.whatsdelete.utils.AppUtils
 import com.example.whatsdelete.utils.ItemOffsetView
@@ -34,8 +32,9 @@ import com.example.whatsdelete.utils.OverlapDecoration
 import com.example.whatsdelete.utils.Prefs
 import com.example.whatsdelete.viewmodel.ApiDataViewModel
 import com.example.whatsdelete.viewmodel.MyViewModelFactory
-import com.example.whatsdelete.viewmodel.Repository
-import com.jatpack.wastatustranding.R
+import com.example.whatsdelete.viewmodel.WhatsDeleteRepository
+import com.pds.wastatustranding.R
+import engine.app.adshandler.AHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -102,7 +101,7 @@ class WaTrandingStatus : Fragment(), setClick, openOnClick, onclickInstalledApp,
         progressDialog?.max = 100
         country = AppUtils.getCountryCode(requireActivity())
         appId = Constants.APP_ID
-        share = view.findViewById(R.id.share)
+        share = view.findViewById(R.id.share);
         share?.setOnClickListener(this)
         shareOnFacebook = view.findViewById(R.id.share_facebook)
         sub_cat_container = view.findViewById(R.id.sub_cat_container)
@@ -127,15 +126,15 @@ class WaTrandingStatus : Fragment(), setClick, openOnClick, onclickInstalledApp,
         bottomStack = view.findViewById(R.id.bottom_stack)
         recyclerView = view.findViewById(R.id.recycler)
         recyclerView?.addItemDecoration(ItemOffsetView(requireActivity(), R.dimen.item_offset))
-        val repository = Repository(APIClient.getNetworkService())
+        val whatsDeleteRepository = WhatsDeleteRepository(APIClient.getNetworkService())
         viewModel = ViewModelProvider(
             this,
-            MyViewModelFactory(repository)
+            MyViewModelFactory(whatsDeleteRepository)
         ).get(ApiDataViewModel::class.java)
         itemOffsetView = activity?.let { ItemOffsetView(it, R.dimen.item_offset) }
         recCategoryitem?.addItemDecoration(ItemOffsetView(requireActivity(), R.dimen.item_offset))
         rv_installed_app?.addItemDecoration(ItemOffsetView(requireActivity(), R.dimen.item_offset))
-
+        // view.findViewById<LinearLayout>(R.id.native_ads).addView(AHandler.getInstance().getNativeLarge(requireActivity()))
         bottomStack?.setOnClickListener {
 
         }
@@ -237,26 +236,21 @@ class WaTrandingStatus : Fragment(), setClick, openOnClick, onclickInstalledApp,
 //            if (isServerHit) {
 
 
-            println(
-                "WaTrandingStatus.callApplicationListView gshjdgakdh aaaaaaa 001" + " " + prefs?.getApplicationLsit(
-                    requireActivity()
-                )
-            )
-
             val applicationResponceList =
                 prefs?.getApplicationLsit(requireActivity())!!.get(position)
 
+
+
             if (applicationResponceList != null && !applicationResponceList!!.equals("")) {
                 println(
-                    "WaTrandingStatus.callApplicationListView gshjdgakdh aaaaaaa 001" + " " + prefs?.getApplicationLsit(
-                        requireActivity()
-                    )!!.size
+                    "WaTrandingStatus.callApplicationListView gshjdgakdh 001" + " " +
+                            applicationResponceList!!.size
                 )
 
                 recCategoryitem?.apply {
 
                     if (applicationResponceList != null && applicationResponceList?.size!! > 0) {
-                        println("WaTrandingStatus.callApplicationListView fasdgjhafsgh 009 aaaa" + " " + applicationResponceList.size)
+                        println("WaTrandingStatus.callApplicationListView fasdgjhafsgh 009 aaaa" + " ")
                         ll_nodata_container?.visibility = View.GONE
                         sub_cat_container?.visibility = View.VISIBLE
 
@@ -303,11 +297,7 @@ class WaTrandingStatus : Fragment(), setClick, openOnClick, onclickInstalledApp,
                         country!!
 
                     )
-                )
-
-                viewModel?.categoryItemLiveData?.observe(viewLifecycleOwner) { categoryItemList ->
-
-
+                )?.observe(viewLifecycleOwner) { categoryItemList ->
                     println("WaTrandingStatus.callApplicationListView fasdgjhafsgh 009 bbb" + " ")
 
 
@@ -315,16 +305,9 @@ class WaTrandingStatus : Fragment(), setClick, openOnClick, onclickInstalledApp,
                     if (categoryItemList != null) {
                         ll_nodata_container?.visibility = View.GONE
                         sub_cat_container?.visibility = View.VISIBLE
-
-
                         val aMap = HashMap<String, List<ApplicationListData>>()
-
                         aMap[position] = categoryItemList.data
-
-
                         prefs?.setApplicationList(requireActivity(), aMap)
-
-
 
                         recCategoryitem?.apply {
 
@@ -363,15 +346,12 @@ class WaTrandingStatus : Fragment(), setClick, openOnClick, onclickInstalledApp,
 
                             }
                         }
-
-
                     } else {
                         ll_nodata_container?.visibility = View.VISIBLE
                         sub_cat_container?.visibility = View.GONE
                         progressBar?.visibility = View.GONE
                     }
 
-                    viewModel?.categoryItemLiveData?.removeObservers(this)
 
                 }
 
@@ -497,7 +477,6 @@ class WaTrandingStatus : Fragment(), setClick, openOnClick, onclickInstalledApp,
         GlobalScope.launch {
             val packList: List<PackageInfo> = activity.packageManager.getInstalledPackages(0)
             val apps = arrayOfNulls<String>(packList.size)
-            appContainsList.clear()
             for (i in packList.indices) {
                 val packInfo: PackageInfo = packList[i]
                 apps[i] = packInfo.applicationInfo.packageName
@@ -508,7 +487,6 @@ class WaTrandingStatus : Fragment(), setClick, openOnClick, onclickInstalledApp,
 
                     if (apps[i].equals(webAppList[pos].package_name)) {
                         println("WaTrandingStatus.callApplicationListView hhifhafhia 003" + " " + webAppList[pos].package_name)
-
 
 
                         appContainsList.add(
