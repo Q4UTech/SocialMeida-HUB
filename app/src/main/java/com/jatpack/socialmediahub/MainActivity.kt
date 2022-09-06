@@ -2,7 +2,6 @@ package com.jatpack.socialmediahub
 
 import android.content.Context
 import android.content.Intent
-import android.os.AsyncTask
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -14,33 +13,76 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout.DrawerListener
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
+import com.example.whatsdelete.api.APIClient
 import com.example.whatsdelete.constants.Constants
+import com.example.whatsdelete.request.CategoryListRequest
+import com.example.whatsdelete.request.CheckUpdateAPIRequest
+import com.example.whatsdelete.responce.ApplicationListData
 import com.example.whatsdelete.utils.AppUtils
+import com.example.whatsdelete.utils.Prefs
+import com.example.whatsdelete.viewmodel.ApiDataViewModel
+import com.example.whatsdelete.viewmodel.MyViewModelFactory
+import com.example.whatsdelete.viewmodel.Repository
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.jatpack.socialmediahub.activities.SettingActivity
 import com.jatpack.socialmediahub.databinding.ActivityMainBinding
-import com.jatpack.socialmediahub.ui.socialmediadownloader.services.BackgroundRunningService
+import com.jatpack.socialmediahub.helper.Pref
 import com.jatpack.socialmediahub.ui.socialmediadownloader.services.ClipBoardService
 import com.jatpack.socialmediahub.ui.status.MyDownloadsFragment
 import kotlinx.android.synthetic.main.activity_main.*
-import org.jsoup.Jsoup
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import java.io.IOException
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var binding: ActivityMainBinding
     private var isSocialMediaClicked: Boolean = false
+    private var viewModel: ApiDataViewModel? = null
+    private var country: String? = null
+    private var appId: String? = null
+    private var pref:Prefs?=null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        pref=Prefs(this)
+
+        appId = Constants.APP_ID
+        country = AppUtils.getCountryCode(this)
+        //when add splash than below api call is moved into splash class
+        val repository = Repository(APIClient.getNetworkService())
+        viewModel = ViewModelProvider(
+            this,
+            MyViewModelFactory(repository)
+        )[ApiDataViewModel::class.java]
+        viewModel?.callCheckUpdateAPI(CheckUpdateAPIRequest(appId!!,country!!))?.observe(this) { list ->
+                Log.d("TAG", "updateedd keyyy: " + list.data.updatekey)
+
+            if (list?.data != null){
+                if(list.data.updatekey!=null && list.data.updatekey != ""){
+                    println("MainActivity.onCreate")
+                    if (pref?.getUpdatedKey()!=null){
+                        if (!pref?.getUpdatedKey().equals(list.data.updatekey)){
+                            pref?.setUpdatedKey(list.data.updatekey)
+                            println("MainActivity.onCreate hihihihihih")
+                            val aMap =HashMap<String, List<ApplicationListData>>()
+                            pref?.setApplicationList(this,aMap)
+                            pref?.setCategoryList(null)
+
+                        }else{
+
+                        }
+                    }
+
+
+                }
+
+            }
+
+            }
 
         val navView: BottomNavigationView = binding.navView
 

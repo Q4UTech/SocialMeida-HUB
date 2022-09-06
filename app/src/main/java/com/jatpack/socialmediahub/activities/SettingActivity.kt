@@ -20,6 +20,7 @@ import com.jatpack.socialmediahub.model.BottomList
 import com.jatpack.socialmediahub.model.NotificatioListItem
 import com.jatpack.socialmediahub.service.SocialMediaHubService
 import com.jatpack.socialmediahub.util.SetClick
+import kotlinx.android.synthetic.main.activity_setting.*
 
 
 class SettingActivity : AppCompatActivity(), SetClick, View.OnClickListener {
@@ -56,6 +57,9 @@ class SettingActivity : AppCompatActivity(), SetClick, View.OnClickListener {
     private var llMessege: LinearLayout? = null
     private var llMessenger: LinearLayout? = null
     private var llFacebook: LinearLayout? = null
+    private var notiDownloader: LinearLayout? = null
+    private var notiChat: LinearLayout? = null
+    private var notiStatus: LinearLayout? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_setting)
@@ -65,6 +69,10 @@ class SettingActivity : AppCompatActivity(), SetClick, View.OnClickListener {
         llWhatsApp = findViewById(R.id.ll_whatsapp)
         llMessege = findViewById(R.id.ll_msg)
         llMessenger = findViewById(R.id.ll_messanger)
+        llFacebook = findViewById(R.id.ll_facebook)
+        notiDownloader = findViewById(R.id.ll_video_downloader)
+        notiChat = findViewById(R.id.ll_direct_chat)
+        notiStatus = findViewById(R.id.ll_status)
         llFacebook = findViewById(R.id.ll_facebook)
         cbSearch = findViewById(R.id.cb_search)
         cbCamera = findViewById(R.id.cb_camera)
@@ -179,18 +187,27 @@ class SettingActivity : AppCompatActivity(), SetClick, View.OnClickListener {
             when (position) {
                 0 -> {
                     ivStatus?.visibility = View.VISIBLE
+                    notiStatus?.visibility = View.VISIBLE
+                    notiDownloader?.visibility = View.GONE
+                    notiChat?.visibility = View.GONE
                     ivDownload?.visibility = View.GONE
                     ivChat?.visibility = View.GONE
                 }
                 1 -> {
                     ivStatus?.visibility = View.GONE
                     ivDownload?.visibility = View.VISIBLE
+                    notiStatus?.visibility = View.GONE
+                    notiDownloader?.visibility = View.VISIBLE
+                    notiChat?.visibility = View.GONE
                     ivChat?.visibility = View.GONE
                 }
                 2 -> {
                     ivStatus?.visibility = View.GONE
                     ivDownload?.visibility = View.GONE
                     ivChat?.visibility = View.VISIBLE
+                    notiStatus?.visibility = View.GONE
+                    notiDownloader?.visibility = View.GONE
+                    notiChat?.visibility = View.VISIBLE
                 }
             }
         }
@@ -204,19 +221,32 @@ class SettingActivity : AppCompatActivity(), SetClick, View.OnClickListener {
         pref?.setSearchPref(true)
         pref?.setCameraPref(true)
         pref?.setWhatsAppPref(true)
-        pref?.setMessagePref(true)
+        /* pref?.setMessagePref(true)*/
 
         if (pref?.getSearchPref() == true) {
             cbSearch?.isChecked = true
+            llSearch?.visibility = View.VISIBLE
         }
         if (pref?.getCameraPref() == true) {
             cbCamera?.isChecked = true
+            llCamera?.visibility = View.VISIBLE
         }
         if (pref?.getWhatsAppPref() == true) {
             cbWhatsApp?.isChecked = true
+            llWhatsApp?.visibility = View.VISIBLE
         }
         if (pref?.getMessagePref() == true) {
             cbMessage?.isChecked = true
+            llMessege?.visibility = View.VISIBLE
+        }
+        if (pref?.getMessengerPref() == true) {
+            cbMessenger?.isChecked = true
+            llMessenger?.visibility = View.VISIBLE
+        }
+
+        if (pref?.getFacebookPref() == true) {
+            cbFacebook?.isChecked = true
+            llFacebook?.visibility = View.VISIBLE
         }
     }
 
@@ -237,61 +267,92 @@ class SettingActivity : AppCompatActivity(), SetClick, View.OnClickListener {
                 ivStatus?.visibility = View.VISIBLE
                 ivDownload?.visibility = View.GONE
                 ivChat?.visibility = View.GONE
+                notiStatus?.visibility = View.VISIBLE
+                notiDownloader?.visibility = View.GONE
+                notiChat?.visibility = View.GONE
             }
             R.id.cv_video_downloader -> {
                 pref?.setPositon(1)
                 ivStatus?.visibility = View.GONE
                 ivDownload?.visibility = View.VISIBLE
                 ivChat?.visibility = View.GONE
+                notiStatus?.visibility = View.GONE
+                notiDownloader?.visibility = View.VISIBLE
+                notiChat?.visibility = View.GONE
             }
             R.id.cv_direct_chat -> {
                 pref?.setPositon(2)
                 ivStatus?.visibility = View.GONE
                 ivDownload?.visibility = View.GONE
                 ivChat?.visibility = View.VISIBLE
+                notiStatus?.visibility = View.GONE
+                notiDownloader?.visibility = View.GONE
+                notiChat?.visibility = View.VISIBLE
             }
             R.id.rl_search -> {
                 if (pref?.getSearchPref() == true) {
                     llSearch?.visibility = View.GONE
                     pref?.setSearchPref(false)
-                    cbSearch?.isChecked = true
+                    cbSearch?.isChecked = false
                 } else {
                     pref?.setSearchPref(true)
                     llSearch?.visibility = View.VISIBLE
-                    cbSearch?.isChecked = false
+                    cbSearch?.isChecked = true
                 }
             }
             R.id.rl_camera -> {
                 if (pref?.getCameraPref() == true) {
                     llCamera?.visibility = View.GONE
-                    pref?.setSearchPref(false)
-                    cbCamera?.isChecked = true
+                    pref?.setCameraPref(false)
+                    cbCamera?.isChecked = false
                 } else {
                     pref?.setCameraPref(true)
                     llCamera?.visibility = View.VISIBLE
-                    cbCamera?.isChecked = false
+                    cbCamera?.isChecked = true
                 }
             }
             R.id.rl_whats_app -> {
                 if (pref?.getWhatsAppPref() == true) {
                     llWhatsApp?.visibility = View.GONE
                     pref?.setWhatsAppPref(false)
-                    cbCamera?.isChecked = true
+                    cbCamera?.isChecked = false
                 } else {
                     pref?.setCameraPref(true)
                     llWhatsApp?.visibility = View.VISIBLE
-                    cbCamera?.isChecked = false
+                    cbCamera?.isChecked = true
                 }
             }
             R.id.rl_msg -> {
-                if (pref?.getMessagePref() == true) {
-                    llMessege?.visibility = View.GONE
-                    pref?.setWhatsAppPref(false)
-                    cbCamera?.isChecked = true
-                } else {
-                    pref?.setMessagePref(true)
+                if (pref?.getMessagePref() == false) {
                     llMessege?.visibility = View.VISIBLE
-                    cbCamera?.isChecked = false
+                    pref?.setMessagePref(true)
+                    cbMessage?.isChecked = true
+                } else {
+                    pref?.setMessagePref(false)
+                    llMessege?.visibility = View.GONE
+                    cbMessage?.isChecked = false
+                }
+            }
+            R.id.rl_messanger -> {
+                if (pref?.getMessengerPref() == false) {
+                    llMessenger?.visibility = View.VISIBLE
+                    pref?.setMessengerPref(true)
+                    cbMessenger?.isChecked = true
+                } else {
+                    pref?.setMessengerPref(false)
+                    llMessenger?.visibility = View.GONE
+                    cbMessenger?.isChecked = false
+                }
+            }
+            R.id.rl_facebook -> {
+                if (pref?.getFacebookPref() == false) {
+                    llFacebook?.visibility = View.VISIBLE
+                    pref?.setFacebookPref(true)
+                    cbFacebook?.isChecked = true
+                } else {
+                    pref?.setFacebookPref(false)
+                    llFacebook?.visibility = View.GONE
+                    cbFacebook?.isChecked = false
                 }
             }
         }
@@ -305,4 +366,5 @@ class SettingActivity : AppCompatActivity(), SetClick, View.OnClickListener {
             false
         }
     }
+
 }

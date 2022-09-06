@@ -52,6 +52,8 @@ class Pref(context: Context) {
         return preferences?.getInt(SAVED_POSITION, 0)
     }
 
+
+
     fun setSearchPref(status: Boolean) {
         editor.putBoolean(SEARCH_PREF, status)
         editor.commit()

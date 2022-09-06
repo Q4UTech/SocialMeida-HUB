@@ -11,6 +11,7 @@ import com.example.whatsdelete.responce.ApplicationListData
 import com.example.whatsdelete.responce.CategoryListData
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import org.json.JSONObject
 import java.lang.reflect.ParameterizedType
 import java.lang.reflect.Type
 
@@ -24,6 +25,7 @@ class Prefs(con: Context) {
     private var context: Context? = con
 
 
+
     init {
         preferences = PreferenceManager.getDefaultSharedPreferences(context)
         editor = preferences.edit()
@@ -35,6 +37,8 @@ class Prefs(con: Context) {
         var KEY_SET_SUB_cat_list = "KEY_SET_SUB_cat_list"
         const val PREF = "prefs_social_media_downloader"
         const val PROGRESS_KEY_PREF = "progress_key_pref"
+         const val SET_UPDATED_KEY = "SET_UPDATED_KEY"
+
 
 
         private const val KEY_CAMERA = "camera_pack"
@@ -120,6 +124,8 @@ class Prefs(con: Context) {
 
      fun setApplicationList(con: Context, jsonMap: HashMap<String, List<ApplicationListData>>) {
         val jsonString = Gson().toJson(jsonMap)
+
+         println("Prefs.setApplicationList jhjhj"+" "+jsonMap.toString())
         val sharedPreferences: SharedPreferences = con.getSharedPreferences("HashMap", MODE_PRIVATE)
         val editor = sharedPreferences.edit()
         editor.putString("map", jsonString)
@@ -135,6 +141,23 @@ class Prefs(con: Context) {
         val token: TypeToken<HashMap<String, List<ApplicationListData>>> =
             object : TypeToken<HashMap<String, List<ApplicationListData>>>() {}
         return Gson().fromJson(json, token.type)
+    }
+
+
+
+
+    fun saveArrayList(list: List<ApplicationListData>?, key: String?) {
+        val gson = Gson()
+        val json = gson.toJson(list)
+        editor.putString(key, json)
+        editor.apply() // This line is IMPORTANT !!!
+    }
+
+    fun getArrayList(key: String?): List<ApplicationListData>? {
+        val gson = Gson()
+        val json = preferences.getString(key, null)
+        val type = object : TypeToken<List<ApplicationListData>?>() {}.type
+        return gson.fromJson(json, type)
     }
 
 
@@ -397,6 +420,15 @@ class Prefs(con: Context) {
         val json = sharedPrefs.getString(key, null)
         val type: Type = ListParameterizeType(clazz!!)
         return gson.fromJson(json, type)
+    }
+
+    fun setUpdatedKey(updatedKey: String) {
+        editor.putString(SET_UPDATED_KEY, updatedKey)
+        editor.commit()
+    }
+
+    fun getUpdatedKey(): String? {
+        return preferences?.getString(SET_UPDATED_KEY, "NA")
     }
 
 }
