@@ -3,7 +3,7 @@
 //import android.os.Bundle
 //import android.os.PersistableBundle
 //import androidx.appcompat.app.AppCompatActivity
-//import com.jatpack.hubdata.R
+//import com.pds.hubdata.R
 //
 //class StatusDetailsActivity : AppCompatActivity() {
 //

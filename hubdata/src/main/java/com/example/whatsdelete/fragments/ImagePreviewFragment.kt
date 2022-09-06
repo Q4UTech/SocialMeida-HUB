@@ -10,7 +10,7 @@ import android.widget.ImageView
 import androidx.viewpager.widget.PagerAdapter
 import androidx.viewpager.widget.ViewPager
 import com.example.whatsdelete.adapter.ViewPagerAdapter
-import com.jatpack.wastatustranding.R
+import com.pds.wastatustranding.R
 
 
 class ImagePreviewFragment : Fragment() {

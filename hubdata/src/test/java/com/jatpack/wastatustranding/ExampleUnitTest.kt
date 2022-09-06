@@ -1,4 +1,4 @@
-package com.jatpack.wastatustranding
+package com.pds.wastatustranding
 
 import org.junit.Test
 

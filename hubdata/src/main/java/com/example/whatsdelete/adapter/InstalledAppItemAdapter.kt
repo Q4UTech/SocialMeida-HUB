@@ -14,7 +14,7 @@ import com.example.whatsdelete.listener.onclickInstalledApp
 import com.example.whatsdelete.listener.openOnClick
 import com.example.whatsdelete.modal.CategoryDetailItem
 import com.example.whatsdelete.responce.ApplicationListData
-import com.jatpack.wastatustranding.R
+import com.pds.wastatustranding.R
 import com.squareup.picasso.Picasso
 
 class InstalledAppItemAdapter(var context:Context, private val list: List<ApplicationListData>?,

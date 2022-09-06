@@ -17,15 +17,9 @@
             <LinearLayout
                 android:id="@+id/ll_ads"
                 android:layout_width="match_parent"
-                android:layout_height="180dp"
-                android:layout_alignParentTop="true">
-
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/ads_img_new" />
-            </LinearLayout>
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -93,7 +87,7 @@ without saving their phone number in your device"
                     android:layout_below="@+id/txt_content"
                     android:layout_centerHorizontal="true"
                     android:layout_marginStart="@dimen/_15sdp"
-                    android:layout_marginTop="@dimen/_25sdp"
+                    android:layout_marginTop="@dimen/margin25dp"
                     android:layout_marginEnd="@dimen/_15sdp"
                     android:background="@drawable/ic_whts_bg">
 
@@ -149,7 +143,7 @@ without saving their phone number in your device"
                     android:layout_height="@dimen/_40sdp"
                     android:layout_below="@+id/tvMsg"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginTop="@dimen/_30sdp"
+                    android:layout_marginTop="@dimen/margin20dp"
                     android:background="@drawable/ic_senc_inactive"
                     android:gravity="center"
                     android:text="@string/send"
