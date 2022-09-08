@@ -7,13 +7,17 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout.DrawerListener
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
@@ -22,6 +26,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.whatsdelete.constants.Constants
 import com.example.whatsdelete.utils.AppUtils
+import com.example.whatsdelete.utils.AppUtils.Companion.openCustomTab
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.pds.socialmediahub.activities.SettingActivity
 import com.pds.socialmediahub.databinding.ActivityMainBinding
@@ -31,7 +36,6 @@ import engine.app.adshandler.AHandler
 import engine.app.fcm.MapperUtils
 import engine.app.inapp.InAppUpdateManager
 import engine.app.listener.InAppUpdateListener
-import engine.app.server.v2.Slave
 import engine.app.serviceprovider.Utils
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_splash.*
@@ -102,6 +106,26 @@ class MainActivity : AppCompatActivity(), InAppUpdateListener, View.OnClickListe
         )
         inAppUpdateManager = InAppUpdateManager(this)
         inAppUpdateManager.checkForAppUpdate(this)
+
+
+        binding.searchBoxEditText.setOnEditorActionListener(TextView.OnEditorActionListener { v, actionId, event ->
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                // Your piece of code on keyboard search click
+
+                if (!isSocialMediaClicked && binding.searchBoxEditText.text.toString() != "") {
+
+                    openWebView(
+                        "https://www.google.com/search?q=" + binding.searchBoxEditText.text.toString()
+                            .trim()
+                    )
+                }
+                binding.searchBoxEditText.setText("")
+                return@OnEditorActionListener true
+            }
+            false
+        })
+
+
     }
 
     override fun onResume() {
@@ -135,17 +159,12 @@ class MainActivity : AppCompatActivity(), InAppUpdateListener, View.OnClickListe
             }
 
             R.id.ll_download -> {
+                val paste = searchBoxEditText?.text.toString()
+                if (paste != null && paste.equals("")) {
+                    Toast.makeText(this, "Please paste valid URL", Toast.LENGTH_LONG).show()
+                    return
+                }
                 if (isSocialMediaClicked) {
-
-
-                    val paste = searchBoxEditText?.text.toString()
-
-
-                    if (paste != null && paste.equals("")) {
-                        Toast.makeText(this, "Please paste valid URL", Toast.LENGTH_LONG).show()
-                        return
-                    }
-
 
                     if (paste != null && paste.contains("https://www.instagram.com") || paste.contains(
                             "https://www.facebook.com"
@@ -366,6 +385,31 @@ class MainActivity : AppCompatActivity(), InAppUpdateListener, View.OnClickListe
     override fun onUpdateNotAvailable() {
         println("InAppUpdateManager MainActivity.onUpdateNotAvailable ")
         AHandler.getInstance().v2CallonAppLaunch(this)
+    }
+
+
+    //    public void updateUI(String url) {
+    //
+    //        if (!url.trim().isEmpty()) {
+    //
+    //            if (Utils.isValidUrl(url.trim())) {
+    //                if (!url.trim().contains("https://")) {
+    //                    openWebView("https://" + url.trim());
+    //                } else {
+    //                    openWebView(url.trim());
+    //                }
+    //            } else {
+    //                openWebView("https://www.google.com/search?q=" + url);
+    //            }
+    //        }
+    //
+    //
+    //    }
+    fun openWebView(url: String?) {
+        // img_home.setVisibility(View.VISIBLE);
+        AppUtils.openCustomTab(this, Uri.parse(url),"#34A853")
+
+//        AHandler.getInstance().showFullAds(CustomBrowserActivity.this,false);
     }
 }
 

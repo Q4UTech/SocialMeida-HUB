@@ -35,6 +35,7 @@ class Prefs(con: Context) {
         var KEY_SET_SAME_DAY = "KEY_SET_SAME_DAY"
         var KEY_SET_cat_list = "KEY_SET_cat_list"
         var KEY_SET_SUB_cat_list = "KEY_SET_SUB_cat_list"
+        var KEY_SET_SUB_cat_list_id = "KEY_SET_SUB_cat_list_id"
         const val PREF = "prefs_social_media_downloader"
         const val PROGRESS_KEY_PREF = "progress_key_pref"
          const val SET_UPDATED_KEY = "SET_UPDATED_KEY"
@@ -89,7 +90,10 @@ class Prefs(con: Context) {
         return gson.fromJson(json, type)
     }
 
-    fun setSubCategoryList(list: List<CategoryDetailItem>?) {
+
+
+
+    fun setSubCategoryList(list: ArrayList<ApplicationListData>?) {
         val gson = Gson()
         val json: String = gson.toJson(list)
         editor.putString(KEY_SET_SUB_cat_list, json)
@@ -98,10 +102,29 @@ class Prefs(con: Context) {
 
     }
 
-    fun getSubCategoryList(): List<CategoryDetailItem>? {
+    fun getSubCategoryList(): ArrayList<ApplicationListData>? {
         val gson = Gson()
         val json: String? = preferences.getString(KEY_SET_SUB_cat_list, null)
-        val type: Type = object : TypeToken<List<CategoryDetailItem>?>() {}.type
+        val type: Type = object : TypeToken<ArrayList<ApplicationListData>?>() {}.type
+        return gson.fromJson(json, type)
+    }
+
+
+
+    //id
+    fun setSubCategoryID(list: List<String>?) {
+        val gson = Gson()
+        val json: String = gson.toJson(list)
+        editor.putString(KEY_SET_SUB_cat_list_id, json)
+        editor.commit()
+
+
+    }
+
+    fun getSubCategoryID(): List<String>? {
+        val gson = Gson()
+        val json: String? = preferences.getString(KEY_SET_SUB_cat_list_id, null)
+        val type: Type = object : TypeToken<List<String>?>() {}.type
         return gson.fromJson(json, type)
     }
 
