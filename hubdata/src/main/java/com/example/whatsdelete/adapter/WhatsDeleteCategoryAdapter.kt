@@ -34,12 +34,12 @@ private var index:Int?=0
         //holder.bind(holder,data)
         holder.categoryName.text= data.cat_name
         Picasso.get().load(data.cat_image).into(holder.categoryImg)
-        holder.itemView.setOnClickListener {
-            //holder.rv_select.background= context.resources.getDrawable(R.drawable.ic_bg_active,null)
-           index=position
+        holder.rv_select.setOnClickListener{
+            index=position
             listener.onClick(data,data.cat_id)
 //            notifyDataSetChanged()
         }
+
 //        if (index == position)
 //            holder.ll_cat_container.background= context.resources.getDrawable(R.drawable.active_bg,null)
 //        else
@@ -57,6 +57,7 @@ private var index:Int?=0
       var categoryName=itemView.findViewById<TextView>(R.id.category_name)
         var categoryImg=itemView.findViewById<ImageView>(R.id.category_image)
         var ll_cat_container=itemView.findViewById<LinearLayout>(R.id.ll_cat_container)
+        var rv_select=itemView.findViewById<RelativeLayout>(R.id.rv_select)
 
 
 

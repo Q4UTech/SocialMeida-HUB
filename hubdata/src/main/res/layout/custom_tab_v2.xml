@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:ripple="http://schemas.android.com/apk/res-auto"
+    android:layout_gravity="center"
+    android:gravity="center"
+    android:id="@+id/parent_custum"
+    android:orientation="vertical"
+    tools:ignore="MissingDefaultResource">
+
+    <!--<ImageView-->
+        <!--android:id="@+id/tab_imageView"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="center" />-->
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:padding="@dimen/margine5"
+        android:orientation="horizontal"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/iv_cat_icon"
+            android:layout_width="@dimen/margin20"
+            android:layout_height="@dimen/margin20"/>
+
+        <TextView
+            android:layout_marginStart="@dimen/margin10"
+            android:text="dasfdadfas"
+            android:id="@+id/custum_tab_text"
+            android:layout_width="wrap_content"
+            android:textSize="12dp"
+            android:textColor="@color/text_color_202020"
+
+            android:textStyle="bold"
+            android:layout_height="wrap_content">
+
+        </TextView>
+
+    </LinearLayout>
+</LinearLayout>

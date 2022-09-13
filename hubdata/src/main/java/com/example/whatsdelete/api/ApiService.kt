@@ -3,9 +3,10 @@ package com.example.whatsdelete.api
 import com.example.whatsdelete.modal.*
 import com.example.whatsdelete.request.ApplicationListRequest
 import com.example.whatsdelete.request.CategoryListRequest
+import com.example.whatsdelete.request.CheckUpdateAPIRequest
 import com.example.whatsdelete.responce.ApplicationListResponce
-import com.example.whatsdelete.responce.CategoryListData
 import com.example.whatsdelete.responce.CategoryListResponce
+import com.example.whatsdelete.responce.CheckUpdateResponce
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -28,8 +29,8 @@ interface ApiService {
     ):Call<ApplicationListResponce>
 
 
-    @POST("downloadimg/")
-    fun getCategoryDownloadCount(@Body categoryDownloadRequest: CategoryDownloadRequest):Call<CategoryItem>
+    @POST("checkupdate/")
+    fun getCheckUpdateApi(@Body checkUpdateAPIRequest: CheckUpdateAPIRequest):Call<CheckUpdateResponce>
 
 
 }

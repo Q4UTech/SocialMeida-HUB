@@ -13,11 +13,11 @@ apply {
 //}
 
 android {
-    compileSdkVersion 32
+    compileSdkVersion 31
 
     defaultConfig {
         minSdkVersion 21
-        targetSdkVersion 32
+        targetSdkVersion 31
         //engine version don't remove it...
         //Add-ons (Admobmediation, show rate issue,unused tag removal,encyption all api data,add userid in all api,analytics)
         // in engine and adding missing account details...

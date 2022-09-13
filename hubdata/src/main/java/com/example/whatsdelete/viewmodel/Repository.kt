@@ -4,25 +4,25 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.whatsdelete.api.ApiService
-import com.example.whatsdelete.constants.Constants
 import com.example.whatsdelete.modal.*
 import com.example.whatsdelete.request.ApplicationListRequest
 import com.example.whatsdelete.request.CategoryListRequest
+import com.example.whatsdelete.request.CheckUpdateAPIRequest
 import com.example.whatsdelete.responce.ApplicationListResponce
-import com.example.whatsdelete.responce.CategoryListData
 import com.example.whatsdelete.responce.CategoryListResponce
+import com.example.whatsdelete.responce.CheckUpdateResponce
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 
-class WhatsDeleteRepository constructor(private val retrofitService: ApiService) {
+class Repository constructor(private val retrofitService: ApiService) {
     val category= MutableLiveData<CategoryListResponce>()
     val categoryItem= MutableLiveData<ApplicationListResponce>()
+    val checkUpdateLiveData= MutableLiveData<CheckUpdateResponce>()
 
     fun getCategoryItem(categoryRequestData: CategoryListRequest): LiveData<CategoryListResponce> {
         Log.d("TAG", "onViewCreated2: ")
@@ -46,7 +46,7 @@ class WhatsDeleteRepository constructor(private val retrofitService: ApiService)
         return category
     }
 
-    fun getApplicationListData(applicationlistRequest: ApplicationListRequest): LiveData<ApplicationListResponce> {
+    fun getApplicationListData(applicationlistRequest: ApplicationListRequest): MutableLiveData<ApplicationListResponce> {
        CoroutineScope(Dispatchers.IO).launch {
            val response=retrofitService.getApplicationListAPI(applicationlistRequest)
 
@@ -67,6 +67,29 @@ class WhatsDeleteRepository constructor(private val retrofitService: ApiService)
        }
 
         return categoryItem
+    }
+
+   fun getCheckUpdateAPI(checkUpdateAPI: CheckUpdateAPIRequest): LiveData<CheckUpdateResponce> {
+       CoroutineScope(Dispatchers.IO).launch {
+           val response=retrofitService.getCheckUpdateApi(checkUpdateAPI)
+
+           response.enqueue(object : Callback<CheckUpdateResponce>{
+               override fun onResponse(
+                   call: Call<CheckUpdateResponce>,
+                   response: Response<CheckUpdateResponce>
+               ) {
+                   checkUpdateLiveData.value=response.body()
+                   Log.d("TAG", "onResponse1: "+response.body())
+               }
+
+               override fun onFailure(call: Call<CheckUpdateResponce>, t: Throwable) {
+                   Log.d("TAG", "onFailure1: "+t.localizedMessage)
+               }
+
+           })
+       }
+
+        return checkUpdateLiveData
     }
 
 

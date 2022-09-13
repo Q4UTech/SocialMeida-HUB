@@ -54,8 +54,8 @@ class AppUtils {
 
         fun getCountryCode(context: Context): String? {
             val tm = (context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager)
-//            return tm.simCountryIso
-            return "IN";
+            return tm.simCountryIso
+//            return "IN";
         }
 
 

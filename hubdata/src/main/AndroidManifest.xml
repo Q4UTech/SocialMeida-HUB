@@ -20,7 +20,10 @@
 
 
         <activity android:name="com.example.whatsdelete.fragments.DetailFragment"
+            android:exported="false"
             android:theme="@style/AppTheme.NoActionBar"/>
+
+
 
     </application>
 

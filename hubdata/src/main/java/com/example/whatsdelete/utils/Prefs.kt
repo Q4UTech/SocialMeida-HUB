@@ -6,11 +6,14 @@ import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
 import com.example.whatsdelete.constants.Constants.Companion.FILTTER_ALL
+import com.example.whatsdelete.modal.ApplicationModelDataList
 import com.example.whatsdelete.modal.CategoryDetailItem
 import com.example.whatsdelete.responce.ApplicationListData
+import com.example.whatsdelete.responce.ApplicationListResponce
 import com.example.whatsdelete.responce.CategoryListData
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import org.json.JSONObject
 import java.lang.reflect.ParameterizedType
 import java.lang.reflect.Type
 
@@ -24,6 +27,7 @@ class Prefs(con: Context) {
     private var context: Context? = con
 
 
+
     init {
         preferences = PreferenceManager.getDefaultSharedPreferences(context)
         editor = preferences.edit()
@@ -33,8 +37,11 @@ class Prefs(con: Context) {
         var KEY_SET_SAME_DAY = "KEY_SET_SAME_DAY"
         var KEY_SET_cat_list = "KEY_SET_cat_list"
         var KEY_SET_SUB_cat_list = "KEY_SET_SUB_cat_list"
+        var KEY_SET_SUB_cat_list_id = "KEY_SET_SUB_cat_list_id"
         const val PREF = "prefs_social_media_downloader"
         const val PROGRESS_KEY_PREF = "progress_key_pref"
+         const val SET_UPDATED_KEY = "SET_UPDATED_KEY"
+
 
 
         private const val KEY_CAMERA = "camera_pack"
@@ -85,7 +92,10 @@ class Prefs(con: Context) {
         return gson.fromJson(json, type)
     }
 
-    fun setSubCategoryList(list: List<CategoryDetailItem>?) {
+
+
+
+    fun setSubCategoryList(list: ArrayList<ApplicationModelDataList>?) {
         val gson = Gson()
         val json: String = gson.toJson(list)
         editor.putString(KEY_SET_SUB_cat_list, json)
@@ -94,12 +104,13 @@ class Prefs(con: Context) {
 
     }
 
-    fun getSubCategoryList(): List<CategoryDetailItem>? {
+    fun getSubCategoryList(): ArrayList<ApplicationModelDataList>? {
         val gson = Gson()
         val json: String? = preferences.getString(KEY_SET_SUB_cat_list, null)
-        val type: Type = object : TypeToken<List<CategoryDetailItem>?>() {}.type
+        val type: Type = object : TypeToken<ArrayList<ApplicationModelDataList>?>() {}.type
         return gson.fromJson(json, type)
     }
+
 
 
 //    fun setApplicationResponceList(modal: ApplicationListResponce?, key: String?) {
@@ -118,23 +129,42 @@ class Prefs(con: Context) {
 //    }
 
 
-     fun setApplicationList(con: Context, jsonMap: HashMap<String, List<ApplicationListData>>) {
-        val jsonString = Gson().toJson(jsonMap)
-        val sharedPreferences: SharedPreferences = con.getSharedPreferences("HashMap", MODE_PRIVATE)
-        val editor = sharedPreferences.edit()
-        editor.putString("map", jsonString)
-        editor.apply()
+//     fun setApplicationList(con: Context, jsonMap: HashMap<String, List<ApplicationListData>>) {
+//        val jsonString = Gson().toJson(jsonMap)
+//
+//         println("Prefs.setApplicationList jhjhj"+" "+jsonMap.toString())
+//        val sharedPreferences: SharedPreferences = con.getSharedPreferences("HashMap", MODE_PRIVATE)
+//        val editor = sharedPreferences.edit()
+//        editor.putString("map", jsonString)
+//        editor.apply()
+//    }
+//
+//    fun getApplicationLsit(con: Context): HashMap<String, List<ApplicationListData>> {
+//        val sharedPreferences: SharedPreferences =
+//            con.getSharedPreferences("HashMap", MODE_PRIVATE)
+//        val defValue =
+//            Gson().toJson(HashMap<String, List<ApplicationListData>>())
+//        val json = sharedPreferences.getString("map", defValue)
+//        val token: TypeToken<HashMap<String, List<ApplicationListData>>> =
+//            object : TypeToken<HashMap<String, List<ApplicationListData>>>() {}
+//        return Gson().fromJson(json, token.type)
+//    }
+
+
+
+
+    fun saveArrayList(list: List<ApplicationListData>?, key: String?) {
+        val gson = Gson()
+        val json = gson.toJson(list)
+        editor.putString(key, json)
+        editor.apply() // This line is IMPORTANT !!!
     }
 
-    fun getApplicationLsit(con: Context): HashMap<String, List<ApplicationListData>> {
-        val sharedPreferences: SharedPreferences =
-            con.getSharedPreferences("HashMap", MODE_PRIVATE)
-        val defValue =
-            Gson().toJson(HashMap<String, List<ApplicationListData>>())
-        val json = sharedPreferences.getString("map", defValue)
-        val token: TypeToken<HashMap<String, List<ApplicationListData>>> =
-            object : TypeToken<HashMap<String, List<ApplicationListData>>>() {}
-        return Gson().fromJson(json, token.type)
+    fun getArrayList(key: String?): List<ApplicationListData>? {
+        val gson = Gson()
+        val json = preferences.getString(key, null)
+        val type = object : TypeToken<List<ApplicationListData>?>() {}.type
+        return gson.fromJson(json, type)
     }
 
 
@@ -397,6 +427,15 @@ class Prefs(con: Context) {
         val json = sharedPrefs.getString(key, null)
         val type: Type = ListParameterizeType(clazz!!)
         return gson.fromJson(json, type)
+    }
+
+    fun setUpdatedKey(updatedKey: String) {
+        editor.putString(SET_UPDATED_KEY, updatedKey)
+        editor.commit()
+    }
+
+    fun getUpdatedKey(): String? {
+        return preferences?.getString(SET_UPDATED_KEY, "NA")
     }
 
 }

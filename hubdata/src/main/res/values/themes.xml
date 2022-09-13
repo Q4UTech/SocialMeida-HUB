@@ -30,5 +30,11 @@
 
     </style>
 
+    <style name="My.New.TabText.Style" parent="@android:style/Widget.Holo.ActionBar.TabText">
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+
 
 </resources>

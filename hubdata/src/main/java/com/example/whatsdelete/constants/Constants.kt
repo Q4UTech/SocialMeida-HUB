@@ -71,7 +71,7 @@ class Constants {
         const val CONNECTION_TIMEOUT_MS: Long=1000
         const val RETROFIT_FAILURE: Int=500
        // const val BASE_URl="https://jsonplaceholder.typicode.com/"
-        const val BASE_URl="https://www.quantum4you.com/engine/socialmediahubapi/"
+        const val BASE_URl="https://quantum4you.com/engine/socialmediahubapi/"
         const val APP_ID="v5hubmedia"
         const val APP_FOLDER_NAME="whats_status"
 

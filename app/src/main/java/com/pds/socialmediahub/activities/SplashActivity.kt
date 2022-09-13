@@ -4,9 +4,19 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
+import androidx.lifecycle.ViewModelProvider
+import com.example.whatsdelete.api.APIClient
+import com.example.whatsdelete.constants.Constants
+import com.example.whatsdelete.request.CheckUpdateAPIRequest
+import com.example.whatsdelete.utils.AppUtils
+import com.example.whatsdelete.utils.Prefs
+import com.example.whatsdelete.viewmodel.ApiDataViewModel
+import com.example.whatsdelete.viewmodel.MyViewModelFactory
+import com.example.whatsdelete.viewmodel.Repository
 import com.pds.socialmediahub.R
 import com.pds.socialmediahub.engine.AppMapperConstant
 import com.pds.socialmediahub.engine.TransLaunchFullAdsActivity
@@ -40,6 +50,7 @@ class SplashActivity : BaseActivity(), OnBannerAdsIdLoaded {
         }
         appLaunch = false
 
+        checkUpdatedKeyForCategoryList()
         AHandler.getInstance().v2CallOnSplash(this, object : OnCacheFullAdLoaded {
             override fun onCacheFullAd() {
                 println("SplashActivity.openDashboardThroughBannerLoaded 001 fulladscaching")
@@ -220,5 +231,33 @@ class SplashActivity : BaseActivity(), OnBannerAdsIdLoaded {
         // acceptCallDoRadoConditions();
         launchApp()
         mPreference!!.setFirstTime(false)
+    }
+
+
+
+
+
+    fun checkUpdatedKeyForCategoryList(){
+        val prefs = Prefs(this)
+        val repository = Repository(APIClient.getNetworkService())
+       val viewModel = ViewModelProvider(
+            this,
+            MyViewModelFactory(repository)
+        ).get(ApiDataViewModel::class.java)
+        viewModel?.callCheckUpdateAPI(CheckUpdateAPIRequest(Constants.APP_ID, AppUtils.getCountryCode(this)!!))
+            ?.observe(this) { list ->
+                Log.d("TAG", "onActivityCreated1: adgfadsgadg 002 abandfhaj splash")
+                Log.d("TAG", "onActivityCreated1:  splash " + list.data.updatekey)
+                if (prefs?.getUpdatedKey()!=null && !prefs?.getUpdatedKey().equals("")){
+
+                    if (prefs?.getUpdatedKey().equals(list.data.updatekey)){
+                        prefs?.setUpdatedKey(list.data.updatekey)
+                        prefs?.setCategoryList(null)
+                        prefs?.setSubCategoryList(null)
+                    }
+
+                }
+
+            }
     }
 }
