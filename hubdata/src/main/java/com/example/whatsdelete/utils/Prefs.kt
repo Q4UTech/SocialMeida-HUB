@@ -6,8 +6,10 @@ import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
 import com.example.whatsdelete.constants.Constants.Companion.FILTTER_ALL
+import com.example.whatsdelete.modal.ApplicationModelDataList
 import com.example.whatsdelete.modal.CategoryDetailItem
 import com.example.whatsdelete.responce.ApplicationListData
+import com.example.whatsdelete.responce.ApplicationListResponce
 import com.example.whatsdelete.responce.CategoryListData
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -93,7 +95,7 @@ class Prefs(con: Context) {
 
 
 
-    fun setSubCategoryList(list: ArrayList<ApplicationListData>?) {
+    fun setSubCategoryList(list: ArrayList<ApplicationModelDataList>?) {
         val gson = Gson()
         val json: String = gson.toJson(list)
         editor.putString(KEY_SET_SUB_cat_list, json)
@@ -102,31 +104,13 @@ class Prefs(con: Context) {
 
     }
 
-    fun getSubCategoryList(): ArrayList<ApplicationListData>? {
+    fun getSubCategoryList(): ArrayList<ApplicationModelDataList>? {
         val gson = Gson()
         val json: String? = preferences.getString(KEY_SET_SUB_cat_list, null)
-        val type: Type = object : TypeToken<ArrayList<ApplicationListData>?>() {}.type
+        val type: Type = object : TypeToken<ArrayList<ApplicationModelDataList>?>() {}.type
         return gson.fromJson(json, type)
     }
 
-
-
-    //id
-    fun setSubCategoryID(list: List<String>?) {
-        val gson = Gson()
-        val json: String = gson.toJson(list)
-        editor.putString(KEY_SET_SUB_cat_list_id, json)
-        editor.commit()
-
-
-    }
-
-    fun getSubCategoryID(): List<String>? {
-        val gson = Gson()
-        val json: String? = preferences.getString(KEY_SET_SUB_cat_list_id, null)
-        val type: Type = object : TypeToken<List<String>?>() {}.type
-        return gson.fromJson(json, type)
-    }
 
 
 //    fun setApplicationResponceList(modal: ApplicationListResponce?, key: String?) {
@@ -145,26 +129,26 @@ class Prefs(con: Context) {
 //    }
 
 
-     fun setApplicationList(con: Context, jsonMap: HashMap<String, List<ApplicationListData>>) {
-        val jsonString = Gson().toJson(jsonMap)
-
-         println("Prefs.setApplicationList jhjhj"+" "+jsonMap.toString())
-        val sharedPreferences: SharedPreferences = con.getSharedPreferences("HashMap", MODE_PRIVATE)
-        val editor = sharedPreferences.edit()
-        editor.putString("map", jsonString)
-        editor.apply()
-    }
-
-    fun getApplicationLsit(con: Context): HashMap<String, List<ApplicationListData>> {
-        val sharedPreferences: SharedPreferences =
-            con.getSharedPreferences("HashMap", MODE_PRIVATE)
-        val defValue =
-            Gson().toJson(HashMap<String, List<ApplicationListData>>())
-        val json = sharedPreferences.getString("map", defValue)
-        val token: TypeToken<HashMap<String, List<ApplicationListData>>> =
-            object : TypeToken<HashMap<String, List<ApplicationListData>>>() {}
-        return Gson().fromJson(json, token.type)
-    }
+//     fun setApplicationList(con: Context, jsonMap: HashMap<String, List<ApplicationListData>>) {
+//        val jsonString = Gson().toJson(jsonMap)
+//
+//         println("Prefs.setApplicationList jhjhj"+" "+jsonMap.toString())
+//        val sharedPreferences: SharedPreferences = con.getSharedPreferences("HashMap", MODE_PRIVATE)
+//        val editor = sharedPreferences.edit()
+//        editor.putString("map", jsonString)
+//        editor.apply()
+//    }
+//
+//    fun getApplicationLsit(con: Context): HashMap<String, List<ApplicationListData>> {
+//        val sharedPreferences: SharedPreferences =
+//            con.getSharedPreferences("HashMap", MODE_PRIVATE)
+//        val defValue =
+//            Gson().toJson(HashMap<String, List<ApplicationListData>>())
+//        val json = sharedPreferences.getString("map", defValue)
+//        val token: TypeToken<HashMap<String, List<ApplicationListData>>> =
+//            object : TypeToken<HashMap<String, List<ApplicationListData>>>() {}
+//        return Gson().fromJson(json, token.type)
+//    }
 
 
 

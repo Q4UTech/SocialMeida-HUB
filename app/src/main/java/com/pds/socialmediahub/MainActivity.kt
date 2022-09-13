@@ -46,6 +46,7 @@ class MainActivity : AppCompatActivity(), InAppUpdateListener, View.OnClickListe
     private var isSocialMediaClicked: Boolean = false
     private var navController: NavController? = null
     private lateinit var inAppUpdateManager: InAppUpdateManager
+    private var isFromHOme:Boolean=false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -84,16 +85,19 @@ class MainActivity : AppCompatActivity(), InAppUpdateListener, View.OnClickListe
         navView.setOnItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.navigation_home -> {
+                    navController?.popBackStack()
                     navController?.navigate(R.id.navigation_home)
                     AHandler.getInstance().showFullAds(this@MainActivity, false)
                     true
                 }
                 R.id.navigation_dashboard -> {
+                    navController?.popBackStack()
                     navController?.navigate(R.id.navigation_dashboard)
                     AHandler.getInstance().showFullAds(this@MainActivity, false)
                     true
                 }
                 R.id.navigation_notifications -> {
+                    navController?.popBackStack()
                     navController?.navigate(R.id.navigation_notifications)
                     AHandler.getInstance().showFullAds(this@MainActivity, false)
                     true
@@ -350,12 +354,15 @@ class MainActivity : AppCompatActivity(), InAppUpdateListener, View.OnClickListe
             if (value != null) {
                 when (value) {
                     MapperUtils.DL_SEARCH_PAGE -> {
+                        navController?.popBackStack()
                         navController?.navigate(R.id.navigation_home)
                     }
                     MapperUtils.DL_DOWNLOAD_PAGE -> {
+                        navController?.popBackStack()
                         navController?.navigate(R.id.navigation_dashboard)
                     }
                     MapperUtils.DL_CHAT_PAGE -> {
+                        navController?.popBackStack()
                         navController?.navigate(R.id.navigation_notifications)
                     }
                     /* MapperUtils.DL_BLOCK_PAGE -> {
@@ -410,6 +417,43 @@ class MainActivity : AppCompatActivity(), InAppUpdateListener, View.OnClickListe
         AppUtils.openCustomTab(this, Uri.parse(url),"#34A853")
 
 //        AHandler.getInstance().showFullAds(CustomBrowserActivity.this,false);
+    }
+
+
+    override fun onBackPressed() {
+
+
+        //                    iv_filter.setVisibility(View.GONE);
+
+
+        if (isDrawerOpen()) {
+            closeMenuDrawer()
+            return
+        }
+
+
+        navController?.addOnDestinationChangedListener { controller, destination, arguments ->
+            println("DashboardActivity.onCreate hi test 001 dasfa"+" "+destination.label)
+
+            if(!destination.label?.equals("Home")!!){
+                navController?.popBackStack()
+                navController?.navigate(R.id.navigation_home)
+                isFromHOme=true
+            }
+
+        }
+
+        if(isFromHOme){
+            isFromHOme=false
+            return
+        }
+
+
+        println("DashboardActivity.onCreate hi test 002"+" ")
+
+        println("DashboardActivity.onBackPressed hi on back press"+" ")
+        AHandler.getInstance().v2CallOnExitPrompt(this)
+        super.onBackPressed()
     }
 }
 

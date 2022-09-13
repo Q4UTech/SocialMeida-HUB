@@ -125,13 +125,12 @@ public class WAStatusFragment extends Fragment implements StatusFragmentContract
 
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            ll_below_10_permission.setVisibility(View.GONE);
             if (mediaPreferences != null && !mediaPreferences.getDocumetFilePath().equals("NA")) {
                 above_10_permission.setVisibility(View.GONE);
-                ll_below_10_permission.setVisibility(View.VISIBLE);
                 fetchFile();
             } else {
                 above_10_permission.setVisibility(View.VISIBLE);
-                ll_below_10_permission.setVisibility(View.GONE);
 
                 allow_doc_permission.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -773,6 +772,9 @@ public class WAStatusFragment extends Fragment implements StatusFragmentContract
 
         }
     };
+
+
+
 
 
 }

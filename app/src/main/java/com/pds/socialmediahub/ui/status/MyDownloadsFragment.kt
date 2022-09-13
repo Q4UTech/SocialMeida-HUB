@@ -171,6 +171,7 @@ class MyDownloadsFragment : AppCompatActivity(), SetClick {
 
         if (criteria.equals("images") && imageList != null && imageList?.size!! > 0) {
             adapterList = GalleryAdapter(this, imageList!!, this)
+            ll_nodata?.visibility=View.GONE
             val gridLayoutManager = GridLayoutManager(this, 3)
             total_downloads?.visibility = View.VISIBLE
             total_downloads?.text = getFontColorSize(imageList?.size!!)
@@ -182,9 +183,13 @@ class MyDownloadsFragment : AppCompatActivity(), SetClick {
                 }
             })
         } else {
+            ll_nodata?.visibility=View.VISIBLE
+
             total_downloads?.visibility = View.GONE
         }
         if (criteria.equals("video") && videoList != null && videoList?.size!! > 0) {
+            ll_nodata?.visibility=View.GONE
+
             total_downloads_videos?.visibility = View.VISIBLE
             adapterList = GalleryAdapter(this, videoList!!, this)
             val gridLayoutManager = GridLayoutManager(this, 3)
@@ -193,6 +198,8 @@ class MyDownloadsFragment : AppCompatActivity(), SetClick {
             videoRecyclerView?.adapter = adapterList
 
         } else {
+            ll_nodata?.visibility=View.VISIBLE
+
             total_downloads_videos?.visibility = View.GONE
         }
 

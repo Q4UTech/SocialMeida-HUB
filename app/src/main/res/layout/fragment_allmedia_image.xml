@@ -71,6 +71,114 @@
                 android:textStyle="bold" />
         </LinearLayout>
 
+
+        <RelativeLayout
+            android:id="@+id/above_10_permission"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <RelativeLayout
+                android:id="@+id/rl_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:id="@+id/ll_small_wa_permission"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_gravity="center|top"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:gravity="center|top"
+                    android:orientation="vertical"
+                    android:visibility="visible">
+
+
+                    <ImageView
+                        android:id="@+id/iv_wa_doc_permission"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/ic_status_saver_bg_small" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:padding="@dimen/_7sdp"
+                        android:text="To Get All Status"
+                        android:textColor="#212121"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/wa_status_permission_text"
+                        android:textAlignment="center"
+                        android:textColor="#8C8C8C"
+                        android:textSize="8sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_wa_big_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/ic_status_saver_bg" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:padding="@dimen/_10sdp"
+                        android:text="To Get All Status"
+                        android:textColor="#212121"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/wa_status_permission_text"
+                        android:textAlignment="center"
+                        android:textColor="#8C8C8C"
+                        android:textSize="8sp" />
+                </LinearLayout>
+
+            </RelativeLayout>
+
+
+            <TextView
+                android:id="@+id/allow_doc_permission"
+                android:layout_width="@dimen/_220sdp"
+                android:layout_height="@dimen/_35sdp"
+                android:layout_below="@+id/rl_container"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/_30sdp"
+                android:background="@drawable/rounded_btn_inapp"
+                android:gravity="center"
+                android:paddingStart="@dimen/_20sdp"
+                android:paddingEnd="@dimen/_20sdp"
+                android:text="@string/btn_allow"
+                android:textAllCaps="true"
+                android:textColor="#FFFFFF"
+                android:textSize="12sp" />
+
+        </RelativeLayout>
+
         <LinearLayout
             android:id="@+id/ll_below_10_permission"
             android:layout_width="wrap_content"
@@ -239,111 +347,6 @@
     </RelativeLayout>
 
 
-    <RelativeLayout
-        android:id="@+id/above_10_permission"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/_20sdp"
-        android:orientation="vertical"
-        android:visibility="gone">
 
-        <RelativeLayout
-            android:id="@+id/rl_container"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <LinearLayout
-                android:id="@+id/ll_small_wa_permission"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_gravity="center|top"
-                android:layout_marginTop="@dimen/_20sdp"
-                android:gravity="center|top"
-                android:orientation="vertical"
-                android:visibility="visible">
-
-
-                <ImageView
-                    android:id="@+id/iv_wa_doc_permission"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/ic_status_saver_bg_small" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_10sdp"
-                    android:padding="@dimen/_7sdp"
-                    android:text="To Get All Status"
-                    android:textColor="#212121"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/wa_status_permission_text"
-                    android:textAlignment="center"
-                    android:textColor="#8C8C8C"
-                    android:textSize="8sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/ll_wa_big_container"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:visibility="gone">
-
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/ic_status_saver_bg" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_10sdp"
-                    android:padding="@dimen/_10sdp"
-                    android:text="To Get All Status"
-                    android:textColor="#212121"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/wa_status_permission_text"
-                    android:textAlignment="center"
-                    android:textColor="#8C8C8C"
-                    android:textSize="8sp" />
-            </LinearLayout>
-
-        </RelativeLayout>
-
-
-        <TextView
-            android:id="@+id/allow_doc_permission"
-            android:layout_width="@dimen/_220sdp"
-            android:layout_height="@dimen/_35sdp"
-            android:layout_below="@+id/rl_container"
-            android:layout_centerInParent="true"
-            android:layout_gravity="center"
-            android:layout_marginTop="@dimen/_30sdp"
-            android:background="@drawable/rounded_btn_inapp"
-            android:gravity="center"
-            android:paddingStart="@dimen/_20sdp"
-            android:paddingEnd="@dimen/_20sdp"
-            android:text="@string/btn_allow"
-            android:textAllCaps="true"
-            android:textColor="#FFFFFF"
-            android:textSize="12sp" />
-
-    </RelativeLayout>
 
 </LinearLayout>

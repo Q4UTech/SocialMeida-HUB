@@ -18,11 +18,12 @@
 
 
     <LinearLayout
-        android:layout_width="150dp"
+        android:layout_width="wrap_content"
+        android:padding="@dimen/margine5"
         android:orientation="horizontal"
         android:layout_gravity="center"
         android:gravity="center"
-        android:layout_height="35dp">
+        android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/iv_cat_icon"
@@ -30,10 +31,14 @@
             android:layout_height="@dimen/margin20"/>
 
         <TextView
+            android:layout_marginStart="@dimen/margin10"
             android:text="dasfdadfas"
             android:id="@+id/custum_tab_text"
             android:layout_width="wrap_content"
-            android:textSize="14dp"
+            android:textSize="12dp"
+            android:textColor="@color/text_color_202020"
+
+            android:textStyle="bold"
             android:layout_height="wrap_content">
 
         </TextView>

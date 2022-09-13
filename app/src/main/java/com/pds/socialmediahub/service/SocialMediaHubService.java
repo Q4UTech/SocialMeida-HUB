@@ -143,43 +143,53 @@ public class SocialMediaHubService extends Service {
         }
 
         Intent searchIntent = new Intent(this, SocialMediaHubService.class).setAction("search_action");
-        PendingIntent searchPendingIntent = PendingIntent.getService(this, 0, searchIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent searchPendingIntent = PendingIntent.getService(this, 0, searchIntent, PendingIntent.FLAG_UPDATE_CURRENT
+                | PendingIntent.FLAG_IMMUTABLE);
         remoteViews.setOnClickPendingIntent(R.id.ll_search, searchPendingIntent);
 
         Intent cameraIntent = new Intent(this, SocialMediaHubService.class).setAction("camera_action");
-        PendingIntent cameraPendingIntent = PendingIntent.getService(this, 0, cameraIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent cameraPendingIntent = PendingIntent.getService(this, 0, cameraIntent, PendingIntent.FLAG_UPDATE_CURRENT
+                | PendingIntent.FLAG_IMMUTABLE);
         remoteViews.setOnClickPendingIntent(R.id.ll_camera, cameraPendingIntent);
 
         Intent whatAppIntent = new Intent(this, SocialMediaHubService.class).setAction("whatsapp_action");
-        PendingIntent whatsPendingIntent = PendingIntent.getService(this, 0, whatAppIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent whatsPendingIntent = PendingIntent.getService(this, 0, whatAppIntent, PendingIntent.FLAG_UPDATE_CURRENT
+                | PendingIntent.FLAG_IMMUTABLE);
         remoteViews.setOnClickPendingIntent(R.id.ll_whatsapp, whatsPendingIntent);
 
         Intent msgIntent = new Intent(this, SocialMediaHubService.class).setAction("msg_action");
-        PendingIntent msgPendingIntent = PendingIntent.getService(this, 0, msgIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent msgPendingIntent = PendingIntent.getService(this, 0, msgIntent, PendingIntent.FLAG_UPDATE_CURRENT
+                | PendingIntent.FLAG_IMMUTABLE);
         remoteViews.setOnClickPendingIntent(R.id.ll_msg, msgPendingIntent);
 
         Intent messengerIntent = new Intent(this, SocialMediaHubService.class).setAction("messenger_action");
-        PendingIntent messengerPendingIntent = PendingIntent.getService(this, 0, messengerIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent messengerPendingIntent = PendingIntent.getService(this, 0, messengerIntent, PendingIntent.FLAG_UPDATE_CURRENT
+                | PendingIntent.FLAG_IMMUTABLE);
         remoteViews.setOnClickPendingIntent(R.id.ll_messanger, messengerPendingIntent);
 
         Intent facebookIntent = new Intent(this, SocialMediaHubService.class).setAction("fb_action");
-        PendingIntent facebookPendingIntent = PendingIntent.getService(this, 0, facebookIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent facebookPendingIntent = PendingIntent.getService(this, 0, facebookIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
         remoteViews.setOnClickPendingIntent(R.id.ll_facebook, facebookPendingIntent);
 
         Intent settingIntenet = new Intent(this, SocialMediaHubService.class).setAction("setting_action");
-        PendingIntent settingPendingIntent = PendingIntent.getService(this, 0, settingIntenet, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent settingPendingIntent = PendingIntent.getService(this, 0, settingIntenet,
+                PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
         remoteViews.setOnClickPendingIntent(R.id.ivSetting, settingPendingIntent);
 
         Intent waStatusIntent = new Intent(this, SocialMediaHubService.class).setAction("wa_status_action");
-        PendingIntent waStatusPendingIntent = PendingIntent.getService(this, 0, waStatusIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent waStatusPendingIntent = PendingIntent.getService(this, 0, waStatusIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
         remoteViews.setOnClickPendingIntent(R.id.ll_status, waStatusPendingIntent);
 
         Intent downloadIntent = new Intent(this, SocialMediaHubService.class).setAction("download_action");
-        PendingIntent downloadPendingIntent = PendingIntent.getService(this, 0, downloadIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent downloadPendingIntent = PendingIntent.getService(this, 0, downloadIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
         remoteViews.setOnClickPendingIntent(R.id.ll_video_downloader, downloadPendingIntent);
 
         Intent chatIntent = new Intent(this, SocialMediaHubService.class).setAction("chat_action");
-        PendingIntent chatPendingIntent = PendingIntent.getService(this, 0, chatIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent chatPendingIntent = PendingIntent.getService(this, 0, chatIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
         remoteViews.setOnClickPendingIntent(R.id.ll_direct_chat, chatPendingIntent);
     }
 

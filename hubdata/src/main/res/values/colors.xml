@@ -12,7 +12,7 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="green">#08534C</color>
-    <color name="tab_selected">#27C984</color>
+    <color name="tab_selected">#202020</color>
     <color name="text_color_202020">#202020</color>
     <color name="txt_color_selected">#012A72</color>
 </resources>
