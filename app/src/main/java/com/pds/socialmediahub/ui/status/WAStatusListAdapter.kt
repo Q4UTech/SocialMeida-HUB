@@ -1,6 +1,7 @@
 package com.pds.socialmediahub.ui.status
 
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.media.MediaPlayer
@@ -21,6 +22,7 @@ import com.pds.socialmediahub.util.Utilities
 import com.pds.socialmediahub.util.VideoRequestHandler
 import com.makeramen.roundedimageview.RoundedImageView
 import com.squareup.picasso.Picasso
+import engine.app.adshandler.AHandler
 import java.io.File
 
 class WAStatusListAdapter(
@@ -171,6 +173,8 @@ class WAStatusListAdapter(
                 intent.putExtra("selectedPos", "" + position)
                 mContext.startActivity(intent)
 //                }
+
+                AHandler.getInstance().showFullAds(mContext as Activity?,false)
             }
         })
         holder.fl_download.setOnClickListener {

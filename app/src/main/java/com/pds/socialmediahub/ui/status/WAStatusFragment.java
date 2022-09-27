@@ -242,21 +242,24 @@ public class WAStatusFragment extends Fragment implements StatusFragmentContract
             ll_noData.setVisibility(View.GONE);
 
         }
-        adapter = new WAStatusListAdapter(getActivity(), status, true, this);
-        adapter.submitList(status);
-        recyclerView.setLayoutManager(new GridLayoutManager(getActivity(),
-                3));
+        if (getActivity()!=null){
+            adapter = new WAStatusListAdapter(getActivity(), status, true, this);
+            adapter.submitList(status);
+            recyclerView.setLayoutManager(new GridLayoutManager(getActivity(),
+                    3));
 //        recyclerView.setHasFixedSize(true);
-        recyclerView.setAdapter(adapter);
-        recyclerView.setItemAnimator(null);
-        adapter.setCheckedListener(new WAStatusListAdapter.CounterSlection() {
-            @Override
-            public void selectItems(int itemSlectionCount) {
-                setPageTitle(itemSlectionCount);
-            }
+            recyclerView.setAdapter(adapter);
+            recyclerView.setItemAnimator(null);
+            adapter.setCheckedListener(new WAStatusListAdapter.CounterSlection() {
+                @Override
+                public void selectItems(int itemSlectionCount) {
+                    setPageTitle(itemSlectionCount);
+                }
 
-        });
-        Log.d("WAStatusFragment", "Hello loadStatus oopss" + " " + status.size());
+            });
+            Log.d("WAStatusFragment", "Hello loadStatus oopss" + " " + status.size());
+        }
+
     }
 
     @Override
@@ -355,10 +358,10 @@ public class WAStatusFragment extends Fragment implements StatusFragmentContract
     public void onResume() {
         super.onResume();
 
+        Log.d("WAStatusFragment", "Hello onResume sadfjsak"+" "+mediaPreferences.getRefresh());
         if (mediaPreferences != null && mediaPreferences.getRefresh()) {
             mediaPreferences.setRefresh(false);
             try {
-
                 load_imgList();
 
             } catch (Exception e) {

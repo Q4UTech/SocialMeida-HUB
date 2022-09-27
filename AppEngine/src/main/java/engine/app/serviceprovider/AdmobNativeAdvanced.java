@@ -2,6 +2,7 @@ package engine.app.serviceprovider;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -79,6 +80,7 @@ public class AdmobNativeAdvanced {
                 super.onVideoEnd();
             }
         });
+        Log.d("AdmobNativeAdvanced", "Hello showNativeAdvancedAds opopopo 1 cccc");
 
         adView.setHeadlineView(adView.findViewById(R.id.appinstall_headline));
         adView.setBodyView(adView.findViewById(R.id.appinstall_body));
@@ -91,7 +93,7 @@ public class AdmobNativeAdvanced {
         // Some assets are guaranteed to be in every NativeAppInstallAd.
         ((TextView) adView.getHeadlineView()).setText(nativeAd.getHeadline());
         ((TextView) adView.getBodyView()).setText(nativeAd.getBody());
-        ((Button) adView.getCallToActionView()).setText(nativeAd.getCallToAction());
+        ((TextView) adView.getCallToActionView()).setText(nativeAd.getCallToAction());
 
         if (nativeAd.getIcon() != null) {
             adView.getIconView().setVisibility(View.VISIBLE);
@@ -205,9 +207,13 @@ public class AdmobNativeAdvanced {
             AdLoader.Builder builder = new AdLoader.Builder(context, id);
 
             if (isNativeLarge) {
+                Log.d("AdmobNativeAdvanced", "Hello showNativeAdvancedAds opopopo 1 aaaa");
+
                 builder.forNativeAd(new NativeAd.OnNativeAdLoadedListener() {
                     @Override
                     public void onNativeAdLoaded(@NonNull NativeAd nativeAd) {
+                        Log.d("AdmobNativeAdvanced", "Hello showNativeAdvancedAds opopopo 1 bbbb");
+
                         mainNativeAd = nativeAd;
                         final LinearLayout linearLayout = new LinearLayout(context);
                         NativeAdView adView = (NativeAdView) context.getLayoutInflater().inflate(R.layout.ad_admob_native_large, linearLayout, false);
@@ -235,6 +241,8 @@ public class AdmobNativeAdvanced {
                 });
             }
 
+            Log.d("AdmobNativeAdvanced", "Hello showNativeAdvancedAds opopopo 1 aaaa 001");
+
             VideoOptions videoOptions = new VideoOptions.Builder()
                     .setStartMuted(true)
                     .build();
@@ -244,11 +252,14 @@ public class AdmobNativeAdvanced {
                     .build();
 
             builder.withNativeAdOptions(adOptions);
+            Log.d("AdmobNativeAdvanced", "Hello showNativeAdvancedAds opopopo 1 aaaa 002");
 
             AdLoader adLoader = builder.withAdListener(new AdListener() {
                 @Override
                 public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
                     super.onAdFailedToLoad(loadAdError);
+                    Log.d("AdmobNativeAdvanced", "Hello showNativeAdvancedAds opopopo 1 aaaa 003");
+
                     System.out.println("AdmobNativeAdvanced.onAdFailedToLoad getNativeAdvancedAds " + loadAdError.getMessage() + " " + isNativeLarge);
                     if (listener != null) {
                         listener.onAdFailed(AdsEnum.ADS_ADMOB, loadAdError.getMessage());
@@ -257,18 +268,26 @@ public class AdmobNativeAdvanced {
 
             }).build();
 
+            Log.d("AdmobNativeAdvanced", "Hello showNativeAdvancedAds opopopo 1 aaaa 004");
+
             AdRequest adRequest = new AdRequest.Builder().build();
             MobileAds.setRequestConfiguration(EngineConstant.addTestDeviceForAdMob());
 
             try {
+                Log.d("AdmobNativeAdvanced", "Hello showNativeAdvancedAds opopopo 1 aaaa 005");
+
                 adLoader.loadAd(adRequest);
             } catch (Exception e) {
+                Log.d("AdmobNativeAdvanced", "Hello showNativeAdvancedAds opopopo 1 aaaa 006"+" "+e.getMessage());
+
                 if (listener != null) {
                     listener.onAdFailed(AdsEnum.ADS_ADMOB, e.getMessage());
                 }
             }
 
         } else {
+            Log.d("AdmobNativeAdvanced", "Hello showNativeAdvancedAds opopopo 1 aaaa 001");
+
             if (listener != null) {
                 listener.onAdFailed(AdsEnum.ADS_ADMOB, "NativeAdvancedAds Id null");
             }
@@ -527,15 +546,22 @@ public class AdmobNativeAdvanced {
     public void showNativeAdvancedAds(final Activity context, String id,
                                       final boolean isNativeLarge, final AppAdsListener listener) {
         if (mainNativeAd == null) {
+            Log.d("AdmobNativeAdvanced", "Hello showNativeAdvancedAds opopopo 1");
             getNativeAdvancedAds(context, id, isNativeLarge, listener);
         } else {
+            Log.d("AdmobNativeAdvanced", "Hello showNativeAdvancedAds opopopo 2");
+
             final LinearLayout linearLayout = new LinearLayout(context);
             if (isNativeLarge) {
+                Log.d("AdmobNativeAdvanced", "Hello showNativeAdvancedAds opopopo 3");
+
                 NativeAdView adView = (NativeAdView) context.getLayoutInflater().inflate(R.layout.ad_admob_native_large, linearLayout, false);
                 populateUnifiedNativeAdForLarge(mainNativeAd, adView);
                 linearLayout.addView(adView);
                 listener.onAdLoaded(linearLayout);
             } else {
+                Log.d("AdmobNativeAdvanced", "Hello showNativeAdvancedAds opopopo 4");
+
                 NativeAdView adView = (NativeAdView) context.getLayoutInflater().inflate(R.layout.ad_admob_native_medium, linearLayout, false);
                 populateUnifiedNativeAdForMedium(mainNativeAd, adView);
                 linearLayout.addView(adView);

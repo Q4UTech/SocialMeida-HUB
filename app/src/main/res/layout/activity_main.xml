@@ -7,6 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:openDrawer="start">
+
     <RelativeLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
@@ -86,15 +87,23 @@
                 </LinearLayout>
 
 
+                <ImageView
+                    android:id="@+id/search_image_google"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_marginStart="@dimen/_6sdp"
+                    android:layout_toRightOf="@+id/search_drop"
+                    android:background="@drawable/ic_group_search" />
+
                 <EditText
                     android:id="@+id/searchBoxEditText"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:layout_centerVertical="true"
                     android:layout_toLeftOf="@+id/ll_download"
-                    android:layout_toRightOf="@+id/search_drop"
+                    android:layout_toRightOf="@+id/search_image_google"
                     android:background="@android:color/transparent"
-                    android:drawableStart="@drawable/ic_group_search"
                     android:drawablePadding="5dp"
                     android:ems="10"
                     android:hint="Search"
@@ -147,12 +156,12 @@
             android:id="@+id/nav_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/ads_layout"
+            android:layout_above="@+id/adsholder"
             android:layout_marginStart="0dp"
             android:layout_marginEnd="0dp"
             android:background="?android:attr/windowBackground"
-            app:itemIconTint="@color/color_selector"
             app:itemIconSize="16dp"
+            app:itemIconTint="@color/color_selector"
             app:itemPaddingBottom="@dimen/margin10"
             app:itemPaddingTop="@dimen/margin10"
             app:itemRippleColor="@null"
@@ -173,14 +182,23 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:navGraph="@navigation/mobile_navigation" />
-<LinearLayout
-    android:id="@+id/ads_layout"
-    android:orientation="horizontal"
-    android:layout_alignParentBottom="true"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"/>
-    </RelativeLayout>
 
+        <LinearLayout
+            android:id="@+id/adsholder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:visibility="visible">
+
+        <LinearLayout
+            android:id="@+id/adsbanner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal"></LinearLayout>
+        </LinearLayout>
+    </RelativeLayout>
 
 
     <com.google.android.material.navigation.NavigationView
@@ -196,7 +214,9 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <include layout="@layout/nav_header_main" />
+            <include
+                android:id="@+id/header_view"
+                layout="@layout/nav_header_main" />
 
             <ScrollView
 
@@ -288,7 +308,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_marginLeft="@dimen/_10sdp"
-                            android:text="@string/rate_apps"
+                            android:text="@string/show_some_love"
                             android:textColor="@color/black"
                             android:textSize="@dimen/_12sdp" />
 
@@ -372,7 +392,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_marginLeft="@dimen/_10sdp"
-                            android:text="@string/shareFeedback"
+                            android:text="@string/email_us"
                             android:textColor="@color/black"
                             android:textSize="@dimen/_12sdp" />
 
@@ -381,7 +401,7 @@
 
 
                     <LinearLayout
-                        android:id="@+id/nav_aboutUs"
+                        android:id="@+id/nav_privacy"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_5sdp"
@@ -393,7 +413,7 @@
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/ic_nav_about_us" />
+                            android:src="@drawable/ic_privacy_policy" />
 
 
                         <TextView
@@ -401,7 +421,35 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_marginLeft="@dimen/_10sdp"
-                            android:text="@string/aboutUs"
+                            android:text="@string/privacy_policy"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_12sdp" />
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/nav_term_condition"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:layout_marginBottom="@dimen/_5sdp"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/_10sdp">
+
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_term_condition" />
+
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="@dimen/_10sdp"
+                            android:text="@string/termsCond"
                             android:textColor="@color/black"
                             android:textSize="@dimen/_12sdp" />
 

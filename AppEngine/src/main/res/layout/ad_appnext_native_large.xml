@@ -5,7 +5,7 @@
     android:id="@+id/na_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/native_large_bg"
+    android:background="@drawable/bottom_round_corner"
     android:padding="10dp">
 
 
@@ -62,7 +62,7 @@
             android:layout_alignParentRight="true"
             android:background="@drawable/native_large_button_color"
             android:text="install"
-            android:textColor="#ffffff" />
+            android:textColor="@color/native_large_button_text_color" />
 
         <ImageView
             android:id="@+id/imageView"

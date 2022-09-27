@@ -16,14 +16,15 @@ import androidx.core.app.NotificationCompat;
 import java.util.Map;
 import java.util.Random;
 
+import app.pnd.adshandler.R;
 import engine.app.PrintLog;
 import engine.app.fcm.MapperUtils;
 import engine.app.fcm.NotificationUIResponse;
 import engine.app.fcm.imageparser.ImageDownloader;
 import engine.app.fcm.imageparser.LoadImage;
-import app.pnd.adshandler.R;
 import engine.app.server.v2.DataHubConstant;
 import engine.app.serviceprovider.Utils;
+import engine.app.ui.MapperActivity;
 
 /**
  * Created by quantum4u1 on 27/04/18.
@@ -66,15 +67,21 @@ public class Type1PushListener implements FCMType, ImageDownloader {
         NotificationManager manager = (NotificationManager) this.context.getSystemService(Context.NOTIFICATION_SERVICE);
         if (manager != null) {
 
-            intent = new Intent(DataHubConstant.CUSTOM_ACTION);
-            intent.addCategory(Intent.CATEGORY_DEFAULT);
+//            intent = new Intent(DataHubConstant.CUSTOM_ACTION);
+            intent = new Intent(context, MapperActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             intent.putExtra(MapperUtils.keyType, push.click_type);
             intent.putExtra(MapperUtils.keyValue, push.click_value);
 
-            PendingIntent contentIntent = PendingIntent.getActivity(this.context, TYPE_1, intent,
-                    PendingIntent.FLAG_UPDATE_CURRENT);
+            PendingIntent contentIntent;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                contentIntent = PendingIntent.getActivity(this.context, TYPE_1, intent,
+                        PendingIntent.FLAG_MUTABLE);
+            }else {
+                contentIntent = PendingIntent.getActivity(this.context, TYPE_1, intent,
+                        PendingIntent.FLAG_UPDATE_CURRENT);
+            }
 
             RemoteViews contentView = new RemoteViews(this.context.getPackageName(), R.layout.notification_type1);
             contentView.setTextViewText(R.id.title, push.headertext);

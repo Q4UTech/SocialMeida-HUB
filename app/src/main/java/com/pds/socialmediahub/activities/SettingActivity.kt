@@ -19,6 +19,7 @@ import com.pds.socialmediahub.model.BottomList
 import com.pds.socialmediahub.model.NotificatioListItem
 import com.pds.socialmediahub.service.SocialMediaHubService
 import com.pds.socialmediahub.util.SetClick
+import engine.app.adshandler.AHandler
 import kotlinx.android.synthetic.main.activity_setting.*
 
 
@@ -45,19 +46,16 @@ class SettingActivity : AppCompatActivity(), SetClick, View.OnClickListener {
     private var pref: Pref? = null
     private var position: Int? = null
     private var rlSearch: RelativeLayout? = null
-    private var rlCamera: RelativeLayout? = null
     private var rlWhatsApp: RelativeLayout? = null
     private var rlMessage: RelativeLayout? = null
     private var rlMessenger: RelativeLayout? = null
     private var rlFacebook: RelativeLayout? = null
     private var cbSearch: AppCompatCheckBox? = null
-    private var cbCamera: AppCompatCheckBox? = null
     private var cbWhatsApp: AppCompatCheckBox? = null
     private var cbMessage: AppCompatCheckBox? = null
     private var cbMessenger: AppCompatCheckBox? = null
     private var cbFacebook: AppCompatCheckBox? = null
     private var llSearch: LinearLayout? = null
-    private var llCamera: LinearLayout? = null
     private var llWhatsApp: LinearLayout? = null
     private var llMessege: LinearLayout? = null
     private var llMessenger: LinearLayout? = null
@@ -65,6 +63,7 @@ class SettingActivity : AppCompatActivity(), SetClick, View.OnClickListener {
     private var notiDownloader: LinearLayout? = null
     private var notiChat: LinearLayout? = null
     private var notiStatus: LinearLayout? = null
+    private var adsbanner: LinearLayout? = null
     private var countList = ArrayList<Int>()
 
     var ivBack: ImageView? = null
@@ -74,6 +73,11 @@ class SettingActivity : AppCompatActivity(), SetClick, View.OnClickListener {
         setContentView(R.layout.activity_setting)
         supportActionBar?.hide()
         pref = Pref(this)
+
+        adsbanner=findViewById(R.id.adsbanner)
+        adsbanner?.addView(AHandler.getInstance().getBannerHeader(this))
+
+
         ivBack = findViewById(R.id.ivBack)
         ivBack?.setOnClickListener {
             finish()
@@ -103,7 +107,6 @@ class SettingActivity : AppCompatActivity(), SetClick, View.OnClickListener {
         }
         serviceToggle = findViewById(R.id.serviceToggle)
         llSearch = findViewById(R.id.ll_search)
-        llCamera = findViewById(R.id.ll_camera)
         llWhatsApp = findViewById(R.id.ll_whatsapp)
         llMessege = findViewById(R.id.ll_msg)
         llMessenger = findViewById(R.id.ll_messanger)
@@ -113,7 +116,6 @@ class SettingActivity : AppCompatActivity(), SetClick, View.OnClickListener {
         notiStatus = findViewById(R.id.ll_status)
         llFacebook = findViewById(R.id.ll_facebook)
         cbSearch = findViewById(R.id.cb_search)
-        cbCamera = findViewById(R.id.cb_camera)
         cbWhatsApp = findViewById(R.id.cb_whats_app)
         cbMessage = findViewById(R.id.cb_msg)
         cbMessenger = findViewById(R.id.cb_messanger)
@@ -121,8 +123,6 @@ class SettingActivity : AppCompatActivity(), SetClick, View.OnClickListener {
         cbSearch = findViewById(R.id.cb_search)
         rlSearch = findViewById(R.id.rl_search)
         rlSearch?.setOnClickListener(this)
-        rlCamera = findViewById(R.id.rl_camera)
-        rlCamera?.setOnClickListener(this)
         rlWhatsApp = findViewById(R.id.rl_whats_app)
         rlWhatsApp?.setOnClickListener(this)
         rlMessage = findViewById(R.id.rl_msg)
@@ -144,7 +144,7 @@ class SettingActivity : AppCompatActivity(), SetClick, View.OnClickListener {
         position = pref?.getPostion()
         showData()
         notificationList.add(NotificatioListItem(R.drawable.ic_search_option, "Search", true))
-        notificationList.add(NotificatioListItem(R.drawable.ic_camera_option, "Camera", true))
+//        notificationList.add(NotificatioListItem(R.drawable.ic_camera_option, "Camera", true))
         if (isAppInstalled("com.whatsapp")) {
 
             rlWhatsApp?.visibility = View.VISIBLE
@@ -178,7 +178,6 @@ class SettingActivity : AppCompatActivity(), SetClick, View.OnClickListener {
         serviceToggle?.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { buttonView, isChecked ->
             if (pref != null) {
                 pref?.setAutoNotificationEnable(isChecked)
-
                 pref?.getAutoNotificationEnable()?.let { serviceToggle?.setChecked(it) }
             }
             if (isChecked) {
@@ -266,13 +265,13 @@ class SettingActivity : AppCompatActivity(), SetClick, View.OnClickListener {
                 countList.add(SEARCH_INDEX)
             }
         }
-        if (pref?.getCameraPref() == true) {
-            cbCamera?.isChecked = true
-            llCamera?.visibility = View.VISIBLE
-            if (!checkIndex(CAMERA_INDEX)) {
-                countList.add(CAMERA_INDEX)
-            }
-        }
+//        if (pref?.getCameraPref() == true) {
+//            cbCamera?.isChecked = true
+//            llCamera?.visibility = View.VISIBLE
+//            if (!checkIndex(CAMERA_INDEX)) {
+//                countList.add(CAMERA_INDEX)
+//            }
+//        }
         if (pref?.getWhatsAppPref() == true) {
             cbWhatsApp?.isChecked = true
             llWhatsApp?.visibility = View.VISIBLE
@@ -365,27 +364,27 @@ class SettingActivity : AppCompatActivity(), SetClick, View.OnClickListener {
 
                 }
             }
-            R.id.rl_camera -> {
-
-                if (pref?.getCameraPref() == true) {
-                    llCamera?.visibility = View.GONE
-                    pref?.setCameraPref(false)
-                    cbCamera?.isChecked = false
-                    removeIndex(CAMERA_INDEX)
-                } else {
-                    if (getIndexListSize() < 3) {
-                        pref?.setCameraPref(true)
-                        llCamera?.visibility = View.VISIBLE
-                        cbCamera?.isChecked = true
-                        addIndex(CAMERA_INDEX)
-                        Log.d("TAG", "showData2: " + getIndexListSize())
-                    } else {
-                        Toast.makeText(this, "Only 3 items at a time", Toast.LENGTH_SHORT).show()
-                    }
-
-
-                }
-            }
+//            R.id.rl_camera -> {
+//
+//                if (pref?.getCameraPref() == true) {
+//                    llCamera?.visibility = View.GONE
+//                    pref?.setCameraPref(false)
+//                    cbCamera?.isChecked = false
+//                    removeIndex(CAMERA_INDEX)
+//                } else {
+//                    if (getIndexListSize() < 3) {
+//                        pref?.setCameraPref(true)
+//                        llCamera?.visibility = View.VISIBLE
+//                        cbCamera?.isChecked = true
+//                        addIndex(CAMERA_INDEX)
+//                        Log.d("TAG", "showData2: " + getIndexListSize())
+//                    } else {
+//                        Toast.makeText(this, "Only 3 items at a time", Toast.LENGTH_SHORT).show()
+//                    }
+//
+//
+//                }
+//            }
             R.id.rl_whats_app -> {
 
                 if (pref?.getWhatsAppPref() == true) {
@@ -498,4 +497,7 @@ class SettingActivity : AppCompatActivity(), SetClick, View.OnClickListener {
     fun getIndexListSize(): Int {
         return countList.size
     }
+
+
 }
+

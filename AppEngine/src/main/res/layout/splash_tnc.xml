@@ -12,15 +12,18 @@
         android:layout_above="@+id/startLayout"
         android:layout_margin="4dp"
         android:gravity="center"
-        android:orientation="horizontal">
+        android:orientation="vertical">
+
+
 
         <TextView
-            android:textSize="9sp"
+            android:layout_marginStart="@dimen/margin_5"
+            android:textSize="12sp"
             android:id="@+id/tvPrivacy1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="By clicking on “Start” you are agree "
+            android:text="By clicking on “Let's Start” you are agree "
             android:textColor="#202020" />
 
 
@@ -28,10 +31,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_marginTop="@dimen/margin_3"
             android:gravity="center"
             android:orientation="horizontal">
             <TextView
-                android:textSize="9sp"
+                android:textSize="12sp"
                 android:id="@+id/tvPrivacy"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -42,7 +46,7 @@
                 android:textColorLink="#24a7f2" />
 
             <TextView
-                android:textSize="9sp"
+                android:textSize="13sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="2dp"
@@ -51,7 +55,7 @@
                 android:textColor="#202020" />
 
             <TextView
-                android:textSize="9sp"
+                android:textSize="12sp"
                 android:id="@+id/tvTerms"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

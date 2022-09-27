@@ -36,9 +36,10 @@
                     android:layout_marginTop="@dimen/_10sdp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/rate_us_black"
-                    android:textSize="14sp"
-                    android:text="@string/photo_delete_msg"/>
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    android:text="Are you sure want to Delete?"/>
 
 
                 <LinearLayout
@@ -46,8 +47,6 @@
                     android:layout_width="match_parent"
                     android:layout_gravity="center"
                     android:gravity="center"
-                    android:layout_marginStart="@dimen/_10sdp"
-                    android:layout_marginEnd="@dimen/_10sdp"
                     android:padding="@dimen/_10sdp"
                     android:layout_height="wrap_content">
 
@@ -61,7 +60,7 @@
                         android:layout_marginEnd="10dp"
                         android:textAllCaps="true"
                         android:textColor="@color/black"
-                        android:textSize="15sp" />
+                        android:textSize="14sp" />
 
 
                     <androidx.cardview.widget.CardView
@@ -80,7 +79,7 @@
                             android:layout_width="match_parent"
                             android:paddingTop="@dimen/_10sdp"
                             android:paddingBottom="@dimen/_10sdp"
-                            android:layout_height="match_parent">
+                            android:layout_height="45dp">
 
                             <ImageView
                                 android:layout_width="wrap_content"

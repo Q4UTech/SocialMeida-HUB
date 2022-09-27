@@ -15,8 +15,8 @@
     <string name="upgradetopro_text">"* No Ads\n\n* All Feature Upgrades Free\n\n* No Monthly Charges\n\n* No Recurring, Lifetime Payment Once"</string>
 
     <!--Provider app id -->
-    <string name="fb_login_protocol_scheme">fb430751108384536</string>
-    <string name="app_id_facebook">430751108384536</string>
+    <string name="fb_login_protocol_scheme">fb1116429675646119</string>
+    <string name="app_id_facebook">1116429675646119</string>
     <string name="app_id_admob">ca-app-pub-3940256099942544~3347511713</string>
     <string name="app_id_mediation_applovin_sdk_key">Ahu_LcSo_HVLiOo3XK_d76tslui3CfrS6JPXiqtc7m29KtC63i_HWrOO9fHQCo_f02vZyWQBGaRmE4cIvTqCLf</string>
 

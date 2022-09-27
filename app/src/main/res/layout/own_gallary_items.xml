@@ -19,8 +19,7 @@
                 android:id="@+id/img"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:scaleType="centerCrop"
-                android:src="@drawable/sample_img" />
+                android:scaleType="centerCrop" />
 
 
         </RelativeLayout>

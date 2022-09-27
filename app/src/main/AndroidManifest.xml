@@ -9,14 +9,14 @@
 
     <uses-permission android:name="android.permission.BROADCAST_CLOSE_SYSTEM_DIALOGS" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <uses-permission android:name="android.permission.CAMERA" />
+<!--    <uses-permission android:name="android.permission.CAMERA" />-->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="com.samsung.android.providers.context.permission.WRITE_USE_APP_FEATURE_SURVEY" /> <!-- StartApp required permissions integration -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-    <uses-permission android:name="android.permission.SET_WALLPAPER" /> <!-- startapp entries -->
+<!--    <uses-permission android:name="android.permission.SET_WALLPAPER" /> &lt;!&ndash; startapp entries &ndash;&gt;-->
     <queries>
         <package android:name="com.whatsapp" />
     </queries>
@@ -39,10 +39,11 @@
         tools:replace="android:allowBackup">
         <activity
             android:name=".MainActivity"
-            android:exported="false" />
+            android:windowSoftInputMode="stateVisible|adjustPan"
+            android:exported="true" />
         <activity
             android:name=".activities.SettingActivity"
-            android:exported="false"
+            android:exported="true"
              />
         <activity android:name=".engine.TransLaunchFullAdsActivity"
             android:theme="@style/AppTheme.NoActionBar"
@@ -61,7 +62,7 @@
 
         <service
             android:name="com.pds.socialmediahub.ui.socialmediadownloader.services.ClipBoardService"
-            android:exported="false" />
+            android:exported="true" />
         <service
             android:name="com.pds.socialmediahub.ui.socialmediadownloader.services.BackgroundRunningService"
             android:exported="true"
@@ -78,9 +79,6 @@
             android:name=".ui.status.MyDownloadsFragment"
             android:screenOrientation="portrait"
              />
-        <activity
-            android:name=".activities.TutorialActivity"
-            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.directchat.WhatsAppWebView"
             android:screenOrientation="portrait" />

@@ -20,6 +20,8 @@ import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.Toast;
 
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
 import com.downloader.Error;
 import com.downloader.OnCancelListener;
 import com.downloader.OnDownloadListener;
@@ -157,6 +159,9 @@ public class ClipBoardService extends Service {
 
         } else {
             downloadingMediaInfo = null;
+            Intent intent = new Intent("download_complete");
+            LocalBroadcastManager.getInstance(getApplicationContext())
+                    .sendBroadcast(intent);
             Toast.makeText(getApplicationContext(), "This media file is already running!!",
                     Toast.LENGTH_SHORT).show();
         }
@@ -219,6 +224,10 @@ public class ClipBoardService extends Service {
             Toast.makeText(mClipBoardService.getApplicationContext(), mClipBoardService.getApplicationContext().getResources().getString(R.string.download_completed), Toast.LENGTH_LONG).show();
             downloadingMediaInfo.setCompleted(true);
 //
+            Intent intent = new Intent("download_complete");
+
+            LocalBroadcastManager.getInstance(mClipBoardService.getApplicationContext())
+                    .sendBroadcast(intent);
 //            new SaveDownloadInfoAsyncTask(new WeakReference<ClipBoardService>(mClipBoardService), downloadingMediaInfo)
 //                    .executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, "");
         }
@@ -227,6 +236,10 @@ public class ClipBoardService extends Service {
         @Override
         public void onError(Error error) {
 
+            Intent intent = new Intent("download_complete");
+
+            LocalBroadcastManager.getInstance(mClipBoardService.getApplicationContext())
+                    .sendBroadcast(intent);
             Toast.makeText(mClipBoardService.getApplicationContext(), "Error please try again", Toast.LENGTH_LONG).show();
 
         }
@@ -328,6 +341,10 @@ public class ClipBoardService extends Service {
 
                 Log.d("DownloadingAsynTask", "Hello onPostExecute " + " " + isUrlFound);
 
+                Intent intent = new Intent("download_complete");
+
+                LocalBroadcastManager.getInstance(clipBoardService.getApplicationContext())
+                        .sendBroadcast(intent);
                 Toast.makeText(clipBoardService.getApplicationContext(),
                         "Do not download private media ", Toast.LENGTH_SHORT)
                         .show();

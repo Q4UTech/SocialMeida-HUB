@@ -38,31 +38,6 @@
                 android:textSize="8sp" />
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/ll_camera"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_weight="0.25"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:visibility="visible">
-
-            <ImageView
-                android:layout_width="@dimen/margin30dp"
-                android:layout_height="@dimen/margin30dp"
-                android:layout_gravity="center"
-                android:src="@drawable/ic_camera_icon" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:text="@string/camera"
-                android:textColor="@color/custom_black"
-                android:textSize="8sp" />
-        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/ll_whatsapp"

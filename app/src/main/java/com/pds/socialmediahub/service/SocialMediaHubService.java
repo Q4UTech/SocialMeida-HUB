@@ -29,6 +29,7 @@ import com.pds.socialmediahub.R;
 import com.pds.socialmediahub.activities.SettingActivity;
 import com.pds.socialmediahub.activities.SplashActivity;
 import com.pds.socialmediahub.helper.Pref;
+import com.pds.socialmediahub.util.Const;
 
 import engine.app.fcm.MapperUtils;
 
@@ -84,8 +85,9 @@ public class SocialMediaHubService extends Service {
 
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID);
         Notification notification = notificationBuilder.setOngoing(true)
-                .setSmallIcon(R.drawable.icon_bid)
+                .setSmallIcon(R.mipmap.ic_launcher_round)
                 .setCustomContentView(remoteViews)
+                .setCustomBigContentView(remoteViews)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 .build();
         startForeground(2, notification);
@@ -98,11 +100,11 @@ public class SocialMediaHubService extends Service {
         } else {
             remoteViews.setViewVisibility(R.id.ll_search, View.GONE);
         }
-        if (pref.getCameraPref()) {
-            remoteViews.setViewVisibility(R.id.ll_camera, View.VISIBLE);
-        } else {
-            remoteViews.setViewVisibility(R.id.ll_camera, View.GONE);
-        }
+//        if (pref.getCameraPref()) {
+//            remoteViews.setViewVisibility(R.id.ll_camera, View.VISIBLE);
+//        } else {
+//            remoteViews.setViewVisibility(R.id.ll_camera, View.GONE);
+//        }
         if (pref.getWhatsAppPref()) {
             remoteViews.setViewVisibility(R.id.ll_whatsapp, View.VISIBLE);
         } else {
@@ -147,10 +149,11 @@ public class SocialMediaHubService extends Service {
                 | PendingIntent.FLAG_IMMUTABLE);
         remoteViews.setOnClickPendingIntent(R.id.ll_search, searchPendingIntent);
 
-        Intent cameraIntent = new Intent(this, SocialMediaHubService.class).setAction("camera_action");
-        PendingIntent cameraPendingIntent = PendingIntent.getService(this, 0, cameraIntent, PendingIntent.FLAG_UPDATE_CURRENT
-                | PendingIntent.FLAG_IMMUTABLE);
-        remoteViews.setOnClickPendingIntent(R.id.ll_camera, cameraPendingIntent);
+//        Intent cameraIntent = new Intent(this, SocialMediaHubService.class).setAction("camera_action");
+
+//        PendingIntent cameraPendingIntent = PendingIntent.getService(this, 0, cameraIntent, PendingIntent.FLAG_UPDATE_CURRENT
+//                | PendingIntent.FLAG_IMMUTABLE);
+//        remoteViews.setOnClickPendingIntent(R.id.ll_camera, cameraPendingIntent);
 
         Intent whatAppIntent = new Intent(this, SocialMediaHubService.class).setAction("whatsapp_action");
         PendingIntent whatsPendingIntent = PendingIntent.getService(this, 0, whatAppIntent, PendingIntent.FLAG_UPDATE_CURRENT
@@ -190,6 +193,10 @@ public class SocialMediaHubService extends Service {
         Intent chatIntent = new Intent(this, SocialMediaHubService.class).setAction("chat_action");
         PendingIntent chatPendingIntent = PendingIntent.getService(this, 0, chatIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+
+
+
+
         remoteViews.setOnClickPendingIntent(R.id.ll_direct_chat, chatPendingIntent);
     }
 
@@ -199,7 +206,8 @@ public class SocialMediaHubService extends Service {
             switch (action) {
                 case "search_action":
                     startActivity(new Intent(this, SplashActivity.class).putExtra(MapperUtils.keyType, MapperUtils.keyDeeplink)
-                            .putExtra(MapperUtils.keyValue, MapperUtils.DL_SEARCH_PAGE)
+                            .putExtra(MapperUtils.keyValue, MapperUtils.MAPPER_SOCIAL_MEDIA)
+                            .putExtra(MapperUtils.keyType, Const.Mapper_type_notification)
                             .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK));
                     closingBroadcast();
                     break;
@@ -255,14 +263,17 @@ public class SocialMediaHubService extends Service {
                     }
                     break;
                 case "setting_action":
-                    Intent setting = new Intent(this, SettingActivity.class);
-                    setting.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    Intent setting = new Intent(this, SplashActivity.class);
+                    setting.putExtra(MapperUtils.keyValue, MapperUtils.MAPPER_SETTING);
+                    setting.putExtra(MapperUtils.keyType, Const.Mapper_type_notification);
+                    setting.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(setting);
                     closingBroadcast();
                     break;
                 case "wa_status_action":
                     Intent waStatus = new Intent(this, SplashActivity.class).putExtra(MapperUtils.keyType, MapperUtils.keyDeeplink)
-                            .putExtra(MapperUtils.keyValue, MapperUtils.DL_DOWNLOAD_PAGE)
+                            .putExtra(MapperUtils.keyValue, MapperUtils.MAPPER_WA_STATUS)
+                            .putExtra(MapperUtils.keyType, Const.Mapper_type_notification)
                             .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
                     startActivity(waStatus);
@@ -270,14 +281,16 @@ public class SocialMediaHubService extends Service {
                     break;
                 case "download_action":
                     Intent homeFragment = new Intent(this, SplashActivity.class).putExtra(MapperUtils.keyType, MapperUtils.keyDeeplink)
-                            .putExtra(MapperUtils.keyValue, MapperUtils.DL_SEARCH_PAGE)
+                            .putExtra(MapperUtils.keyValue, MapperUtils.MAPPER_GALLERY)
+                            .putExtra(MapperUtils.keyType, Const.Mapper_type_notification)
                             .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(homeFragment);
                     closingBroadcast();
                     break;
                 case "chat_action":
                     Intent chatFragmentIntent = new Intent(this, SplashActivity.class).putExtra(MapperUtils.keyType, MapperUtils.keyDeeplink)
-                            .putExtra(MapperUtils.keyValue, MapperUtils.DL_CHAT_PAGE)
+                            .putExtra(MapperUtils.keyValue, MapperUtils.MAPPER_WA_DIRECT_CHAT)
+                            .putExtra(MapperUtils.keyType, Const.Mapper_type_notification)
                             .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
                     startActivity(chatFragmentIntent);
@@ -290,7 +303,7 @@ public class SocialMediaHubService extends Service {
     }
 
     private void closingBroadcast() {
-        sendBroadcast(new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
+//        sendBroadcast(new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
     }
 
     public boolean isStoragePermissionGrantedonly() {

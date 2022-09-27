@@ -1,5 +1,6 @@
 package com.pds.socialmediahub.adapter
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.media.MediaPlayer
@@ -19,6 +20,7 @@ import com.pds.socialmediahub.ui.status.AllMediaListingImage_singleton
 import com.pds.socialmediahub.ui.status.StatusPriviewActivity
 import com.pds.socialmediahub.util.SetClick
 import com.pds.socialmediahub.util.Utilities
+import engine.app.adshandler.AHandler
 import java.io.File
 
 class GalleryAdapter(
@@ -112,6 +114,8 @@ class GalleryAdapter(
                     .setAllStatusFiles(galleryList)
                 intent.putExtra("selectedPos", "" + position)
                 context.startActivity(intent)
+
+                AHandler.getInstance().showFullAds(context as Activity?,false)
 
             }
         })

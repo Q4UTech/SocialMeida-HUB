@@ -34,7 +34,7 @@ public class EngineConstant {
     public static final String DEVICE_ID_21 = "6D2E58FD4A61733550753ED4BC9D6CC3"; //Shayan Device
     public static final String DEVICE_ID_22 = "E31CC6B4D27BDF40CC3800D8A2B47012"; //Nokia 5.3
 
-    public static final String dailyuseapps = "fitness_pedometer";
+    public static final String dailyuseapps = "SocialMediaHub_Channel";
 
 
 

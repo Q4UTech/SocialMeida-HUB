@@ -7,7 +7,7 @@
     <string name="title_directchat">Direct Chat</string>
     <string name="noti_settings">Notification Settings</string>
     <string name="rate_apps">Rate App</string>
-    <string name="more_apps">More App</string>
+    <string name="more_apps">More Apps</string>
     <string name="share_app">Share App</string>
     <string name="shareFeedback">Feedback</string>
     <string name="aboutUs">AboutUs</string>
@@ -17,7 +17,7 @@
     <string name="cancel">Cancel</string>
     <string name="save_status_subtitle">Save Status</string>
     <string name="post">Post</string>
-    <string name="saved_image_toast">image saved</string>
+    <string name="saved_image_toast">Downloaded Successfully</string>
     <string name="delete_image">image deleted</string>
     <string name="save_image_toast">image_saved</string>
     <string name="photo_delete_msg">image deleted</string>
@@ -52,4 +52,6 @@
     <string name="preview">Preview</string>
     <string name="chat">Chat</string>
     <string name="downloader">Downloader</string>
+    <string name="email_us">Email Us</string>
+    <string name="show_some_love">Show some Love</string>
 </resources>

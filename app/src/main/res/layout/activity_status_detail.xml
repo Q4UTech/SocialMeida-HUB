@@ -77,6 +77,7 @@
     </RelativeLayout>
 
     <RelativeLayout
+        android:layout_below="@+id/topbar"
         android:id="@+id/status_video_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -95,11 +96,12 @@
             <VideoView
                 android:id="@+id/videoView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true" />
             <LinearLayout
                 android:id="@+id/ll_play"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:gravity="center">
 
@@ -134,7 +136,7 @@
                 android:layout_height="wrap_content"
                 android:layout_above="@+id/rl_saved_options"
                 android:layout_gravity="center"
-                android:background="#17FFFFFF">
+                android:background="#33000000">
 
                 <LinearLayout
 
@@ -318,39 +320,69 @@
 
         </LinearLayout>
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.3"
             android:gravity="center"
             android:orientation="vertical">
 
-            <RelativeLayout
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:visibility="gone"
+                android:id="@+id/video_delete"
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:layout_gravity="center"
+                android:gravity="center"
                 android:layout_height="wrap_content">
 
                 <ImageView
-                    android:id="@+id/video_delete"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/ic_video_delete" />
 
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Download"
+                    android:textColor="@color/txt_color"
+                    android:textSize="10sp" />
+
+            </LinearLayout>
+
+
+
+            <LinearLayout
+                android:id="@+id/video_save"
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:layout_height="wrap_content">
+
+
                 <ImageView
-                    android:id="@+id/video_save"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/ic_download_file"
-                    android:visibility="gone" />
-            </RelativeLayout>
+                    />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Download"
-                android:textColor="@color/txt_color"
-                android:textSize="10sp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Download"
+                    android:textColor="@color/txt_color"
+                    android:textSize="10sp" />
 
-        </LinearLayout>
+            </LinearLayout>
+
+
+
+
+
+
+        </RelativeLayout>
 
 
     </LinearLayout>

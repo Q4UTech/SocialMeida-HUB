@@ -50,6 +50,7 @@ class SplashActivity : BaseActivity(), OnBannerAdsIdLoaded {
         }
         appLaunch = false
 
+
         checkUpdatedKeyForCategoryList()
         AHandler.getInstance().v2CallOnSplash(this, object : OnCacheFullAdLoaded {
             override fun onCacheFullAd() {
@@ -61,6 +62,7 @@ class SplashActivity : BaseActivity(), OnBannerAdsIdLoaded {
                 openDashboardThroughFullAdsCaching()
             }
         })
+
         mPreference = GCMPreferences(this)
         layoutStart = findViewById(R.id.letsStart)
         layoutStart?.setOnClickListener(View.OnClickListener { view: View? ->
@@ -250,7 +252,7 @@ class SplashActivity : BaseActivity(), OnBannerAdsIdLoaded {
                 Log.d("TAG", "onActivityCreated1:  splash " + list.data.updatekey)
                 if (prefs?.getUpdatedKey()!=null && !prefs?.getUpdatedKey().equals("")){
 
-                    if (prefs?.getUpdatedKey().equals(list.data.updatekey)){
+                    if (!prefs?.getUpdatedKey().equals(list.data.updatekey)){
                         prefs?.setUpdatedKey(list.data.updatekey)
                         prefs?.setCategoryList(null)
                         prefs?.setSubCategoryList(null)
@@ -260,4 +262,6 @@ class SplashActivity : BaseActivity(), OnBannerAdsIdLoaded {
 
             }
     }
+
+
 }

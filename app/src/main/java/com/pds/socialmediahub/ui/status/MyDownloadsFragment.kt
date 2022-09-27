@@ -1,6 +1,5 @@
 package com.pds.socialmediahub.ui.status
 
-import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -24,6 +23,7 @@ import com.pds.socialmediahub.adapter.GalleryAdapter
 import com.pds.socialmediahub.helper.MediaPreferences
 import com.pds.socialmediahub.model.ImagesDetails
 import com.pds.socialmediahub.util.*
+import engine.app.adshandler.AHandler
 import kotlinx.android.synthetic.main.fragment_my_download.*
 import java.io.File
 import java.io.FileInputStream
@@ -42,7 +42,6 @@ class MyDownloadsFragment : AppCompatActivity(), SetClick {
     private var executorService: ExecutorService? = null
     private var mediaPreferences: MediaPreferences? = null
     private var total_downloads: TextView? = null
-    private var total_downloads_videos: TextView? = null
     private var rl_no_data_found: RelativeLayout? = null
     var adapterList: GalleryAdapter? = null
     private var bottomSheetDialog: BottomSheetDialog? = null
@@ -77,14 +76,20 @@ class MyDownloadsFragment : AppCompatActivity(), SetClick {
     var ivBack: ImageView? = null
     var save: TextView? = null
     var rlTop: RelativeLayout? = null
+    var adsbanner: LinearLayout? = null
 
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.fragment_my_download)
+        mediaPreferences= MediaPreferences(this)
         supportActionBar?.hide()
         tvSelectAll = findViewById(R.id.tvSelectAll)
+
+        adsbanner=findViewById(R.id.adsbanner)
+        adsbanner?.addView(AHandler.getInstance().getBannerHeader(this))
+
         path = this.getExternalFilesDir(Constants.WA_Status_Gallery)?.absolutePath
         tempList = getExternalFilesDir(Constants.WA_Status_Gallery)!!.listFiles()
         rlTop = findViewById(R.id.topbar)
@@ -97,14 +102,11 @@ class MyDownloadsFragment : AppCompatActivity(), SetClick {
             Toast.makeText(this, "Setting Saved", Toast.LENGTH_SHORT).show()
         }
         executorService = Executors.newSingleThreadExecutor()
-        videoList = ArrayList()
-        imageList = ArrayList()
+
 
         ll_nodata = findViewById(R.id.ll_nodata)
         ll_nodata_video = findViewById(R.id.ll_nodata_video)
-        loadData()
         total_downloads = findViewById(R.id.total_downloads)
-        total_downloads_videos = findViewById(R.id.total_downloads_videos)
         imgActive = findViewById(R.id.img_active)
         imgInactive = findViewById(R.id.img_inactive)
         videoActive = findViewById(R.id.video_active)
@@ -114,13 +116,18 @@ class MyDownloadsFragment : AppCompatActivity(), SetClick {
         ll_save = findViewById(R.id.ll_save)
         ll_select_all = findViewById(R.id.ll_select_all)
         ll_card_selection = findViewById(R.id.ll_card_selection)
-        imgActive?.setOnClickListener(View.OnClickListener { v: View? ->
 
-            imgInactive?.visibility = View.VISIBLE
-            imgActive?.visibility = View.GONE
-            videoInactive?.visibility = View.GONE
-            videoActive?.visibility = View.VISIBLE
-        })
+
+//
+//        imgActive?.setOnClickListener(View.OnClickListener { v: View? ->
+//
+//            imgInactive?.visibility = View.VISIBLE
+//            imgActive?.visibility = View.GONE
+//            videoInactive?.visibility = View.GONE
+//            videoActive?.visibility = View.VISIBLE
+//        })
+
+
         imgInactive?.setOnClickListener(View.OnClickListener { v: View? ->
             imgInactive?.visibility = View.GONE
             imgActive?.visibility = View.VISIBLE
@@ -132,13 +139,13 @@ class MyDownloadsFragment : AppCompatActivity(), SetClick {
             recyclerView?.visibility = View.VISIBLE
 
         })
-        videoActive?.setOnClickListener(View.OnClickListener { v: View? ->
-            imgInactive?.visibility = View.GONE
-            videoInactive?.visibility = View.VISIBLE
-            videoActive?.visibility = View.GONE
-            imgActive?.visibility = View.VISIBLE
-
-        })
+//        videoActive?.setOnClickListener(View.OnClickListener { v: View? ->
+//            imgInactive?.visibility = View.GONE
+//            videoInactive?.visibility = View.VISIBLE
+//            videoActive?.visibility = View.GONE
+//            imgActive?.visibility = View.VISIBLE
+//
+//        })
         videoInactive?.setOnClickListener(View.OnClickListener { v: View? ->
             videoInactive?.visibility = View.GONE
             imgInactive?.visibility = View.VISIBLE
@@ -156,11 +163,13 @@ class MyDownloadsFragment : AppCompatActivity(), SetClick {
         recyclerView?.addItemDecoration(itemOffsetView!!)
         videoRecyclerView?.addItemDecoration(itemOffsetView!!)
 
+        videoList = ArrayList()
+        imageList = ArrayList()
+        loadData()
 
     }
 
     private fun fetchFor10AndAbove(criteria: String) {
-
         fetchForAndroid10andBelow(criteria)
 
     }
@@ -168,40 +177,63 @@ class MyDownloadsFragment : AppCompatActivity(), SetClick {
 
     private fun fetchForAndroid10andBelow(criteria: String) {
 
+        when (criteria) {
+            "images" -> {
 
-        if (criteria.equals("images") && imageList != null && imageList?.size!! > 0) {
-            adapterList = GalleryAdapter(this, imageList!!, this)
-            ll_nodata?.visibility=View.GONE
-            val gridLayoutManager = GridLayoutManager(this, 3)
-            total_downloads?.visibility = View.VISIBLE
-            total_downloads?.text = getFontColorSize(imageList?.size!!)
-            recyclerView?.layoutManager = gridLayoutManager
-            recyclerView?.adapter = adapterList
-            adapterList?.setCheckedListener(object : GalleryAdapter.CounterSlection {
-                override fun selectItems(itemSlectionCount: Int) {
-                    setPageTitle(itemSlectionCount)
+                total_downloads?.visibility=View.VISIBLE
+                videoRecyclerView?.visibility=View.GONE
+
+                ll_nodata_video?.visibility=View.GONE
+                if (imageList != null && imageList?.size!! > 0) {
+                    recyclerView?.visibility=View.VISIBLE
+                    adapterList = GalleryAdapter(this, imageList!!, this)
+                    ll_nodata?.visibility=View.GONE
+                    val gridLayoutManager = GridLayoutManager(this, 3)
+                    total_downloads?.text = getFontColorSize(imageList?.size!!)
+                    recyclerView?.layoutManager = gridLayoutManager
+                    recyclerView?.adapter = adapterList
+                    adapterList?.setCheckedListener(object : GalleryAdapter.CounterSlection {
+                        override fun selectItems(itemSlectionCount: Int) {
+                            setPageTitle(itemSlectionCount)
+                        }
+                    })
+                } else {
+                    println("MyDownloadsFragment.fetchForAndroid10andBelow no data dfgmdajbga")
+
+                    ll_nodata?.visibility=View.VISIBLE
+                    recyclerView?.visibility=View.INVISIBLE
+                    videoRecyclerView?.visibility=View.INVISIBLE
+                    total_downloads?.visibility=View.GONE
+
                 }
-            })
-        } else {
-            ll_nodata?.visibility=View.VISIBLE
+            }
 
-            total_downloads?.visibility = View.GONE
-        }
-        if (criteria.equals("video") && videoList != null && videoList?.size!! > 0) {
-            ll_nodata?.visibility=View.GONE
+             "video" -> {
+                 recyclerView?.visibility=View.GONE
+                 ll_nodata?.visibility=View.GONE
+                 total_downloads?.visibility=View.VISIBLE
 
-            total_downloads_videos?.visibility = View.VISIBLE
-            adapterList = GalleryAdapter(this, videoList!!, this)
-            val gridLayoutManager = GridLayoutManager(this, 3)
-            total_downloads_videos?.text = getFontColorSize(imageList?.size!!)
-            videoRecyclerView?.layoutManager = gridLayoutManager
-            videoRecyclerView?.adapter = adapterList
+                 if (videoList != null && videoList?.size!! > 0) {
+                     ll_nodata_video?.visibility=View.GONE
+                     videoRecyclerView?.visibility=View.VISIBLE
+                     total_downloads?.text = getFontColorSize(videoList?.size!!)
+                     adapterList = GalleryAdapter(this, videoList!!, this)
+                     val gridLayoutManager = GridLayoutManager(this, 3)
+                     videoRecyclerView?.layoutManager = gridLayoutManager
+                     videoRecyclerView?.adapter = adapterList
 
-        } else {
-            ll_nodata?.visibility=View.VISIBLE
+                 } else {
 
-            total_downloads_videos?.visibility = View.GONE
-        }
+                     println("MyDownloadsFragment.fetchForAndroid10andBelow no data")
+                     ll_nodata_video?.visibility=View.VISIBLE
+                     total_downloads?.visibility=View.GONE
+                     recyclerView?.visibility=View.INVISIBLE
+                     videoRecyclerView?.visibility=View.INVISIBLE
+
+                 }
+            }
+
+            }
 
     }
 
@@ -212,6 +244,32 @@ class MyDownloadsFragment : AppCompatActivity(), SetClick {
 
     override fun onResume() {
         super.onResume()
+        if (mediaPreferences != null && mediaPreferences!!.refresh) {
+            mediaPreferences!!.refresh = false
+            try {
+                path = this.getExternalFilesDir(Constants.WA_Status_Gallery)?.absolutePath
+                tempList = getExternalFilesDir(Constants.WA_Status_Gallery)!!.listFiles()
+                executorService = Executors.newSingleThreadExecutor()
+                println("MyDownloadsFragment.onResume fsadhfjagsjs")
+                videoList = ArrayList()
+                imageList = ArrayList()
+                videoList?.clear()
+                imageList?.clear()
+                imgInactive?.visibility = View.GONE
+                imgActive?.visibility = View.VISIBLE
+                imgActive?.setTextColor(resources.getColor(R.color.white, null))
+                videoInactive?.visibility = View.VISIBLE
+                videoActive?.visibility = View.GONE
+//                fetchFor10AndAbove("images")
+                videoRecyclerView?.visibility = View.GONE
+                recyclerView?.visibility = View.VISIBLE
+
+                loadData()
+            } catch (e: java.lang.Exception) {
+                e.printStackTrace()
+            }
+        }
+
 //        new AsycnTask(this).execute();
     }
 
@@ -233,16 +291,16 @@ class MyDownloadsFragment : AppCompatActivity(), SetClick {
                     }
                 }
                 runOnUiThread {
-                    if (videoList != null && videoList?.size!! > 0) {
-                        ll_nodata?.visibility = View.GONE
-                    } else {
-                        ll_nodata?.visibility = View.VISIBLE
-                    }
-                    if (imageList != null && imageList?.size!! > 0) {
-                        ll_nodata?.visibility = View.GONE
-                    } else {
-                        ll_nodata?.visibility = View.VISIBLE
-                    }
+//                    if (videoList != null && videoList?.size!! > 0) {
+//                        ll_nodata_video?.visibility = View.GONE
+//                    } else {
+//                        ll_nodata_video?.visibility = View.VISIBLE
+//                    }
+//                    if (imageList != null && imageList?.size!! > 0) {
+//                        ll_nodata?.visibility = View.GONE
+//                    } else {
+//                        ll_nodata?.visibility = View.VISIBLE
+//                    }
                     fetchFor10AndAbove("images")
                 }
 

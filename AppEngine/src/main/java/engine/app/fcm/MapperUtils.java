@@ -21,15 +21,15 @@ public class MapperUtils {
     public static final String LAUNCH_SPLASH = "_splash_launch";
     public static final String MATER_UPDATE = "master_update";
 
-    public static final String DL_ACTIVITY_PAGE = "DL_ACTIVITY_PAGE";
-    public static final String DL_PROFILE_PAGE = "DL_PROFILE_PAGE";
-    public static final String DL_PEDOMETER_HOME = "DL_PEDOMETER_HOME";
-    public static final String DL_RESTORE = "DL_RESTORE";
 
 
-    public static final String DL_SEARCH_PAGE = "DL_SEARCH_PAGE";
-    public static final String DL_DOWNLOAD_PAGE = "DL_DOWNLOAD_PAGE";
-    public static final String DL_CHAT_PAGE = "DL_CHAT_PAGE";
-    public static final String DL_SETTING_PAGE = "DL_SETTING_PAGE";
+    public static final String MAPPER_WA_DIRECT_CHAT = "mapper_wa_direct_chat";
+    public static final String MAPPER_WA_STATUS = "mapper_wa_status";
+    public static final String MAPPER_SOCIAL_MEDIA = "mapper_social_media";
+    public static final String MAPPER_GALLERY = "mapper_gallery";
+    public static final String MAPPER_SETTING = "mapper_setting";
 
+//    public static final String DL_SEARCH_PAGE = "DL_SEARCH_PAGE";
+//    public static final String DL_DOWNLOAD_PAGE = "DL_DOWNLOAD_PAGE";
+//    public static final String DL_CHAT_PAGE = "DL_CHAT_PAGE";
 }

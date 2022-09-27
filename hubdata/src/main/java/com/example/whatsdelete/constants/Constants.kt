@@ -72,7 +72,7 @@ class Constants {
         const val RETROFIT_FAILURE: Int=500
        // const val BASE_URl="https://jsonplaceholder.typicode.com/"
         const val BASE_URl="https://quantum4you.com/engine/socialmediahubapi/"
-        const val APP_ID="v5hubmedia"
+        const val APP_ID="v5socialmediahubpds"
         const val APP_FOLDER_NAME="whats_status"
 
         const val NOTIFICATION_CHANNEL_ID = "M24Apps"

@@ -2,22 +2,20 @@ package com.pds.socialmediahub
 
 import android.Manifest
 import android.app.Activity
+import android.app.ActivityManager
 import android.app.AlertDialog
-import android.content.Context
-import android.content.DialogInterface
-import android.content.Intent
+import android.app.ProgressDialog
+import android.content.*
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.*
-import androidx.appcompat.app.AppCompatActivity
-import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout.DrawerListener
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
@@ -26,10 +24,13 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.whatsdelete.constants.Constants
 import com.example.whatsdelete.utils.AppUtils
-import com.example.whatsdelete.utils.AppUtils.Companion.openCustomTab
+import com.example.whatsdelete.utils.Prefs
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.pds.socialmediahub.activities.BaseActivity
 import com.pds.socialmediahub.activities.SettingActivity
 import com.pds.socialmediahub.databinding.ActivityMainBinding
+import com.pds.socialmediahub.helper.Pref
+import com.pds.socialmediahub.service.SocialMediaHubService
 import com.pds.socialmediahub.ui.socialmediadownloader.services.ClipBoardService
 import com.pds.socialmediahub.ui.status.MyDownloadsFragment
 import engine.app.adshandler.AHandler
@@ -38,21 +39,23 @@ import engine.app.inapp.InAppUpdateManager
 import engine.app.listener.InAppUpdateListener
 import engine.app.serviceprovider.Utils
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.activity_splash.*
 
-class MainActivity : AppCompatActivity(), InAppUpdateListener, View.OnClickListener {
+
+class MainActivity : BaseActivity(), InAppUpdateListener, View.OnClickListener {
 
     private lateinit var binding: ActivityMainBinding
     private var isSocialMediaClicked: Boolean = false
     private var navController: NavController? = null
     private lateinit var inAppUpdateManager: InAppUpdateManager
-    private var isFromHOme:Boolean=false
+    private var isFromHOmeCount:Int=0
+    private var dialog: ProgressDialog? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        binding.adsbanner.addView(AHandler.getInstance().getBannerHeader(this))
         val navView: BottomNavigationView = binding.navView
 
         binding.openNavDrawer.setOnClickListener(this)
@@ -61,13 +64,15 @@ class MainActivity : AppCompatActivity(), InAppUpdateListener, View.OnClickListe
         binding.navSetting.setOnClickListener(this)
         binding.ivDownloaded.setOnClickListener(this)
         binding.navRate.setOnClickListener(this)
-        binding.navAboutUs.setOnClickListener(this)
+        binding.navTermCondition.setOnClickListener(this)
+        binding.navPrivacy.setOnClickListener(this)
         binding.navShareApp.setOnClickListener(this)
+        binding.headerView.appLogo.setOnClickListener(this)
         binding.navMore.setOnClickListener(this)
         binding.navShareFeedback.setOnClickListener(this)
         navController = findNavController(R.id.nav_host_fragment_activity_main)
         navView.setupWithNavController(navController!!)
-        callingForMapper(this@MainActivity)
+
         binding.drawerLayout.addDrawerListener(object : DrawerListener {
             override fun onDrawerSlide(drawerView: View, slideOffset: Float) {}
             override fun onDrawerOpened(drawerView: View) {
@@ -82,32 +87,37 @@ class MainActivity : AppCompatActivity(), InAppUpdateListener, View.OnClickListe
 
             override fun onDrawerStateChanged(newState: Int) {}
         })
-        navView.setOnItemSelectedListener { menuItem ->
-            when (menuItem.itemId) {
-                R.id.navigation_home -> {
-                    navController?.popBackStack()
-                    navController?.navigate(R.id.navigation_home)
-                    AHandler.getInstance().showFullAds(this@MainActivity, false)
-                    true
-                }
-                R.id.navigation_dashboard -> {
-                    navController?.popBackStack()
-                    navController?.navigate(R.id.navigation_dashboard)
-                    AHandler.getInstance().showFullAds(this@MainActivity, false)
-                    true
-                }
-                R.id.navigation_notifications -> {
-                    navController?.popBackStack()
-                    navController?.navigate(R.id.navigation_notifications)
-                    AHandler.getInstance().showFullAds(this@MainActivity, false)
-                    true
-                }
-            }
-            false
-        }
-        findViewById<LinearLayout>(R.id.ads_layout).addView(
-            AHandler.getInstance().getBannerHeader(this)
-        )
+//        navView.setOnItemSelectedListener { menuItem ->
+//
+//            println("MainActivity.onCreate hjgjhgjhgjj"+" "+menuItem.title)
+//            when (menuItem.itemId) {
+//                R.id.navigation_home -> {
+//                    navController?.popBackStack()
+//                    navController?.navigate(R.id.navigation_home)
+//                    AHandler.getInstance().showFullAds(this@MainActivity, false)
+//                    true
+//                }
+//                R.id.navigation_dashboard -> {
+//                    navController?.popBackStack()
+//                    navController?.navigate(R.id.navigation_dashboard)
+//                    AHandler.getInstance().showFullAds(this@MainActivity, false)
+//                    true
+//                }
+//                R.id.navigation_notifications -> {
+//                    navController?.popBackStack()
+//                    navController?.navigate(R.id.navigation_notifications)
+//                    AHandler.getInstance().showFullAds(this@MainActivity, false)
+//                    true
+//                }
+//            }
+//            false
+//        }
+
+
+
+
+
+
         inAppUpdateManager = InAppUpdateManager(this)
         inAppUpdateManager.checkForAppUpdate(this)
 
@@ -130,7 +140,34 @@ class MainActivity : AppCompatActivity(), InAppUpdateListener, View.OnClickListe
         })
 
 
+        callingForMapper(this@MainActivity)
+
+
+        if (Pref(this).getAutoNotificationEnable()){
+            if (!isMyServiceRunning(SocialMediaHubService::class.java)){
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    startForegroundService(
+                        Intent(
+                            this,
+                            SocialMediaHubService::class.java
+                        )
+                    )
+
+                } else {
+                    startService(
+                        Intent(
+                            this,
+                            SocialMediaHubService::class.java
+                        )
+                    )
+
+                }
+
+            }
+
+        }
     }
+
 
     override fun onResume() {
         super.onResume()
@@ -181,6 +218,17 @@ class MainActivity : AppCompatActivity(), InAppUpdateListener, View.OnClickListe
                         paste.contains("tumblr.com/post") || paste.contains("tiktok.com")
                     ) {
                         Log.d("BackgroundRService", "Test onPrimaryClipChanged...$paste  ")
+
+                        val intentFilter = IntentFilter()
+                        intentFilter.addAction("download_complete")
+                        LocalBroadcastManager.getInstance(this)
+                            .registerReceiver(broadcastReceiver, intentFilter)
+
+                        dialog =  ProgressDialog(this)
+                        dialog?.setMessage("Downloading...")
+                        dialog?.setCancelable(false)
+                        dialog?.show()
+
                         startDownloadingLink(
                             applicationContext,
                             paste,
@@ -193,11 +241,20 @@ class MainActivity : AppCompatActivity(), InAppUpdateListener, View.OnClickListe
             R.id.nav_rate -> {
                 Utils().rateUs(this)
             }
-            R.id.nav_aboutUs -> {
+            R.id.nav_privacy -> {
 
+                AHandler.getInstance().onStartPrivacyPolicy(this)
+            }
+            R.id.nav_term_condition -> {
+
+                AHandler.getInstance().onStartTermCondistion(this)
             }
             R.id.nav_share_app -> {
                 Utils().shareUrl(this)
+            }
+
+            R.id.app_logo -> {
+                AHandler.getInstance().getDefaultServerAdsData(this)
             }
             R.id.nav_more -> {
                 Utils().moreApps(this)
@@ -239,6 +296,8 @@ class MainActivity : AppCompatActivity(), InAppUpdateListener, View.OnClickListe
         mypopupWindow.showAsDropDown(v, -10, -90)
         google_click.setOnClickListener {
             isSocialMediaClicked = false
+            binding.searchImageGoogle.visibility=View.VISIBLE
+            binding.searchBoxEditText.setText("")
             binding.searchBoxEditText.hint = "Search"
             binding.llDownload.visibility = View.GONE
             binding.selectedSocial.setImageDrawable(getDrawable(R.drawable.ic_search))
@@ -246,6 +305,8 @@ class MainActivity : AppCompatActivity(), InAppUpdateListener, View.OnClickListe
         }
         down_video.setOnClickListener {
             isSocialMediaClicked = true
+            binding.searchImageGoogle.visibility=View.GONE
+            binding.searchBoxEditText.setText("")
             binding.searchBoxEditText.hint = "Paste URL/Link here"
             binding.llDownload.visibility = View.VISIBLE
             binding.selectedSocial.setImageDrawable(getDrawable(R.drawable.ic_video_selected))
@@ -264,6 +325,7 @@ class MainActivity : AppCompatActivity(), InAppUpdateListener, View.OnClickListe
 //            context.startForegroundService(downloadService);
 //        } else {
         context.startService(downloadService)
+        binding.searchBoxEditText.setText("")
         // }
     }
 
@@ -292,7 +354,7 @@ class MainActivity : AppCompatActivity(), InAppUpdateListener, View.OnClickListe
                 val intent = Intent("list_refresh");
 
                 LocalBroadcastManager.getInstance(this)
-                    .sendBroadcast(intent);
+                    .sendBroadcast(intent)
             }
         }
     }
@@ -353,31 +415,21 @@ class MainActivity : AppCompatActivity(), InAppUpdateListener, View.OnClickListe
         try {
             if (value != null) {
                 when (value) {
-                    MapperUtils.DL_SEARCH_PAGE -> {
-                        navController?.popBackStack()
-                        navController?.navigate(R.id.navigation_home)
+                    MapperUtils.MAPPER_SOCIAL_MEDIA -> {
+//                        navController?.navigate(R.id.navigation_home)
                     }
-                    MapperUtils.DL_DOWNLOAD_PAGE -> {
-                        navController?.popBackStack()
+                    MapperUtils.MAPPER_WA_STATUS -> {
                         navController?.navigate(R.id.navigation_dashboard)
                     }
-                    MapperUtils.DL_CHAT_PAGE -> {
-                        navController?.popBackStack()
+                    MapperUtils.MAPPER_WA_DIRECT_CHAT -> {
                         navController?.navigate(R.id.navigation_notifications)
                     }
-                    /* MapperUtils.DL_BLOCK_PAGE -> {
-                         viewPager?.currentItem = 2
+                     MapperUtils.MAPPER_GALLERY -> {
+                         startActivity(Intent(this, MyDownloadsFragment::class.java))
                      }
-                     MapperUtils.DL_ADD_BLOCK_DIAL -> {
-                         context.startActivity(Intent(context, BlockNumberActivity::class.java))
-                     }
-                     MapperUtils.DL_ADD_BLOCK_CONTACT -> {
-                         context.startActivity(Intent(context, BlockContactActivity::class.java))
-                     }
+                     MapperUtils.MAPPER_SETTING -> {
+                         startActivity(Intent(this, SettingActivity::class.java))                     }
 
-                     MapperUtils.DL_Permission_CDO -> {
-                         checkPermissionCDO()
-                     }*/
                 }
             }
         } catch (e: java.lang.Exception) {
@@ -421,39 +473,123 @@ class MainActivity : AppCompatActivity(), InAppUpdateListener, View.OnClickListe
 
 
     override fun onBackPressed() {
-
-
-        //                    iv_filter.setVisibility(View.GONE);
-
-
         if (isDrawerOpen()) {
             closeMenuDrawer()
             return
         }
 
 
-        navController?.addOnDestinationChangedListener { controller, destination, arguments ->
-            println("DashboardActivity.onCreate hi test 001 dasfa"+" "+destination.label)
+//        navController?.addOnDestinationChangedListener { controller, destination, arguments ->
+//            println("DashboardActivity.onCreate hi test 001 dasfa"+" "+destination.label)
+//
+//            if(destination.label?.equals("Home")!!){
+//                isFromHOmeCount++
+//
+//
+//            }
+//
+//
+//
+//        }
+//
+//        println("MainActivity.onBackPressed log >>>> 009"+" "+isFromHOmeCount)
+//        if (isFromHOmeCount==2){
+//        }
 
-            if(!destination.label?.equals("Home")!!){
-                navController?.popBackStack()
-                navController?.navigate(R.id.navigation_home)
-                isFromHOme=true
+
+
+        super.onBackPressed()
+    }
+
+
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+
+//        if (requestCode == WA_STATUS_FOLDER_REQ_CODE && resultCode == RESULT_OK) {
+//            Uri treeUri = data.getData();
+//            mediaPreferences.setDocumetFilePath(data.getData().toString());
+//            getContentResolver().takePersistableUriPermission(treeUri,
+//                    Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+//
+//                    Intent intent = new Intent(WA_STATUS_FOLDER_REQ_RECEIVER);
+//        // You can also include some extra data.
+//        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+//
+//        }
+        if (requestCode == InAppUpdateManager.REQ_CODE_VERSION_UPDATE) {
+            if (resultCode != RESULT_OK) { //RESULT_OK / RESULT_CANCELED / RESULT_IN_APP_UPDATE_FAILED
+                // If the update is cancelled or fails,
+                // you can request to start the update again.
+                inAppUpdateManager.unregisterInstallStateUpdListener()
+                onUpdateNotAvailable()
+                println("InAppUpdateManager MainActivityV2.onActivityResult RESULT_CANCELED $resultCode")
+            } else {
+                println("InAppUpdateManager MainActivityV2.onActivityResult RESULT_OK $resultCode")
+            }
+        }
+    }
+
+
+    override fun onDestroy() {
+        AHandler.getInstance().v2CallOnExitPrompt(this)
+
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(broadcastReceiver);
+
+        super.onDestroy()
+
+    }
+
+
+    var broadcastReceiver: BroadcastReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent) {
+            if (intent.action.equals("download_complete")){
+                if (dialog!=null && dialog?.isShowing!!) {
+                    dialog?.dismiss();
+                }
+                Log.d("TAG", "onReceive called: fasmb kdhjgksjhkj")
             }
 
         }
-
-        if(isFromHOme){
-            isFromHOme=false
-            return
-        }
-
-
-        println("DashboardActivity.onCreate hi test 002"+" ")
-
-        println("DashboardActivity.onBackPressed hi on back press"+" ")
-        AHandler.getInstance().v2CallOnExitPrompt(this)
-        super.onBackPressed()
     }
+
+
+    fun openAppNotification(isChecked : Boolean){
+        if (isChecked) {
+            Log.d("TAG", "onCreate: " + isChecked)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                startForegroundService(
+                    Intent(
+                        this,
+                        SocialMediaHubService::class.java
+                    )
+                )
+
+            } else {
+                startService(
+                    Intent(
+                        this,
+                        SocialMediaHubService::class.java
+                    )
+                )
+
+            }
+        } else {
+            Log.d("TAG", "onCreate1: " + isChecked)
+            stopService(Intent(this, SocialMediaHubService::class.java))
+        }
+    }
+
+
+    fun isMyServiceRunning(serviceClass: Class<*>): Boolean {
+        val manager = this.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+        return manager.getRunningServices(Integer.MAX_VALUE)
+            .any { it.service.className == serviceClass.name }
+    }
+
+
+
+
 }
 

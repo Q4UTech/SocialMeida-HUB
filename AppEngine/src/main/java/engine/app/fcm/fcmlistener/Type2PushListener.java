@@ -10,21 +10,21 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Build;
+import android.widget.RemoteViews;
 
 import androidx.core.app.NotificationCompat;
-
-import android.widget.RemoteViews;
 
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Random;
 
+import app.pnd.adshandler.R;
 import engine.app.fcm.MapperUtils;
 import engine.app.fcm.NotificationUIResponse;
 import engine.app.fcm.imageparser.ImageDownloader;
 import engine.app.fcm.imageparser.LoadImage;
-import app.pnd.adshandler.R;
 import engine.app.server.v2.DataHubConstant;
+import engine.app.ui.MapperActivity;
 
 /**
  * Created by quantum4u1 on 27/04/18.
@@ -67,16 +67,20 @@ public class Type2PushListener implements FCMType, ImageDownloader {
 
             if (mNotificationManager != null) {
 
-                notificationIntent = new Intent(DataHubConstant.CUSTOM_ACTION);
-                notificationIntent.addCategory(Intent.CATEGORY_DEFAULT);
+                notificationIntent = new Intent(context, MapperActivity.class);
                 notificationIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 notificationIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 notificationIntent.putExtra(MapperUtils.keyType, push.click_type);
                 notificationIntent.putExtra(MapperUtils.keyValue, push.click_value);
 
-                PendingIntent contentIntent = PendingIntent.getActivity(context, TYPE_2, notificationIntent,
-                        PendingIntent.FLAG_UPDATE_CURRENT);
-
+                PendingIntent contentIntent;
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                    contentIntent = PendingIntent.getActivity(this.context, TYPE_2, notificationIntent,
+                            PendingIntent.FLAG_MUTABLE);
+                } else {
+                    contentIntent = PendingIntent.getActivity(this.context, TYPE_2, notificationIntent,
+                            PendingIntent.FLAG_UPDATE_CURRENT);
+                }
                 RemoteViews contentView = new RemoteViews(context.getPackageName(), R.layout.notification_type2);
                 contentView.setTextViewText(R.id.title, push.headertext);
                 contentView.setTextColor(R.id.title, Color.parseColor(push.headertextcolor));

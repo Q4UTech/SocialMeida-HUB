@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.Random;
 
+import app.pnd.adshandler.R;
 import engine.app.fcm.ButtonFirst;
 import engine.app.fcm.ButtonSecond;
 import engine.app.fcm.MapperUtils;
@@ -25,8 +26,8 @@ import engine.app.fcm.NotificationActionReceiver;
 import engine.app.fcm.NotificationUIResponse;
 import engine.app.fcm.imageparser.ImageDownloader;
 import engine.app.fcm.imageparser.LoadImage;
-import app.pnd.adshandler.R;
 import engine.app.server.v2.DataHubConstant;
+import engine.app.ui.MapperActivity;
 
 /**
  * Created by quantum4u1 on 27/04/18.
@@ -97,16 +98,20 @@ public class Type3PushListener implements FCMType, ImageDownloader {
 
         if (mNotificationManager != null) {
 
-            intent = new Intent(DataHubConstant.CUSTOM_ACTION);
-            intent.addCategory(Intent.CATEGORY_DEFAULT);
+            intent = new Intent(context, MapperActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             intent.putExtra(MapperUtils.keyType, btn.click_type);
             intent.putExtra(MapperUtils.keyValue, btn.click_value);
 
-            PendingIntent pcloseIntent = PendingIntent.getActivity(context, TYPE_3, intent,
-                    PendingIntent.FLAG_UPDATE_CURRENT);
-
+            PendingIntent pcloseIntent;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                pcloseIntent = PendingIntent.getActivity(this.context, TYPE_3, intent,
+                        PendingIntent.FLAG_MUTABLE);
+            } else {
+                pcloseIntent = PendingIntent.getActivity(this.context, TYPE_3, intent,
+                        PendingIntent.FLAG_UPDATE_CURRENT);
+            }
             RemoteViews contentView = new RemoteViews(context.getPackageName(), R.layout.notification_type3_one);
             contentView.setTextViewText(R.id.title, this.push.headertext);
             contentView.setTextColor(R.id.title, Color.parseColor(this.push.headertextcolor));
@@ -198,8 +203,7 @@ public class Type3PushListener implements FCMType, ImageDownloader {
                 .getSystemService(Context.NOTIFICATION_SERVICE);
         if (mNotificationManager != null) {
 
-            intent1 = new Intent(DataHubConstant.CUSTOM_ACTION);
-            intent1.addCategory(Intent.CATEGORY_DEFAULT);
+            intent1 = new Intent(context, MapperActivity.class);
             intent1.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             intent1.putExtra(MapperUtils.keyType, btn1.click_type);
@@ -213,12 +217,23 @@ public class Type3PushListener implements FCMType, ImageDownloader {
             intent2.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
 
-            PendingIntent pendingSwitchIntent = PendingIntent.getActivity(this.context, TYPE_4, intent1,
-                    PendingIntent.FLAG_UPDATE_CURRENT);
+            PendingIntent pendingSwitchIntent;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                pendingSwitchIntent = PendingIntent.getActivity(this.context, TYPE_4, intent1,
+                        PendingIntent.FLAG_MUTABLE);
+            } else {
+                pendingSwitchIntent = PendingIntent.getActivity(this.context, TYPE_4, intent1,
+                        PendingIntent.FLAG_UPDATE_CURRENT);
+            }
 
-            PendingIntent contentIntent2 = PendingIntent.getBroadcast(this.context, TYPE_4, intent2,
-                    PendingIntent.FLAG_UPDATE_CURRENT);
-
+            PendingIntent contentIntent2;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                contentIntent2 = PendingIntent.getBroadcast(this.context, TYPE_4, intent2,
+                        PendingIntent.FLAG_MUTABLE);
+            } else {
+                contentIntent2 = PendingIntent.getBroadcast(this.context, TYPE_4, intent2,
+                        PendingIntent.FLAG_UPDATE_CURRENT);
+            }
             RemoteViews contentView = new RemoteViews(this.context.getPackageName(), R.layout.notification_type3_two);
             contentView.setTextViewText(R.id.title, this.push.headertext);
             contentView.setTextColor(R.id.title, Color.parseColor(this.push.headertextcolor));

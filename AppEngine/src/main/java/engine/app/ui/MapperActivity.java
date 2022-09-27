@@ -87,13 +87,11 @@ public class MapperActivity extends Activity {
             case MapperUtils.gcmFeedbackApp:
             case MapperUtils.gcmRateApp:
             case MapperUtils.gcmForceAppUpdate:
-            case MapperUtils.DL_ACTIVITY_PAGE:
-            case MapperUtils.DL_PROFILE_PAGE:
-            case MapperUtils.DL_PEDOMETER_HOME:
-            case MapperUtils.DL_SEARCH_PAGE:
-            case MapperUtils.DL_DOWNLOAD_PAGE:
-            case MapperUtils.DL_CHAT_PAGE:
-            case MapperUtils.DL_RESTORE:
+            case MapperUtils.MAPPER_WA_DIRECT_CHAT:
+            case MapperUtils.MAPPER_WA_STATUS:
+            case MapperUtils.MAPPER_SOCIAL_MEDIA:
+            case MapperUtils.MAPPER_GALLERY:
+            case MapperUtils.MAPPER_SETTING:
                 launchAppWithMapper(type, value);
                 break;
 

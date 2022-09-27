@@ -12,6 +12,7 @@ public class Const {
     public static final String STATUS_IMAGE = "Status Image";
     public static final String STATUS_VIDEO = "Status Video";
     public static final String DOWNLOAD = "Download";
+    public static final String Mapper_type_notification = "Mapper_type_notification";
 
 
 

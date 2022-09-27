@@ -4,5 +4,6 @@
     <string name="download_only">Download</string>
     <string name="preview_images"><u>Preview images</u></string>
     <string name="share_to">Share to</string>
+    <string name="use_tap_access">One Tap Access</string>
 
 </resources>

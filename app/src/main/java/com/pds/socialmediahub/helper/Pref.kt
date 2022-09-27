@@ -104,7 +104,7 @@ class Pref(context: Context) {
     }
 
     fun getMessagePref(): Boolean? {
-        return preferences?.getBoolean(MESSAGE_PREF, false)
+        return preferences?.getBoolean(MESSAGE_PREF, true)
     }
 
     fun setMessengerPref(status: Boolean) {

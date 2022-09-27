@@ -1,11 +1,10 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.SocialMediaHub" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="Theme.SocialMediaHub" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-
         <item name="actionModeStyle">@style/LStyled.ActionMode</item>
         <item name="android:actionModeCloseDrawable">@drawable/action_bar_close</item>
         <item name="android:titleTextStyle">@style/Stl.TitleTextStyle</item>
@@ -14,6 +13,8 @@
         <item name="actionBarTabTextStyle" tools:targetApi="l">@style/Stl.TitleTextStyle</item>
         <!-- Customize your theme here. -->
         <item name="android:fontFamily">@font/mulish_normal</item>
+        <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
+
     </style>
 
     <style name="TextStyleBNV" parent="@style/TextAppearance.AppCompat.Caption">
@@ -81,6 +82,8 @@
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">true</item>
         <item name="windowNoTitle">true</item>
+        <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
+
         <!--        <item name="actionBarTheme">@style/Widget.App.ActionMode</item>-->
         <item name="android:actionModeCloseDrawable">@drawable/action_bar_close</item>
 <!--        <item name="android:actionMenuTextColor">@color/actionbar_color</item>-->

@@ -173,11 +173,12 @@ public class AHandler {
      *
      * */
     public void v2CallOnExitPrompt(Activity context) {
-        context.finishAffinity();
+//        context.finishAffinity();
 
         /*
          * full ads count will be 0 on exit..
          */
+        Log.d("AHandler", "Hello v2CallOnExitPrompt gsfgsdgds");
         Utils.setFullAdsCount(context, 0);
 
         //Open Ads count will be 0 on exit..
@@ -493,12 +494,12 @@ public class AHandler {
 
             if (Slave.NATIVE_TYPE_LARGE.equalsIgnoreCase(Slave.NATIVE_LARGE_call_native)) {
 
-                FrameLayout nativeAdsContainer = (FrameLayout) LayoutInflater.from(context)
-                        .inflate(R.layout.native_ads_progress_dialog_ads_loader, null, false);
+                LinearLayout nativeAdsContainer = (LinearLayout) LayoutInflater.from(context)
+                        .inflate(R.layout.native_ads_progress_dialog_ads_loader_new, null, false);
                 LinearLayout linearLayout = nativeAdsContainer.findViewById(R.id.ll_progress_layout);
                 linearLayout.setGravity(Gravity.CENTER);
                 linearLayout.setMinimumHeight(getMinNativeHeight(context, R.dimen.native_large_height));
-
+//
                 LoadAdData loadAdData = new LoadAdData();
                 loadAdData.setPosition(0);
                 loadNativeLarge(context, loadAdData, nativeAdsContainer);

@@ -122,18 +122,18 @@
 
     <color name="new_speedmeter">#151B54</color>
 
-    <color name="native_med_bg">#FFFFFF</color>
+    <color name="native_med_bg">#2661CCFA</color>
     <color name="native_med_text_color">#000000</color>
     <color name="native_med_sub_text_color">#000000</color>
-    <color name="native_med_button_bg">#1e8055</color>
-    <color name="native_med_button_text_color">#FFFFFF</color>
+    <color name="native_med_button_bg">#61CCFA</color>
+    <color name="native_med_button_text_color">#000000</color>
 
 
-    <color name="native_large_bg">#000000</color>
-    <color name="native_large_text_color">#FFFFFF</color>
-    <color name="native_large_sub_text_color">#FFFFFF</color>
-    <color name="native_large_button_bg">#1e8055</color>
-    <color name="native_large_button_text_color">#FFFFFF</color>
+    <color name="native_large_bg">#2661CCFA</color>
+    <color name="native_large_text_color">#000000</color>
+    <color name="native_large_sub_text_color">#000000</color>
+    <color name="native_large_button_bg">#61CCFA</color>
+    <color name="native_large_button_text_color">#000000</color>
 
     <color name="native_med_bg_grid">#000000</color>
     <color name="native_med_text_color_grid">#FFFFFF</color>
@@ -141,11 +141,11 @@
     <color name="native_med_button_bg_grid">#1e8055</color>
     <color name="native_med_button_text_color_grid">#FFFFFF</color>
 
-    <color name="native_rect_bg">#FFFFFF</color>
+    <color name="native_rect_bg">#2661CCFA</color>
     <color name="native_rect_text_color">#000000</color>
     <color name="native_rect_sub_text_color">#000000</color>
-    <color name="native_rect_button_bg">#1e8055</color>
-    <color name="native_rect_button_text_color">#FFFFFF</color>
+    <color name="native_rect_button_bg">#61CCFA</color>
+    <color name="native_rect_button_text_color">#000000</color>
 
     <color name="banner_applovin_bg_color">#FFFFFF</color>
     <color name="banner_large_applovin_bg_color">#FFFFFF</color>

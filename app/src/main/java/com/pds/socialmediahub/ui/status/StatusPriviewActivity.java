@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.PendingIntent;
+import android.content.ActivityNotFoundException;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
@@ -59,6 +60,8 @@ import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+
+import engine.app.adshandler.AHandler;
 
 
 public class StatusPriviewActivity extends BaseActivity implements View.OnClickListener, SeekBar.OnSeekBarChangeListener {
@@ -338,8 +341,8 @@ public class StatusPriviewActivity extends BaseActivity implements View.OnClickL
                 }
             });
 
-           /* LinearLayout adsbanner = findViewById(R.id.adsbanner);
-            adsbanner.addView(AHandler.getInstance().getBannerHeader(this));*/
+            LinearLayout adsbanner = findViewById(R.id.adsbanner);
+            adsbanner.addView(AHandler.getInstance().getBannerHeader(this));
 
             //  AHandler.getInstance().showFullAds(this,false);
 
@@ -396,9 +399,12 @@ public class StatusPriviewActivity extends BaseActivity implements View.OnClickL
             binding.llRepost.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+
+
                     if (statusDocumentFileList != null && statusDocumentFileList.size() > 0) {
 
-                        setwatsappdp(statusDocumentFileList.get(imgSelectedPos).getUri());
+                        shareOnWhatsApp(StatusPriviewActivity.this,statusDocumentFileList.get(imgSelectedPos).getUri());
+//                        setwatsappdp(statusDocumentFileList.get(imgSelectedPos).getUri());
                     } else if (statusFileList != null && statusFileList.size() > 0) {
                         Log.d("StatusPriviewActivity", "Hello onClick hi pathhh" + " " + statusFileList.get(imgSelectedPos)
                                 .getPath());
@@ -407,7 +413,10 @@ public class StatusPriviewActivity extends BaseActivity implements View.OnClickL
                                 getApplicationContext().getPackageName() + ".provider",
                                 new File(statusFileList.get(imgSelectedPos)
                                         .getPath()));
-                        setwatsappdp(uri);
+
+                        shareOnWhatsApp(StatusPriviewActivity.this,uri);
+
+//                        setwatsappdp(uri);
                     }
                 }
             });
@@ -569,20 +578,40 @@ public class StatusPriviewActivity extends BaseActivity implements View.OnClickL
         return !file.exists();
     }
 
+    private void shareOnWhatsApp(Context context, Uri uri) {
+        if (context != null) {
+               Intent  whatsappIntent = new Intent(Intent.ACTION_SEND);
+                whatsappIntent.setType( "*/*");
+                whatsappIntent.setPackage("com.whatsapp");
+                whatsappIntent.putExtra(Intent.EXTRA_STREAM, uri);
+                try {
+                    context.startActivity(whatsappIntent);
+                } catch (ActivityNotFoundException ex) {
+                    Toast.makeText(
+                            context,
+                            "whats app not installed",
+                            Toast.LENGTH_SHORT
+                    ).show();
+                }
+        }
+    }
+
+
     private void setwatsappdp(Uri uri) {
 
 
-        try {
+//        try {
             if (uri != null) {
-                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
-            }
-        } catch (Exception e) {
-//            Log.d(TAG, "setwatsappdp1: " + e.getMessage());
-        }
+//                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+//            }
+//        } catch (Exception e) {
+////            Log.d(TAG, "setwatsappdp1: " + e.getMessage());
+//        }
+//
+//        if (bitmap != null) {
 
-        if (bitmap != null) {
+//            Uri urisqure = saveImage(cropToSquare(bitmap),uri.getPath());
 
-            Uri urisqure = saveImage(cropToSquare(bitmap));
             PackageManager pm = getPackageManager();
             // Log.d("TAG", "setSingleStatus5: " + urisqure);
             try {
@@ -590,7 +619,7 @@ public class StatusPriviewActivity extends BaseActivity implements View.OnClickL
                 PackageInfo info = pm.getPackageInfo("com.whatsapp", PackageManager.GET_META_DATA);
 
                 Intent waIntent = new Intent(Intent.ACTION_ATTACH_DATA);
-                waIntent.setDataAndType(urisqure, "image/jpg");
+                waIntent.setDataAndType(uri, "image/jpg");
                 waIntent.setPackage("com.whatsapp");
                 waIntent.putExtra("mimeType", "image/jpg");
                 startActivity(waIntent);
@@ -949,12 +978,14 @@ public class StatusPriviewActivity extends BaseActivity implements View.OnClickL
         // 0 -> hide & 1 -> show
         if (type == 0) {
             binding.bottomLayout.setVisibility(View.GONE);
+            binding.llPlay.setVisibility(View.GONE);
 //            toolbar.setVisibility(View.GONE);
             // Hide status bar
             // getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
             isMediaCntrollerVisible = false;
         } else {
             binding.bottomLayout.setVisibility(View.VISIBLE);
+            binding.llPlay.setVisibility(View.VISIBLE);
 //            toolbar.setVisibility(View.VISIBLE);
             // Show status bar
             // getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -992,7 +1023,7 @@ public class StatusPriviewActivity extends BaseActivity implements View.OnClickL
     }
 
 
-    private Uri saveImage(Bitmap finalBitmap) {
+    private Uri saveImage(Bitmap finalBitmap,String fileUripath) {
         //String root = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).toString();
         //System.out.println(root + " Root value in saveImage Function");
         String bitmapPath;
@@ -1006,7 +1037,9 @@ public class StatusPriviewActivity extends BaseActivity implements View.OnClickL
 
         File file = null;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            file = new File(String.valueOf(statusDocumentFileList.get(imgSelectedPos).getUri()));
+
+
+            file = new File(fileUripath);
         } else {
             file = new File(String.valueOf(statusFileList.get(imgSelectedPos).getPath()));
         }
@@ -1037,7 +1070,7 @@ public class StatusPriviewActivity extends BaseActivity implements View.OnClickL
                 MediaStore.Images.Media.DATA + "=? ",
                 new String[]{filePath}, null);
         if (cursor != null && cursor.moveToFirst()) {
-            int id = cursor.getInt(cursor
+            @SuppressLint("Range") int id = cursor.getInt(cursor
                     .getColumnIndex(MediaStore.MediaColumns._ID));
             Uri baseUri = Uri.parse("content://media/external/images/media");
             return Uri.withAppendedPath(baseUri, "" + id);

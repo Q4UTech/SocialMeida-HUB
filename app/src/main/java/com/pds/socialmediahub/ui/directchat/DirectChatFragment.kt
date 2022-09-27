@@ -104,7 +104,7 @@ class DirectChatFragment : Fragment(R.layout.fragment_notifications), SetClick {
             }
         }
         view.findViewById<LinearLayout>(R.id.ll_ads)
-            .addView(AHandler.getInstance().getNativeLarge(requireActivity()))
+            .addView(AHandler.getInstance().getNativeMedium(requireActivity()))
         /*  if (numberPref?.getNumberList() != null) {*/
 
         tvMsg?.addTextChangedListener(object : TextWatcher {
