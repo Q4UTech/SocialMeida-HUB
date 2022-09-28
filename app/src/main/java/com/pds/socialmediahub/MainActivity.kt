@@ -12,43 +12,70 @@ import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.*
 import androidx.core.app.ActivityCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout.DrawerListener
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentPagerAdapter
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
-import androidx.navigation.NavController
-import androidx.navigation.findNavController
-import androidx.navigation.ui.setupWithNavController
+import androidx.viewpager.widget.ViewPager.OnPageChangeListener
 import com.example.whatsdelete.constants.Constants
+import com.example.whatsdelete.fragments.RootHomeFragment
+import com.example.whatsdelete.fragments.WaTrandingStatus
 import com.example.whatsdelete.utils.AppUtils
-import com.example.whatsdelete.utils.Prefs
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.pds.socialmediahub.activities.BaseActivity
 import com.pds.socialmediahub.activities.SettingActivity
 import com.pds.socialmediahub.databinding.ActivityMainBinding
 import com.pds.socialmediahub.helper.Pref
 import com.pds.socialmediahub.service.SocialMediaHubService
+import com.pds.socialmediahub.ui.directchat.DirectChatFragment
 import com.pds.socialmediahub.ui.socialmediadownloader.services.ClipBoardService
 import com.pds.socialmediahub.ui.status.MyDownloadsFragment
+import com.pds.socialmediahub.ui.status.WAStatusFragment
 import engine.app.adshandler.AHandler
 import engine.app.fcm.MapperUtils
 import engine.app.inapp.InAppUpdateManager
 import engine.app.listener.InAppUpdateListener
 import engine.app.serviceprovider.Utils
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.fragment_status.*
 
 
 class MainActivity : BaseActivity(), InAppUpdateListener, View.OnClickListener {
 
     private lateinit var binding: ActivityMainBinding
     private var isSocialMediaClicked: Boolean = false
-    private var navController: NavController? = null
+//    private var navController: NavController? = null
     private lateinit var inAppUpdateManager: InAppUpdateManager
     private var isFromHOmeCount:Int=0
+    private var prevMenuItem: MenuItem? = null
     private var dialog: ProgressDialog? = null
+
+    private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
+        when (item.itemId) {
+            R.id.navigation_home -> {
+                binding.viewpager?.currentItem = 0
+                return@OnNavigationItemSelectedListener true
+            }
+            R.id.navigation_dashboard -> {
+                binding.viewpager?.currentItem = 1
+                return@OnNavigationItemSelectedListener true
+            }
+            R.id.navigation_notifications -> {
+                binding.viewpager?.currentItem = 2
+                return@OnNavigationItemSelectedListener true
+            }
+        }
+        false
+    }
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -70,9 +97,8 @@ class MainActivity : BaseActivity(), InAppUpdateListener, View.OnClickListener {
         binding.headerView.appLogo.setOnClickListener(this)
         binding.navMore.setOnClickListener(this)
         binding.navShareFeedback.setOnClickListener(this)
-        navController = findNavController(R.id.nav_host_fragment_activity_main)
-        navView.setupWithNavController(navController!!)
-
+//        navController = findNavController(R.id.nav_host_fragment_activity_main)
+//        navView.setupWithNavController(navController!!)
         binding.drawerLayout.addDrawerListener(object : DrawerListener {
             override fun onDrawerSlide(drawerView: View, slideOffset: Float) {}
             override fun onDrawerOpened(drawerView: View) {
@@ -115,6 +141,65 @@ class MainActivity : BaseActivity(), InAppUpdateListener, View.OnClickListener {
 
 
 
+      val  mPagerAdapter = ViewPagerAdapter(supportFragmentManager, 3)
+       binding.viewpager?.setAdapter(mPagerAdapter)
+
+
+//        navView.setOnNavigationItemSelectedListener(
+//            BottomNavigationView.OnNavigationItemSelectedListener { item ->
+//                try {
+//                    Log.d("MainActivityLauncher", "Hello onNavigationItemSelected nav ")
+//                    when (item.itemId) {
+//                        R.id.navigation_home -> {
+//                            binding.viewpager?.currentItem = 0
+//                            return@OnNavigationItemSelectedListener true
+//                        }
+//                        R.id.navigation_dashboard -> {
+//                            binding.viewpager?.currentItem = 1
+//                            return@OnNavigationItemSelectedListener true
+//                        }
+//                        R.id.navigation_notifications -> {
+//                            binding.viewpager?.currentItem = 2
+//                            return@OnNavigationItemSelectedListener true
+//                        }
+//                    }
+//                    //  AHandler.getInstance().showFullAds(MainActivityLauncher.this, false);
+//                } catch (e: Exception) {
+//                }
+//                false
+//            })
+
+
+
+
+
+//                navView.setupWithNavController(binding.viewpager!!)
+        navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
+
+        binding.viewpager.addOnPageChangeListener(object : OnPageChangeListener {
+            override fun onPageScrolled(
+                position: Int,
+                positionOffset: Float,
+                positionOffsetPixels: Int
+            ) {
+            }
+
+            override fun onPageSelected(position: Int) {
+                Log.d("MainActivityLauncher", "Hello onPageSelected  $position")
+                AHandler.getInstance().showFullAds(this@MainActivity, false)
+
+                if (prevMenuItem != null) {
+                    prevMenuItem?.isChecked = false
+                } else {
+                    binding.navView.menu.getItem(0).isChecked = false
+                }
+                binding.navView.menu.getItem(position).isChecked = true
+                prevMenuItem = binding.navView.menu.getItem(position)
+                Log.d("MainActivityLauncher", "Test onPageSelected...")
+            }
+
+            override fun onPageScrollStateChanged(state: Int) {}
+        })
 
 
 
@@ -419,10 +504,10 @@ class MainActivity : BaseActivity(), InAppUpdateListener, View.OnClickListener {
 //                        navController?.navigate(R.id.navigation_home)
                     }
                     MapperUtils.MAPPER_WA_STATUS -> {
-                        navController?.navigate(R.id.navigation_dashboard)
+//                        navController?.navigate(R.id.navigation_dashboard)
                     }
                     MapperUtils.MAPPER_WA_DIRECT_CHAT -> {
-                        navController?.navigate(R.id.navigation_notifications)
+//                        navController?.navigate(R.id.navigation_notifications)
                     }
                      MapperUtils.MAPPER_GALLERY -> {
                          startActivity(Intent(this, MyDownloadsFragment::class.java))
@@ -479,24 +564,11 @@ class MainActivity : BaseActivity(), InAppUpdateListener, View.OnClickListener {
         }
 
 
-//        navController?.addOnDestinationChangedListener { controller, destination, arguments ->
-//            println("DashboardActivity.onCreate hi test 001 dasfa"+" "+destination.label)
-//
-//            if(destination.label?.equals("Home")!!){
-//                isFromHOmeCount++
-//
-//
-//            }
-//
-//
-//
-//        }
-//
-//        println("MainActivity.onBackPressed log >>>> 009"+" "+isFromHOmeCount)
-//        if (isFromHOmeCount==2){
-//        }
 
-
+        if (binding.viewpager.currentItem!=0){
+            binding.viewpager.currentItem=0
+            return
+        }
 
         super.onBackPressed()
     }
@@ -589,6 +661,41 @@ class MainActivity : BaseActivity(), InAppUpdateListener, View.OnClickListener {
     }
 
 
+
+    internal class ViewPagerAdapter(manager: FragmentManager?, _pageCount: Int) :
+        FragmentPagerAdapter(manager!!) {
+        private var pageCount = 0
+        private val titles = arrayOf("Home", "Status","Direct Chat")
+        private var home: RootHomeFragment? = null
+        private var status: WAStatusFragment? = null
+        private var directchat: DirectChatFragment? = null
+        override fun getItem(position: Int): Fragment {
+            if (position == 0) {
+                //load fragment one
+                return home!!
+            } else if (position == 1) {
+                return status!!
+            } else if (position == 2) {
+                return directchat!!
+            }
+            return null!!
+        }
+
+        override fun getCount(): Int {
+            return pageCount
+        }
+
+        override fun getPageTitle(position: Int): CharSequence? {
+            return titles[position]
+        }
+
+        init {
+            pageCount = _pageCount
+            home = RootHomeFragment()
+            status = WAStatusFragment()
+            directchat= DirectChatFragment()
+        }
+    }
 
 
 }

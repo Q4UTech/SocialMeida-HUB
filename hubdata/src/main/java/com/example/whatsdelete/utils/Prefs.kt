@@ -78,17 +78,17 @@ class Prefs(con: Context) {
     }
 
 
-    fun setCategoryList(list: List<CategoryListData>?) {
+    fun setCategoryList(list: MutableList<CategoryListData>?) {
         val gson = Gson()
         val json: String = gson.toJson(list)
         editor.putString(KEY_SET_cat_list, json)
         editor.commit()
     }
 
-    fun getCategoryList(): List<CategoryListData>? {
+    fun getCategoryList(): MutableList<CategoryListData>? {
         val gson = Gson()
         val json: String? = preferences.getString(KEY_SET_cat_list, null)
-        val type: Type = object : TypeToken<List<CategoryListData>?>() {}.type
+        val type: Type = object : TypeToken<MutableList<CategoryListData>?>() {}.type
         return gson.fromJson(json, type)
     }
 

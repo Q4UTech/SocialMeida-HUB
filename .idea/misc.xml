@@ -33,8 +33,10 @@
         <entry key="app/src/main/res/drawable/ic_share_file.xml" value="0.164" />
         <entry key="app/src/main/res/drawable/ic_splash_bg.xml" value="0.164" />
         <entry key="app/src/main/res/drawable/ic_status_saver_bg_small.xml" value="0.164" />
+        <entry key="app/src/main/res/drawable/ic_toggle_select.xml" value="0.164" />
         <entry key="app/src/main/res/drawable/ic_white_btn_bg.xml" value="0.217" />
         <entry key="app/src/main/res/drawable/tb_ind_bg.xml" value="0.16" />
+        <entry key="app/src/main/res/drawable/toggle_selector.xml" value="0.164" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.26296296296296295" />
         <entry key="app/src/main/res/layout/activity_setting.xml" value="0.33" />
         <entry key="app/src/main/res/layout/activity_splash.xml" value="0.25" />
@@ -48,6 +50,7 @@
         <entry key="app/src/main/res/layout/download_share_prompt.xml" value="0.29791666666666666" />
         <entry key="app/src/main/res/layout/fragment_allmedia_image.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_dashboard.xml" value="0.29791666666666666" />
+        <entry key="app/src/main/res/layout/fragment_favourite.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.29791666666666666" />
         <entry key="app/src/main/res/layout/fragment_my_download.xml" value="0.29791666666666666" />
         <entry key="app/src/main/res/layout/fragment_notifications.xml" value="0.26296296296296295" />
@@ -67,16 +70,24 @@
         <entry key="app/src/main/res/layout/status_row_view.xml" value="0.26296296296296295" />
         <entry key="app/src/main/res/layout/trans_layout.xml" value="0.29791666666666666" />
         <entry key="app/src/main/res/layout/webviewlayout.xml" value="0.29791666666666666" />
+        <entry key="app/src/main/res/menu/bottom_nav_menu.xml" value="0.14322916666666666" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.164" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.164" />
         <entry key="hubdata/src/main/res/drawable/active_bg.xml" value="0.164" />
         <entry key="hubdata/src/main/res/drawable/bottom_round_corner.xml" value="0.1555" />
+        <entry key="hubdata/src/main/res/drawable/ic_no_data_bg.xml" value="0.164" />
+        <entry key="hubdata/src/main/res/drawable/ic_toggle_select.xml" value="0.164" />
         <entry key="hubdata/src/main/res/drawable/tb_ind_bg.xml" value="0.16" />
+        <entry key="hubdata/src/main/res/drawable/toggle_selector.xml" value="0.164" />
         <entry key="hubdata/src/main/res/layout/category_item.xml" value="0.33" />
         <entry key="hubdata/src/main/res/layout/custom_tab_v2.xml" value="0.25" />
         <entry key="hubdata/src/main/res/layout/data_item.xml" value="0.29791666666666666" />
+        <entry key="hubdata/src/main/res/layout/fav_data_item.xml" value="0.25" />
+        <entry key="hubdata/src/main/res/layout/fav_item_list.xml" value="0.67" />
         <entry key="hubdata/src/main/res/layout/fragment_detail.xml" value="0.26296296296296295" />
+        <entry key="hubdata/src/main/res/layout/fragment_dynamic.xml" value="0.14270833333333333" />
         <entry key="hubdata/src/main/res/layout/fragment_home_cat.xml" value="0.25555555555555554" />
+        <entry key="hubdata/src/main/res/layout/fragment_home_root.xml" value="0.29791666666666666" />
         <entry key="hubdata/src/main/res/layout/home_new.xml" value="0.296875" />
       </map>
     </option>

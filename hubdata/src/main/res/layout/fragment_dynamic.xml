@@ -29,7 +29,6 @@
             android:id="@+id/main_container"
             android:layout_width="match_parent"
             android:orientation="vertical"
-            android:visibility="gone"
             android:layout_height="match_parent">
 
             <androidx.core.widget.NestedScrollView
@@ -132,7 +131,30 @@
 
                         </LinearLayout>
 
+                        <com.google.android.material.tabs.TabLayout
+                            android:id="@+id/tablayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentTop="true"
+                            android:background="#F3F3F3"
+                            android:elevation="2dp"
+                            android:paddingStart="@dimen/margin10"
+                            android:paddingEnd="@dimen/margin10"
+                            app:tabGravity="fill"
+                            app:tabIndicator="@drawable/tb_ind_bg"
+                            app:tabIndicatorColor="@color/text_color_202020"
+                            app:tabIndicatorFullWidth="true"
+                            app:tabIndicatorHeight="3dp"
+                            app:tabInlineLabel="true"
+                            app:tabMode="scrollable"
+                            app:tabSelectedTextColor="@color/tab_selected"
+                            app:tabTextAppearance="@style/My.New.TabText.Style"
+                            app:tabTextColor="#d3d3d3">
+
+                        </com.google.android.material.tabs.TabLayout>
+
                         <LinearLayout
+                            android:layout_below="@+id/tablayout"
                             android:id="@+id/sub_cat_container"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
@@ -278,74 +300,8 @@
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 
-        <RelativeLayout
-            android:id="@+id/rl_add_new_fav"
-            android:layout_width="wrap_content"
-            android:visibility="visible"
-            android:layout_centerInParent="true"
-            android:layout_height="wrap_content">
 
 
-            <RelativeLayout
-                android:id="@+id/rl_fav_container"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <LinearLayout
-                    android:id="@+id/ll_ask_add_new_fav"
-                    android:layout_width="wrap_content"
-                    android:orientation="vertical"
-                    android:gravity="center"
-                    android:layout_height="wrap_content">
-                    <Button
-                        android:layout_width="wrap_content"
-                        android:text="Add Fav"
-                        android:clickable="false"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_marginStart="@dimen/txt_11"
-                        android:textColor="@color/rate_us_black"
-                        android:textSize="@dimen/txt_11">
-
-                    </Button>
-
-                </LinearLayout>
-
-
-                <Button
-                    android:id="@+id/save_btn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginEnd="@dimen/txt_11"
-                    android:text="Save"
-                    android:textColor="@color/rate_us_black"
-                    android:textSize="@dimen/txt_11" />
-
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/fav_rv_category_item"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/save_btn"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    tools:listitem="@layout/fav_data_item" />
-
-
-            </RelativeLayout>
-
-
-
-
-
-
-
-
-
-
-
-
-        </RelativeLayout>
 
 
 

@@ -7,5 +7,6 @@ data class ApplicationListData(
     val image: String,
     val package_name: String,
     val click_url:String,
-    val color:String
+    val color:String,
+    var isChecked:Boolean
 )
