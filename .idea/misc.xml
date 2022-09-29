@@ -26,6 +26,8 @@
         <entry key="app/src/main/res/drawable/app_grad.xml" value="0.164" />
         <entry key="app/src/main/res/drawable/bottom_navigation_color_selector.xml" value="0.153" />
         <entry key="app/src/main/res/drawable/btn_green.xml" value="0.153" />
+        <entry key="app/src/main/res/drawable/circular.xml" value="0.164" />
+        <entry key="app/src/main/res/drawable/circularimage.xml" value="0.164" />
         <entry key="app/src/main/res/drawable/effect_2.xml" value="0.153" />
         <entry key="app/src/main/res/drawable/effect_9.xml" value="0.153" />
         <entry key="app/src/main/res/drawable/gradient_download_button_bg.xml" value="0.164" />
@@ -75,6 +77,8 @@
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.164" />
         <entry key="hubdata/src/main/res/drawable/active_bg.xml" value="0.164" />
         <entry key="hubdata/src/main/res/drawable/bottom_round_corner.xml" value="0.1555" />
+        <entry key="hubdata/src/main/res/drawable/ic_fab_add.xml" value="0.164" />
+        <entry key="hubdata/src/main/res/drawable/ic_fab_download.xml" value="0.164" />
         <entry key="hubdata/src/main/res/drawable/ic_no_data_bg.xml" value="0.164" />
         <entry key="hubdata/src/main/res/drawable/ic_toggle_select.xml" value="0.164" />
         <entry key="hubdata/src/main/res/drawable/tb_ind_bg.xml" value="0.16" />
@@ -82,7 +86,7 @@
         <entry key="hubdata/src/main/res/layout/category_item.xml" value="0.33" />
         <entry key="hubdata/src/main/res/layout/custom_tab_v2.xml" value="0.25" />
         <entry key="hubdata/src/main/res/layout/data_item.xml" value="0.29791666666666666" />
-        <entry key="hubdata/src/main/res/layout/fav_data_item.xml" value="0.25" />
+        <entry key="hubdata/src/main/res/layout/fav_data_item.xml" value="0.33" />
         <entry key="hubdata/src/main/res/layout/fav_item_list.xml" value="0.67" />
         <entry key="hubdata/src/main/res/layout/fragment_detail.xml" value="0.26296296296296295" />
         <entry key="hubdata/src/main/res/layout/fragment_dynamic.xml" value="0.14270833333333333" />

@@ -85,7 +85,7 @@ public class SocialMediaHubService extends Service {
 
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID);
         Notification notification = notificationBuilder.setOngoing(true)
-                .setSmallIcon(R.mipmap.ic_launcher_round)
+                .setSmallIcon(R.drawable.status_app_icon)
                 .setCustomContentView(remoteViews)
                 .setCustomBigContentView(remoteViews)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
@@ -238,7 +238,6 @@ public class SocialMediaHubService extends Service {
                         startActivity(msg);
                         closingBroadcast();
                     } catch (Exception e) {
-                        Toast.makeText(this, "Message app not installed in your phone", Toast.LENGTH_LONG).show();
                         e.printStackTrace();
                     }
                     break;
@@ -263,6 +262,7 @@ public class SocialMediaHubService extends Service {
                     }
                     break;
                 case "setting_action":
+                    Log.d("SocialMediaHubService", "Hello handleNotification ghghghguyy");
                     Intent setting = new Intent(this, SplashActivity.class);
                     setting.putExtra(MapperUtils.keyValue, MapperUtils.MAPPER_SETTING);
                     setting.putExtra(MapperUtils.keyType, Const.Mapper_type_notification);
@@ -271,7 +271,7 @@ public class SocialMediaHubService extends Service {
                     closingBroadcast();
                     break;
                 case "wa_status_action":
-                    Intent waStatus = new Intent(this, SplashActivity.class).putExtra(MapperUtils.keyType, MapperUtils.keyDeeplink)
+                    Intent waStatus = new Intent(this, SplashActivity.class)
                             .putExtra(MapperUtils.keyValue, MapperUtils.MAPPER_WA_STATUS)
                             .putExtra(MapperUtils.keyType, Const.Mapper_type_notification)
                             .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -280,7 +280,7 @@ public class SocialMediaHubService extends Service {
                     closingBroadcast();
                     break;
                 case "download_action":
-                    Intent homeFragment = new Intent(this, SplashActivity.class).putExtra(MapperUtils.keyType, MapperUtils.keyDeeplink)
+                    Intent homeFragment = new Intent(this, SplashActivity.class)
                             .putExtra(MapperUtils.keyValue, MapperUtils.MAPPER_GALLERY)
                             .putExtra(MapperUtils.keyType, Const.Mapper_type_notification)
                             .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -288,7 +288,7 @@ public class SocialMediaHubService extends Service {
                     closingBroadcast();
                     break;
                 case "chat_action":
-                    Intent chatFragmentIntent = new Intent(this, SplashActivity.class).putExtra(MapperUtils.keyType, MapperUtils.keyDeeplink)
+                    Intent chatFragmentIntent = new Intent(this, SplashActivity.class)
                             .putExtra(MapperUtils.keyValue, MapperUtils.MAPPER_WA_DIRECT_CHAT)
                             .putExtra(MapperUtils.keyType, Const.Mapper_type_notification)
                             .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

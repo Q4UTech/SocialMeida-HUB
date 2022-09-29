@@ -23,6 +23,7 @@ import com.example.whatsdelete.adapter.WhatsDelteCategoryItemAdapter
 import com.example.whatsdelete.api.APIClient
 import com.example.whatsdelete.constants.Constants
 import com.example.whatsdelete.dynamictab.DynamicFragment
+import com.example.whatsdelete.listener.FavSelectionListListner
 import com.example.whatsdelete.listener.onclickInstalledApp
 import com.example.whatsdelete.listener.openOnClick
 import com.example.whatsdelete.listener.setClick
@@ -37,6 +38,8 @@ import com.example.whatsdelete.utils.Prefs
 import com.example.whatsdelete.viewmodel.ApiDataViewModel
 import com.example.whatsdelete.viewmodel.MyViewModelFactory
 import com.example.whatsdelete.viewmodel.Repository
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.pds.wastatustranding.R
 import engine.app.adshandler.AHandler
 import kotlinx.coroutines.Dispatchers
@@ -48,13 +51,11 @@ import java.text.SimpleDateFormat
 
 
 class WaTrandingStatus : Fragment(), setClick, openOnClick, onclickInstalledApp,
-    View.OnClickListener {
-    public val DATEFORMAT = SimpleDateFormat("ddMMyyyy")
+    View.OnClickListener, FavSelectionListListner {
     private var recCategoryitem: RecyclerView? = null
     private var rv_installed_app: RecyclerView? = null
     private var fav_rv_category_item: RecyclerView? = null
     private var progressBar: ProgressBar? = null
-    private var whatsDeleteDataAdapter: WhatsDeleteCategoryAdapter? = null
     private var whatsDelteCategoryItemAdapter: WhatsDelteCategoryItemAdapter? = null
     private var favCategoryItemAdapter: FavCategoryItemAdapter? = null
     private var installedAppItemAdapter: InstalledAppItemAdapter? = null
@@ -66,6 +67,7 @@ class WaTrandingStatus : Fragment(), setClick, openOnClick, onclickInstalledApp,
     private var preview: TextView? = null
     private var close: ImageView? = null
     private var ll_nodata_container: LinearLayout? = null
+    private var ll_nodata_fav: LinearLayout? = null
     private var sub_cat_container: LinearLayout? = null
 
     private var itemOffsetView: ItemOffsetView? = null
@@ -81,24 +83,21 @@ class WaTrandingStatus : Fragment(), setClick, openOnClick, onclickInstalledApp,
 
     private var txt_total: TextView? = null
     private var native_ads: LinearLayout? = null
-    private var viewPager: ViewPager? = null
     private var txt_total_installed_apps: TextView? = null
     private var downloadTag: String? = null
-    private var tempCategoriesID111: String? = null
-    private var remainingDownloadingFileCount: Int? = 0
     var progressDialog: ProgressDialog? = null
     private var tempImgList = ArrayList<String>()
     private var tempFileNameList = ArrayList<String>()
-    private var temFileList = ArrayList<File>()
     private var prefs: Prefs? = null
     private var country: String? = null
     private var appId: String? = null
-    private var main_container:CoordinatorLayout?=null
-    private var rl_add_new_fav:RelativeLayout?=null
+    private var main_container: CoordinatorLayout? = null
+    private var rl_add_new_fav: RelativeLayout? = null
+    private var save_btn: ExtendedFloatingActionButton? = null
+    private var ll_ask_add_new_fav: ExtendedFloatingActionButton? = null
 
-
-//    lateinit var mainViewModel: RoomDbMainViewModel
-//    private var tabs: TabLayout? = null
+    private var mainAllAppList: List<ApplicationListData>? = null
+    private var mainFavSelectedList: MutableList<String>? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -112,7 +111,6 @@ class WaTrandingStatus : Fragment(), setClick, openOnClick, onclickInstalledApp,
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.d("TAG", "onViewCreated: ")
         prefs = Prefs(requireActivity())
         progressDialog = ProgressDialog(requireActivity())
         progressDialog?.setTitle("Downloading..")
@@ -126,6 +124,8 @@ class WaTrandingStatus : Fragment(), setClick, openOnClick, onclickInstalledApp,
         native_ads = view.findViewById(R.id.native_ads)
         main_container = view.findViewById(R.id.main_container)
         rl_add_new_fav = view.findViewById(R.id.rl_add_new_fav)
+        save_btn = view.findViewById(R.id.save_btn)
+        ll_ask_add_new_fav = view.findViewById(R.id.ll_ask_add_new_fav)
 
         share?.setOnClickListener(this)
         shareOnFacebook = view.findViewById(R.id.share_facebook)
@@ -134,6 +134,7 @@ class WaTrandingStatus : Fragment(), setClick, openOnClick, onclickInstalledApp,
         txt_total = view.findViewById(R.id.txt_total)
         txt_total_installed_apps = view.findViewById(R.id.txt_total_installed_apps)
         ll_nodata_container = view.findViewById(R.id.ll_nodata_container)
+        ll_nodata_fav = view.findViewById(R.id.ll_nodata_container)
         shareOnFacebook?.setOnClickListener(this)
         shareOnInsta = view.findViewById(R.id.share_insta)
         shareOnInsta?.setOnClickListener(this)
@@ -165,7 +166,12 @@ class WaTrandingStatus : Fragment(), setClick, openOnClick, onclickInstalledApp,
         itemOffsetView = activity?.let { ItemOffsetView(it, R.dimen.item_offset) }
         recCategoryitem?.addItemDecoration(ItemOffsetView(requireActivity(), R.dimen.item_offset))
         rv_installed_app?.addItemDecoration(ItemOffsetView(requireActivity(), R.dimen.item_offset))
-        fav_rv_category_item?.addItemDecoration(ItemOffsetView(requireActivity(), R.dimen.item_offset))
+        fav_rv_category_item?.addItemDecoration(
+            ItemOffsetView(
+                requireActivity(),
+                R.dimen.item_offset
+            )
+        )
         bottomStack?.setOnClickListener {
 
         }
@@ -180,29 +186,102 @@ class WaTrandingStatus : Fragment(), setClick, openOnClick, onclickInstalledApp,
             if (arguments != null) requireArguments().getInt(ARG_TAB_SELECTED_POSITION) else 1
 
 
-        if (tabpos!=null && tabpos==0){
-            rl_add_new_fav?.visibility=View.VISIBLE
-            main_container?.visibility=View.GONE
+        if (tabpos != null && tabpos == 0) {
+            println("WaTrandingStatus.callApplicationListView fasdgjhafsgh 009 aaaa fhsajdfga")
+
+            rl_add_new_fav?.visibility = View.VISIBLE
+            main_container?.visibility = View.GONE
+
+            ll_ask_add_new_fav?.visibility = View.VISIBLE
+
+            val applicationResponceList = prefs?.getFavList()
+
+            if (applicationResponceList != null && applicationResponceList?.size!! > 0) {
+                ll_nodata_container?.visibility = View.GONE
+                sub_cat_container?.visibility = View.VISIBLE
+                rl_add_new_fav?.visibility = View.GONE
+                save_btn?.visibility = View.VISIBLE
+                main_container?.visibility = View.VISIBLE
+                recCategoryitem?.apply {
 
 
-            rl_add_new_fav?.setOnClickListener{
-                callAllApplicationListView("all")
+                    txt_total?.setText(
+                        applicationResponceList!!.size.toString()
+                    )
+
+                    ll_nodata_container?.visibility = View.GONE
+                    sub_cat_container?.visibility = View.VISIBLE
+                    whatsDelteCategoryItemAdapter =
+                        WhatsDelteCategoryItemAdapter(
+                            requireContext(),
+                            applicationResponceList,
+                            this@WaTrandingStatus
+                        )
+                    adapter = whatsDelteCategoryItemAdapter
+                    progressBar?.visibility = View.GONE
+                    getallapps(requireActivity(), applicationResponceList)
+                }
+
+//                            Prefs(requireActivity()).setSubCategoryList(null)
+//                            Prefs(requireActivity()).setSubCategoryList(categoryItemList.data)
+            } else {
+                ll_nodata_fav
+//                            recCategoryitem?.visibility = View.GONE
+                ll_nodata_container?.visibility = View.GONE
+                ll_nodata_fav?.visibility = View.VISIBLE
+                save_btn?.visibility = View.GONE
+                sub_cat_container?.visibility = View.GONE
+                progressBar?.visibility = View.GONE
+                rl_add_new_fav?.visibility = View.VISIBLE
+                main_container?.visibility = View.VISIBLE
+
             }
 
-        }else{
-            rl_add_new_fav?.visibility=View.GONE
-            main_container?.visibility=View.VISIBLE
+
+
+
+            ll_ask_add_new_fav?.setOnClickListener {
+                println("WaTrandingStatus.onViewCreated jhjgjhj")
+                rl_add_new_fav?.visibility = View.VISIBLE
+                main_container?.visibility = View.GONE
+                save_btn?.visibility = View.VISIBLE
+
+                callAllApplicationListView("all")
+            }
+            save_btn?.setOnClickListener {
+
+                rl_add_new_fav?.visibility = View.GONE
+                main_container?.visibility = View.VISIBLE
+                if ((mainAllAppList != null) && (mainAllAppList?.size!! > 0) && (mainFavSelectedList != null) && mainFavSelectedList?.size!! > 0) {
+                    mainAllAppList?.let {
+                        mainFavSelectedList?.let { it1 ->
+                            callFavrioutList(
+                                it,
+                                it1
+                            )
+                        }
+                    }
+
+                } else {
+                    Toast.makeText(requireActivity(), "Select App..", Toast.LENGTH_SHORT).show()
+
+                }
+            }
+
+        } else {
+            ll_ask_add_new_fav?.visibility = View.GONE
+
+            rl_add_new_fav?.visibility = View.GONE
+            main_container?.visibility = View.VISIBLE
 
         }
 
-        if (tabpos!=null && tabpos>0 && sectionNumber!=null){
+        if (tabpos != null && tabpos > 0 && sectionNumber != null) {
             Log.d("DynamicFragment", "Hello onCreate hi section number $sectionNumber  $tabpos ")
             callApplicationListView(sectionNumber.toString())
         }
 
     }
-
-
 
 
     override fun onClick(data: CategoryListData, position: String) {
@@ -427,18 +506,6 @@ class WaTrandingStatus : Fragment(), setClick, openOnClick, onclickInstalledApp,
     }
 
 
-//    private fun setUpTabIcons(position: Int, data: List<CategoryListData>) {
-//        val chatView: View = LayoutInflater.from(requireActivity()).inflate(R.layout.custom_tab_v2, null)
-//       val tv_cat_name= chatView.findViewById<TextView>(R.id.custum_tab_text)
-//        val iv_cat = chatView.findViewById<ImageView>(R.id.iv_cat_icon)
-//
-//        tv_cat_name?.setText(data[position].cat_name)
-//        Glide.with(requireActivity()).load(data[position].cat_image).into(iv_cat)
-//
-//        tabs?.getTabAt(position)?.customView = chatView
-//
-//    }
-
     companion object {
         fun newInstance(sectionNumber: String, position: Int): WaTrandingStatus {
 
@@ -447,11 +514,9 @@ class WaTrandingStatus : Fragment(), setClick, openOnClick, onclickInstalledApp,
             args.putString(fragment.ARG_SECTION_NUMBER, sectionNumber)
             args.putInt(fragment.ARG_TAB_SELECTED_POSITION, position)
             fragment.arguments = args
-//            fragment.callApplicationListView(sectionNumber)
             return fragment
         }
     }
-
 
 
     private fun callApplicationListView(position: String) {
@@ -508,7 +573,6 @@ class WaTrandingStatus : Fragment(), setClick, openOnClick, onclickInstalledApp,
                         sub_cat_container?.visibility = View.VISIBLE
 //                            if (!isHitData){
 //                                isHitData=true
-                        println("WaTrandingStatus.callApplicationListView gfdjshgaja opopop " + " " + categoryItemList.data.toString())
                         appContainsList.add(
                             ApplicationModelDataList(
                                 categoryItemList.data!!,
@@ -516,29 +580,14 @@ class WaTrandingStatus : Fragment(), setClick, openOnClick, onclickInstalledApp,
                             )
                         )
 
-
-                        println("WaTrandingStatus.callApplicationListView gfdjshgaja aaaa " + " " + appContainsList.toString())
-
-
-
                         prefs?.setSubCategoryList(null)
                         prefs?.setSubCategoryList(appContainsList)
-                        println(
-                            "WaTrandingStatus.callApplicationListView hi this is log 001" + " " +
-                                    prefs?.getSubCategoryList()!!.size + " " + position
-                        )
-
                         val applicationResponceList =
                             prefs?.getSubCategoryList()
                         if (applicationResponceList != null && applicationResponceList!!.size > 0) {
                             for (i in applicationResponceList!!.indices) {
                                 if (applicationResponceList!![i].cat_id.equals(position)) {
                                     dataList = applicationResponceList!![i].data
-                                    println(
-                                        "WaTrandingStatus.callApplicationListView hi this is log 002" + " " +
-                                                dataList.toString()
-                                    )
-
                                 }
                             }
                         }
@@ -546,8 +595,6 @@ class WaTrandingStatus : Fragment(), setClick, openOnClick, onclickInstalledApp,
                         recCategoryitem?.apply {
 
                             if (applicationResponceList != null && applicationResponceList?.size!! > 0) {
-                                println("WaTrandingStatus.callApplicationListView fasdgjhafsgh 009 aaaa" + " " + dataList.toString())
-
                                 txt_total?.setText(
                                     dataList!!.size.toString()
                                 )
@@ -563,12 +610,7 @@ class WaTrandingStatus : Fragment(), setClick, openOnClick, onclickInstalledApp,
                                 adapter = whatsDelteCategoryItemAdapter
                                 progressBar?.visibility = View.GONE
                                 getallapps(requireActivity(), dataList)
-
-
-//                            Prefs(requireActivity()).setSubCategoryList(null)
-//                            Prefs(requireActivity()).setSubCategoryList(categoryItemList.data)
                             } else {
-//                            recCategoryitem?.visibility = View.GONE
                                 ll_nodata_container?.visibility = View.VISIBLE
                                 sub_cat_container?.visibility = View.GONE
                                 progressBar?.visibility = View.GONE
@@ -576,13 +618,9 @@ class WaTrandingStatus : Fragment(), setClick, openOnClick, onclickInstalledApp,
                             }
                         }
 
-
-//                        }
-
                     } else {
                         progressBar?.visibility = View.GONE
                         sub_cat_container?.visibility = View.GONE
-
                         ll_nodata_container?.visibility = View.VISIBLE
 
                     }
@@ -590,26 +628,13 @@ class WaTrandingStatus : Fragment(), setClick, openOnClick, onclickInstalledApp,
 
             } else {
 
-                println("WaTrandingStatus.callApplicationListView gfdjshgaja aaaa ccc" + " " + appContainsList.toString())
-
-
                 prefs?.setSubCategoryList(appContainsList)
-                println(
-                    "WaTrandingStatus.callApplicationListView hi this is log 001" + " " +
-                            prefs?.getSubCategoryList()!!.size + " " + position
-                )
-
                 val applicationResponceList =
                     prefs?.getSubCategoryList()
                 if (applicationResponceList != null && applicationResponceList!!.size > 0) {
                     for (i in applicationResponceList!!.indices) {
                         if (applicationResponceList!![i].cat_id.equals(position)) {
                             dataList = applicationResponceList!![i].data
-                            println(
-                                "WaTrandingStatus.callApplicationListView hi this is log 002" + " " +
-                                        dataList.toString()
-                            )
-
                         }
                     }
                 }
@@ -619,12 +644,6 @@ class WaTrandingStatus : Fragment(), setClick, openOnClick, onclickInstalledApp,
                     ll_nodata_container?.visibility = View.GONE
                     sub_cat_container?.visibility = View.VISIBLE
                     recCategoryitem?.apply {
-
-
-                        println("WaTrandingStatus.callApplicationListView fasdgjhafsgh 009 aaaa" + " " + dataList.toString())
-
-
-
                         txt_total?.setText(
                             dataList!!.size.toString()
                         )
@@ -641,11 +660,7 @@ class WaTrandingStatus : Fragment(), setClick, openOnClick, onclickInstalledApp,
                         progressBar?.visibility = View.GONE
                         getallapps(requireActivity(), dataList)
                     }
-
-//                            Prefs(requireActivity()).setSubCategoryList(null)
-//                            Prefs(requireActivity()).setSubCategoryList(categoryItemList.data)
                 } else {
-//                            recCategoryitem?.visibility = View.GONE
                     ll_nodata_container?.visibility = View.VISIBLE
                     sub_cat_container?.visibility = View.GONE
                     progressBar?.visibility = View.GONE
@@ -669,7 +684,7 @@ class WaTrandingStatus : Fragment(), setClick, openOnClick, onclickInstalledApp,
 
         val applicationResponceList =
             prefs?.getSubCategoryList()
-        var dataList: List<ApplicationListData> = ArrayList<ApplicationListData>()
+        var dataList: ArrayList<ApplicationListData> = ArrayList<ApplicationListData>()
 //        CoroutineScope(Dispatchers.IO).launch {
         progressBar?.visibility = View.VISIBLE
         if (country != null) {
@@ -690,7 +705,6 @@ class WaTrandingStatus : Fragment(), setClick, openOnClick, onclickInstalledApp,
                     )
 
                     if (applicationResponceList!![i].cat_id.equals(position)) {
-                        println("WaTrandingStatus.callApplicationListView hi conatines data ")
                         isContains = true
 
                     }
@@ -698,8 +712,6 @@ class WaTrandingStatus : Fragment(), setClick, openOnClick, onclickInstalledApp,
             }
             if (!isContains) {
                 isContains = false
-                println("WaTrandingStatus.callApplicationListView hi conatines data 001")
-
                 viewModel?.callApplicationListData(
                     ApplicationListRequest(
                         appId!!,
@@ -715,41 +727,26 @@ class WaTrandingStatus : Fragment(), setClick, openOnClick, onclickInstalledApp,
                         sub_cat_container?.visibility = View.VISIBLE
 //                            if (!isHitData){
 //                                isHitData=true
-                        println("WaTrandingStatus.callApplicationListView gfdjshgaja opopop " + " " + categoryItemList.data.toString())
                         appContainsList.add(
                             ApplicationModelDataList(
                                 categoryItemList.data!!,
                                 position
                             )
                         )
-
-
-                        println("WaTrandingStatus.callApplicationListView gfdjshgaja aaaa " + " " + appContainsList.toString())
-
-
-
                         prefs?.setSubCategoryList(null)
                         prefs?.setSubCategoryList(appContainsList)
-                        println(
-                            "WaTrandingStatus.callApplicationListView hi this is log 001" + " " +
-                                    prefs?.getSubCategoryList()!!.size + " " + position
-                        )
-
                         val applicationResponceList =
                             prefs?.getSubCategoryList()
                         if (applicationResponceList != null && applicationResponceList!!.size > 0) {
                             for (i in applicationResponceList!!.indices) {
                                 if (applicationResponceList!![i].cat_id.equals(position)) {
                                     dataList = applicationResponceList!![i].data
-                                    println(
-                                        "WaTrandingStatus.callApplicationListView hi this is log 002" + " " +
-                                                dataList.toString()
-                                    )
 
                                 }
                             }
                         }
 
+                        mainAllAppList = dataList
                         fav_rv_category_item?.apply {
                             if (applicationResponceList != null && applicationResponceList?.size!! > 0) {
                                 txt_total?.setText(
@@ -786,11 +783,13 @@ class WaTrandingStatus : Fragment(), setClick, openOnClick, onclickInstalledApp,
                     for (i in applicationResponceList!!.indices) {
                         if (applicationResponceList!![i].cat_id.equals(position)) {
                             dataList = applicationResponceList!![i].data
+
                         }
                     }
                 }
 
                 if (applicationResponceList != null && applicationResponceList?.size!! > 0) {
+                    mainAllAppList = dataList
                     fav_rv_category_item?.apply {
                         txt_total?.setText(
                             dataList!!.size.toString()
@@ -821,6 +820,86 @@ class WaTrandingStatus : Fragment(), setClick, openOnClick, onclickInstalledApp,
         }
 
 
+    }
+
+
+    private fun callFavrioutList(
+        allAppList: List<ApplicationListData>,
+        favSelectedList: List<String>
+    ) {
+
+        var appContainsList: ArrayList<ApplicationListData> =
+            ArrayList<ApplicationListData>()
+        appContainsList.clear()
+
+        GlobalScope.launch {
+            for (i in favSelectedList.indices) {
+
+                for (pos in allAppList.indices) {
+
+                    if (allAppList[pos].package_name.equals(favSelectedList[i])) {
+                        appContainsList.add(
+                            ApplicationListData(
+                                allAppList[pos].app_name,
+                                allAppList[pos].cat_id,
+                                allAppList[pos].id,
+                                allAppList[pos].image,
+                                allAppList[pos].package_name,
+                                allAppList[pos].click_url,
+                                allAppList[pos].color,
+                                false
+                            )
+                        )
+
+
+                    }
+                }
+            }
+
+            prefs?.setFavList(appContainsList)
+
+
+            val applicationResponceList = prefs?.getFavList()
+
+            if (applicationResponceList != null && applicationResponceList?.size!! > 0) {
+                ll_nodata_container?.visibility = View.GONE
+                sub_cat_container?.visibility = View.VISIBLE
+                recCategoryitem?.apply {
+                    txt_total?.setText(
+                        applicationResponceList!!.size.toString()
+                    )
+
+                    ll_nodata_container?.visibility = View.GONE
+                    sub_cat_container?.visibility = View.VISIBLE
+                    whatsDelteCategoryItemAdapter =
+                        WhatsDelteCategoryItemAdapter(
+                            requireContext(),
+                            applicationResponceList,
+                            this@WaTrandingStatus
+                        )
+                    adapter = whatsDelteCategoryItemAdapter
+                    progressBar?.visibility = View.GONE
+                    getallapps(requireActivity(), applicationResponceList)
+                }
+            } else {
+                ll_nodata_container?.visibility = View.VISIBLE
+                sub_cat_container?.visibility = View.GONE
+                progressBar?.visibility = View.GONE
+
+            }
+
+        }
+
+
+    }
+
+    override fun favSelectedPackageList(tempList: ArrayList<String>) {
+        if (tempList != null && tempList.size > 0) {
+
+            mainFavSelectedList = tempList
+
+
+        }
     }
 
 }

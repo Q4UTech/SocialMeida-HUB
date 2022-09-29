@@ -8,14 +8,54 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.whatsdelete.listener.FavSelectionListListner
 import com.example.whatsdelete.listener.openOnClick
 import com.example.whatsdelete.modal.CategoryDetailItem
 import com.example.whatsdelete.responce.ApplicationListData
+import com.example.whatsdelete.utils.Prefs
 import com.pds.wastatustranding.R
 import com.squareup.picasso.Picasso
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import java.io.File
 
 class FavCategoryItemAdapter(var context:Context, private val list: List<ApplicationListData>?,
-                             var listener:openOnClick): RecyclerView.Adapter<FavCategoryItemAdapter.ViewHolder>() {
+                             var listener: FavSelectionListListner
+): RecyclerView.Adapter<FavCategoryItemAdapter.ViewHolder>() {
+    var tempList = ArrayList<String>()
+
+    var checkStatus = list?.let {
+        BooleanArray(it.size)}
+
+    var checkStatustemp = list?.let {
+        BooleanArray(it.size)
+        if (Prefs(context).getFavList()!=null && Prefs(context).getFavList()!!.size>0) {
+//            GlobalScope.launch {
+                for (i in list!!.indices) {
+
+                    for (pos in Prefs(context).getFavList()!!.indices){
+                        if (Prefs(context).getFavList()?.get(pos)?.package_name.equals(list[i].package_name)) {
+                            checkStatus!![i]=true
+                            list[i].isChecked=true
+                            list?.get(i)?.let { it1 -> tempList.add(it1.package_name) }
+                            println("FavCategoryItemAdapter. sdghskdjfh"+" "+list[i].package_name+" "+
+                                    list[i].isChecked
+                            )
+
+                        }
+//                        else{
+//                            checkStatus!![i]=false
+//                            list[i].isChecked=false
+//
+//                        }
+                    }
+                }
+//            }
+            notifyDataSetChanged()
+        }
+
+    }
+
 
 
 
@@ -28,6 +68,8 @@ class FavCategoryItemAdapter(var context:Context, private val list: List<Applica
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         Log.d("TAG", "onBindViewHolder: ")
+        println("FavCategoryItemAdapter. sdghskdjfh 002"+" "+ list!![position].isChecked)
+
         val itemData= list?.get(position)
      /*   Glide.with(context)
             .load(itemData?.img)
@@ -45,21 +87,34 @@ class FavCategoryItemAdapter(var context:Context, private val list: List<Applica
 
 
 
-        if (list?.get(position)?.isChecked == true){
+
+
+        if (list!![position].isChecked){
+            println("FavCategoryItemAdapter.onBindViewHolder hi check test >>> aaa"+" "+position
+            +" "+checkStatus!!.size+" "+checkStatus.toString())
             holder.serviceToggle.isChecked=true
         }else{
+            println("FavCategoryItemAdapter.onBindViewHolder hi check test >>> bbb"+" "+position)
+
             holder.serviceToggle.isChecked=false
 
         }
 
-        holder.serviceToggle.setOnCheckedChangeListener { buttonView, isChecked ->
+        holder.serviceToggle.setOnClickListener {
 
-            if (isChecked){
-                list?.get(position)?.isChecked=true
-            }else{
+            if (list!![position].isChecked){
+                checkStatus!![position]=false
                 list?.get(position)?.isChecked=false
+                list?.get(position)?.let { it1 -> tempList.remove(it1.package_name) }
+            }else{
+                checkStatus!![position]=true
+                list?.get(position)?.isChecked=true
 
+                list?.get(position)?.let { it1 -> tempList.add(it1.package_name) }
             }
+            listener.favSelectedPackageList(tempList)
+
+            notifyDataSetChanged()
         }
 
 

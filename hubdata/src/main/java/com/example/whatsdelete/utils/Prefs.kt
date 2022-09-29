@@ -37,6 +37,7 @@ class Prefs(con: Context) {
         var KEY_SET_SAME_DAY = "KEY_SET_SAME_DAY"
         var KEY_SET_cat_list = "KEY_SET_cat_list"
         var KEY_SET_SUB_cat_list = "KEY_SET_SUB_cat_list"
+        var KEY_SET_FAV_cat_list = "KEY_SET_FAV_cat_list"
         var KEY_SET_SUB_cat_list_id = "KEY_SET_SUB_cat_list_id"
         const val PREF = "prefs_social_media_downloader"
         const val PROGRESS_KEY_PREF = "progress_key_pref"
@@ -108,6 +109,22 @@ class Prefs(con: Context) {
         val gson = Gson()
         val json: String? = preferences.getString(KEY_SET_SUB_cat_list, null)
         val type: Type = object : TypeToken<ArrayList<ApplicationModelDataList>?>() {}.type
+        return gson.fromJson(json, type)
+    }
+
+    fun setFavList(list: ArrayList<ApplicationListData>?) {
+        val gson = Gson()
+        val json: String = gson.toJson(list)
+        editor.putString(KEY_SET_FAV_cat_list, json)
+        editor.commit()
+
+
+    }
+
+    fun getFavList(): ArrayList<ApplicationListData>? {
+        val gson = Gson()
+        val json: String? = preferences.getString(KEY_SET_FAV_cat_list, null)
+        val type: Type = object : TypeToken<ArrayList<ApplicationListData>?>() {}.type
         return gson.fromJson(json, type)
     }
 
