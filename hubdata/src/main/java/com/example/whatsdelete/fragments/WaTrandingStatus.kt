@@ -191,7 +191,6 @@ class WaTrandingStatus : Fragment(), setClick, openOnClick, onclickInstalledApp,
 
             rl_add_new_fav?.visibility = View.VISIBLE
             main_container?.visibility = View.GONE
-
             ll_ask_add_new_fav?.visibility = View.VISIBLE
 
             val applicationResponceList = prefs?.getFavList()
@@ -225,7 +224,6 @@ class WaTrandingStatus : Fragment(), setClick, openOnClick, onclickInstalledApp,
 //                            Prefs(requireActivity()).setSubCategoryList(null)
 //                            Prefs(requireActivity()).setSubCategoryList(categoryItemList.data)
             } else {
-                ll_nodata_fav
 //                            recCategoryitem?.visibility = View.GONE
                 ll_nodata_container?.visibility = View.GONE
                 ll_nodata_fav?.visibility = View.VISIBLE
@@ -263,14 +261,22 @@ class WaTrandingStatus : Fragment(), setClick, openOnClick, onclickInstalledApp,
                     }
 
                 } else {
-                    Toast.makeText(requireActivity(), "Select App..", Toast.LENGTH_SHORT).show()
+                    prefs?.setFavList(null)
+                    ll_nodata_container?.visibility = View.GONE
+                    ll_nodata_fav?.visibility = View.VISIBLE
+                    save_btn?.visibility = View.GONE
+                    sub_cat_container?.visibility = View.GONE
+                    progressBar?.visibility = View.GONE
+                    rl_add_new_fav?.visibility = View.GONE
+                    main_container?.visibility = View.VISIBLE
 
                 }
+
+                Toast.makeText(requireActivity(), "Changes Done", Toast.LENGTH_SHORT).show()
             }
 
         } else {
             ll_ask_add_new_fav?.visibility = View.GONE
-
             rl_add_new_fav?.visibility = View.GONE
             main_container?.visibility = View.VISIBLE
 
@@ -832,69 +838,74 @@ class WaTrandingStatus : Fragment(), setClick, openOnClick, onclickInstalledApp,
             ArrayList<ApplicationListData>()
         appContainsList.clear()
 
-        GlobalScope.launch {
-            for (i in favSelectedList.indices) {
+        if (favSelectedList!=null && favSelectedList.isNotEmpty()){
+            GlobalScope.launch {
+                for (i in favSelectedList.indices) {
 
-                for (pos in allAppList.indices) {
+                    for (pos in allAppList.indices) {
 
-                    if (allAppList[pos].package_name.equals(favSelectedList[i])) {
-                        appContainsList.add(
-                            ApplicationListData(
-                                allAppList[pos].app_name,
-                                allAppList[pos].cat_id,
-                                allAppList[pos].id,
-                                allAppList[pos].image,
-                                allAppList[pos].package_name,
-                                allAppList[pos].click_url,
-                                allAppList[pos].color,
-                                false
+                        if (allAppList[pos].package_name.equals(favSelectedList[i])) {
+                            appContainsList.add(
+                                ApplicationListData(
+                                    allAppList[pos].app_name,
+                                    allAppList[pos].cat_id,
+                                    allAppList[pos].id,
+                                    allAppList[pos].image,
+                                    allAppList[pos].package_name,
+                                    allAppList[pos].click_url,
+                                    allAppList[pos].color,
+                                    false
+                                )
                             )
-                        )
 
 
+                        }
                     }
                 }
-            }
 
-            prefs?.setFavList(appContainsList)
+                prefs?.setFavList(appContainsList)
 
 
-            val applicationResponceList = prefs?.getFavList()
+                val applicationResponceList = prefs?.getFavList()
 
-            if (applicationResponceList != null && applicationResponceList?.size!! > 0) {
-                ll_nodata_container?.visibility = View.GONE
-                sub_cat_container?.visibility = View.VISIBLE
-                recCategoryitem?.apply {
-                    txt_total?.setText(
-                        applicationResponceList!!.size.toString()
-                    )
-
+                if (applicationResponceList != null && applicationResponceList?.size!! > 0) {
                     ll_nodata_container?.visibility = View.GONE
                     sub_cat_container?.visibility = View.VISIBLE
-                    whatsDelteCategoryItemAdapter =
-                        WhatsDelteCategoryItemAdapter(
-                            requireContext(),
-                            applicationResponceList,
-                            this@WaTrandingStatus
+                    recCategoryitem?.apply {
+                        txt_total?.setText(
+                            applicationResponceList!!.size.toString()
                         )
-                    adapter = whatsDelteCategoryItemAdapter
+
+                        ll_nodata_container?.visibility = View.GONE
+                        sub_cat_container?.visibility = View.VISIBLE
+                        whatsDelteCategoryItemAdapter =
+                            WhatsDelteCategoryItemAdapter(
+                                requireContext(),
+                                applicationResponceList,
+                                this@WaTrandingStatus
+                            )
+                        adapter = whatsDelteCategoryItemAdapter
+                        progressBar?.visibility = View.GONE
+                        getallapps(requireActivity(), applicationResponceList)
+                    }
+                } else {
+                    ll_nodata_container?.visibility = View.VISIBLE
+                    sub_cat_container?.visibility = View.GONE
                     progressBar?.visibility = View.GONE
-                    getallapps(requireActivity(), applicationResponceList)
+
                 }
-            } else {
-                ll_nodata_container?.visibility = View.VISIBLE
-                sub_cat_container?.visibility = View.GONE
-                progressBar?.visibility = View.GONE
 
             }
 
         }
 
 
+
+
     }
 
     override fun favSelectedPackageList(tempList: ArrayList<String>) {
-        if (tempList != null && tempList.size > 0) {
+        if (tempList != null) {
 
             mainFavSelectedList = tempList
 

@@ -5,5 +5,6 @@
     <string name="preview_images"><u>Preview images</u></string>
     <string name="share_to">Share to</string>
     <string name="use_tap_access">One Tap Access</string>
+    <string name="no_favorite_apps_tap_add_to_mark_favorites">No favorite apps, Tap Add to mark favorites</string>
 
 </resources>

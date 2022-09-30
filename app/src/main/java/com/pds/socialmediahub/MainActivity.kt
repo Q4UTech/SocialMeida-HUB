@@ -501,13 +501,13 @@ class MainActivity : BaseActivity(), InAppUpdateListener, View.OnClickListener {
             if (value != null) {
                 when (value) {
                     MapperUtils.MAPPER_SOCIAL_MEDIA -> {
-//                        navController?.navigate(R.id.navigation_home)
+
                     }
                     MapperUtils.MAPPER_WA_STATUS -> {
-//                        navController?.navigate(R.id.navigation_dashboard)
+                        binding.viewpager?.currentItem = 1
                     }
                     MapperUtils.MAPPER_WA_DIRECT_CHAT -> {
-//                        navController?.navigate(R.id.navigation_notifications)
+                        binding.viewpager?.currentItem = 2
                     }
                      MapperUtils.MAPPER_GALLERY -> {
                          startActivity(Intent(this, MyDownloadsFragment::class.java))

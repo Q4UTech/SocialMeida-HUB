@@ -23,6 +23,7 @@ import android.widget.Toast;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
 import com.pds.socialmediahub.MainActivity;
 import com.pds.socialmediahub.R;
@@ -34,6 +35,7 @@ import com.pds.socialmediahub.util.Const;
 import engine.app.fcm.MapperUtils;
 
 public class SocialMediaHubService extends Service {
+    private static final int NOTIFICATION_ID = 2;
     private Handler handler;
     private Context mContext;
     private int ID = 1;
@@ -90,7 +92,7 @@ public class SocialMediaHubService extends Service {
                 .setCustomBigContentView(remoteViews)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 .build();
-        startForeground(2, notification);
+        startForeground(NOTIFICATION_ID, notification);
     }
 
     private void setChannelAction(RemoteViews remoteViews) {
@@ -156,7 +158,9 @@ public class SocialMediaHubService extends Service {
 //        remoteViews.setOnClickPendingIntent(R.id.ll_camera, cameraPendingIntent);
 
         Intent whatAppIntent = new Intent(this, SocialMediaHubService.class).setAction("whatsapp_action");
-        PendingIntent whatsPendingIntent = PendingIntent.getService(this, 0, whatAppIntent, PendingIntent.FLAG_UPDATE_CURRENT
+
+
+        PendingIntent  whatsPendingIntent = PendingIntent.getService(this, 0, whatAppIntent, PendingIntent.FLAG_UPDATE_CURRENT
                 | PendingIntent.FLAG_IMMUTABLE);
         remoteViews.setOnClickPendingIntent(R.id.ll_whatsapp, whatsPendingIntent);
 
@@ -303,7 +307,11 @@ public class SocialMediaHubService extends Service {
     }
 
     private void closingBroadcast() {
-//        sendBroadcast(new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
+        Intent it = new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS);
+        getApplicationContext().sendBroadcast(it);
+//        NotificationManagerCompat.from(getApplicationContext()).cancelAll();
+//        NotificationManager notificationManager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
+//        notificationManager.cancel(NOTIFICATION_ID);
     }
 
     public boolean isStoragePermissionGrantedonly() {

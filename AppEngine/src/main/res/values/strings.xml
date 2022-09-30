@@ -17,7 +17,7 @@
     <!--Provider app id -->
     <string name="fb_login_protocol_scheme">fb1116429675646119</string>
     <string name="app_id_facebook">1116429675646119</string>
-    <string name="app_id_admob">ca-app-pub-3940256099942544~3347511713</string>
+    <string name="app_id_admob">ca-app-pub-5122276687810272~4778964328</string>
     <string name="app_id_mediation_applovin_sdk_key">Ahu_LcSo_HVLiOo3XK_d76tslui3CfrS6JPXiqtc7m29KtC63i_HWrOO9fHQCo_f02vZyWQBGaRmE4cIvTqCLf</string>
 
     <string name="ads_loading">Ads Loading....</string>

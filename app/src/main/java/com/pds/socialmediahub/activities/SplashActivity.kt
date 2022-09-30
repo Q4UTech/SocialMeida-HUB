@@ -249,7 +249,6 @@ class SplashActivity : BaseActivity(), OnBannerAdsIdLoaded {
         viewModel?.callCheckUpdateAPI(CheckUpdateAPIRequest(Constants.APP_ID, AppUtils.getCountryCode(this)!!))
             ?.observe(this) { list ->
                 Log.d("TAG", "onActivityCreated1: adgfadsgadg 002 abandfhaj splash")
-                Log.d("TAG", "onActivityCreated1:  splash " + list.data.updatekey)
                 if (prefs?.getUpdatedKey()!=null && !prefs?.getUpdatedKey().equals("")){
 
                     if (!prefs?.getUpdatedKey().equals(list.data.updatekey)){

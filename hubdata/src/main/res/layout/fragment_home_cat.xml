@@ -129,7 +129,7 @@
                                     android:textStyle="bold"
                                     android:textColor="@color/text_color_202020"
                                     android:textSize="@dimen/txt_14sp"
-                                    android:text="No Data Found!"/>
+                                    android:text="@string/no_favorite_apps_tap_add_to_mark_favorites"/>
 
                             </LinearLayout>
 
@@ -363,10 +363,10 @@
                     android:layout_marginTop="@dimen/margin20"
                     android:layout_marginEnd="@dimen/margin20"
                     android:layout_marginBottom="@dimen/margin20"
-                    android:backgroundTint="#024282"
+                    android:backgroundTint="#0E579F"
                     android:paddingStart="@dimen/margin_bottom_40"
                     android:paddingEnd="@dimen/margin_bottom_40"
-                    android:text="Save"
+                    android:text="Done"
                     android:textAllCaps="false"
                     android:textColor="@color/white_inapp"
                     android:textSize="13sp"
