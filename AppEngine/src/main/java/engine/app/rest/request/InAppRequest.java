@@ -32,11 +32,18 @@ public class InAppRequest {
     public String launchCount;
 
 
+    @SerializedName("country")
+    public String country;
+
+
+
     public InAppRequest(Context context, String productID) {
         product_id = productID;
         version = RestUtils.getVersion(context);
         unique_id = new GCMPreferences(context).getUniqueId();
         launchCount = RestUtils.getAppLaunchCount();
+        country = RestUtils.getCountryCode(context);
+
         // for android it will be 1
         os = "1";
     }

@@ -29,10 +29,14 @@ public class VersionData {
     @SerializedName("launchcount")
     public String launchCount;
 
+    @SerializedName("country")
+    public String country;
+
 
     public VersionData(Context context) {
         version = RestUtils.getVersion(context);
         unique_id = new GCMPreferences(context).getUniqueId();
+        country = RestUtils.getCountryCode(context);
 
         launchCount = RestUtils.getAppLaunchCount();
         // for android it will be 1

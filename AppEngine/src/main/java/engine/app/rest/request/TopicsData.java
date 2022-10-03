@@ -25,6 +25,10 @@ public class TopicsData {
     @SerializedName("launchcount")
     public String launchCount;
 
+
+    @SerializedName("country")
+    public String country;
+
     @SerializedName("app_topics")
     @Expose
     public ArrayList<TopicsRequest> app_topics = new ArrayList<>();
@@ -36,6 +40,8 @@ public class TopicsData {
         appID = DataHubConstant.APP_ID;
         version = RestUtils.getVersion(context);
         launchCount = RestUtils.getAppLaunchCount();
+        country = RestUtils.getCountryCode(context);
+
         // for android it will be 1
         os = "1";
         unique_id = new GCMPreferences(context).getUniqueId();

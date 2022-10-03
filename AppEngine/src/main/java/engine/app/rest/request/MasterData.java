@@ -29,10 +29,15 @@ public class MasterData {
     @SerializedName("launchcount")
     public String launchCount;
 
+    @SerializedName("country")
+    public String country;
+
     public MasterData(Context context) {
         version = RestUtils.getVersion(context);
         unique_id = new GCMPreferences(context).getUniqueId();
         launchCount = RestUtils.getAppLaunchCount();
+        country = RestUtils.getCountryCode(context);
+
         // for android it will be 1
         os = "1";
 
